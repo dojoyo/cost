@@ -7,158 +7,151 @@
           <i class="iconfont icon-gudingbangongfei"></i> 固定办公费
         </div>
         <div style="margin-left: auto">
+          <el-button type="primary" size="small" icon="iconfont icon-xinzeng fs-12" @click="goAdd"> 新增</el-button>
         </div>
       </div>
     </el-header>
+    <div class="search-area">
+      <div class="w-100p flex space-between">
+        <div>
+          <el-date-picker v-model="search.year" type="year" format="yyyy年" value-format="yyyy" placeholder="请选择年份" class="mr-10"></el-date-picker>
+          <el-button @click="getList()" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
+        </div>
+        <div class="operate-buttons">
+          <el-button type="text" icon="iconfont icon-bianjix fs-12" class="blue" @click="goAdd"> 编辑</el-button>
+          <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue" @click="openImportDialog"> 导入</el-button>
+          <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="openExportDialog"> 导出</el-button>
+          <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue" @click="getTemp"> 下载模板</el-button>
+        </div>
+      </div>
+    </div>
     <el-main class="main">
-      <div class="w-100p">
-        <el-input size="medium" style="width: 200px; margin-right: 20px" placeholder="请输入合同名称或签署人" v-model="search.filter"/>
-        <el-date-picker
-          style="margin-right: 20px"
-          v-model="search.time"
-          type="daterange"
-          value-format="yyyy-MM-dd"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
-        </el-date-picker>
-        <el-select v-model="search.contractType" placeholder="请选择分类" style="margin-right: 20px">
-          <el-option
-            v-for="item in enumType.ContractCategory"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="search.signState" placeholder="请选择合同状态" style="margin-right: 20px">
-          <el-option
-            v-for="item in enumType.ContractSignState"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-button @click="getList()" type="primary" size="small">查询</el-button>
-      </div>
-      <el-table v-if="list && list.length>0" :data="list" style="width: 100%; margin-top:10px; " :header-cell-style="{background:'#fdfdfd'}">
-        <el-table-column label="合同名称" width="300"  prop="contractName"></el-table-column>
-        <el-table-column prop="contractType.name" label="分类" width="120"></el-table-column>
-        <el-table-column prop="approvalTitle" label="审批流程" width="400"></el-table-column>
-        <el-table-column prop="signTime" label="创建时间" width="150">
-          <template slot-scope="scope">
-            {{scope.row.createTime | DateTimeEn}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="signTime" label="签订时间" width="150">
-          <template slot-scope="scope">
-            {{scope.row.signTime | DateTimeEn}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="signState.name" label="状态" width="80"></el-table-column>
-        <el-table-column prop="promoter.userName" label="发起人" width="120"></el-table-column>
-        <el-table-column prop="signer" label="签署方" width="120"></el-table-column>
-
-        <el-table-column label="操作" width="145" fixed="right" header-align="center" align="center" >
-          <template slot-scope="scope">
-            <el-button type="text" :disabled="scope.row.permission && scope.row.signState && (!scope.row.permission.canDownload || scope.row.signState.value!=='COMPLETE')" @click="downloadFile(scope.row.instanceId)">下载</el-button>
-            <span style="padding: 0 10px">|</span>
-            <el-dropdown trigger="click">
-            <span class="el-dropdown-link" style="cursor: pointer">
-              更多<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="cancelSign(scope.row.instanceId)">取消签署</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </template>
-        </el-table-column>
+      <el-table v-if="list && list.length>0" :data="list" style="width: 100%; margin-top:10px; " :header-cell-style="{background:'#f5f9ff'}" border :cell-style="firstCellStyle">
+        <el-table-column label="部门" width="180" prop="deptName"></el-table-column>
+        <el-table-column label="1月" width="120" align="right" prop="janCost"></el-table-column>
+        <el-table-column label="2月" width="120" align="right" prop="febCost"></el-table-column>
+        <el-table-column label="3月" width="120" align="right" prop="marCost"></el-table-column>
+        <el-table-column label="4月" width="120" align="right" prop="aprCost"></el-table-column>
+        <el-table-column label="5月" width="120" align="right" prop="mayCost"></el-table-column>
+        <el-table-column label="6月" width="120" align="right" prop="junCost"></el-table-column>
+        <el-table-column label="7月" width="120" align="right" prop="julCost"></el-table-column>
+        <el-table-column label="8月" width="120" align="right" prop="augCost"></el-table-column>
+        <el-table-column label="9月" width="120" align="right" prop="septCost"></el-table-column>
+        <el-table-column label="10月" width="120" align="right" prop="octCost"></el-table-column>
+        <el-table-column label="11月" width="120" align="right" prop="novCost"></el-table-column>
+        <el-table-column label="12月" width="120" align="right" prop="decCost"></el-table-column>
+        <el-table-column label="合计" width="120" align="right" prop="totalCost" fixed="right"></el-table-column>
       </el-table>
-      <div class="txt-right">
-        <el-pagination
-          v-if="list && list.length>0"
-          style="margin-top: 20px"
-          :current-page="pageNum"
-          :page-sizes="[5, 10, 20]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        >
-        </el-pagination>
-      </div>
       <div v-show="list && list.length===0" class="w-100p gray" style="text-align: center;">
         <img src="@/assets/no-list.png">
         <br><span style="font-size: 14px">暂无数据</span><br/><br/>
       </div>
     </el-main>
+    <AddAndEditDialog ref="addAndEdit" />
+    <ImportDialog ref="importDialog" />
+    <ExportDialog ref="exportDialog" />
   </el-container>
 </template>
 <script>
   import api from '@/api/cost';
+  import mixin from '../mixins';
+  import AddAndEditDialog from './addAndEdit';
+  import ImportDialog from '../components/importDialog';
+  import ExportDialog from '../components/exportDialog';
   export default {
     name: '',
-    components: {},
+    components: { AddAndEditDialog, ImportDialog, ExportDialog },
     props: {},
     data() {
       return {
         enumType: {},
-        search: {},
+        search: {
+          year: new Date().getFullYear() + ''
+        },
         list: [],
-        pageNum: 1,
-        pageSize: 10,
-        total: 0
+        deptTree: []
       };
     },
+    mixins: [mixin],
     mounted() {
-      // this.getEnum('ContractSignState', true)
-      // this.getList();
+      this.getEnum('FeeMonth');
+      this.getList();
+      this.getDeptTree();
     },
     methods: {
-      // 获取枚举类
-      getEnum(type, isAddAll) {
-        api.getEnum(type).then(res => {
-          if (res.code === 200) {
-            if (isAddAll) {
-              res.data.unshift({name: '全部', value: ''});
-            }
-            this.$set(this.enumType, type, res.data);
-          }
-        }).catch(err => {
-          console.log(err);
-        });
+      // 设置第一列蓝色背景
+      firstCellStyle({ row, column, rowIndex, columnIndex }) {
+        if (columnIndex === 0) {
+          return { backgroundColor: '#f5f9ff' };
+        } else if (columnIndex === 13) {
+          return { color: 'black' };
+        }
       },
       // 获取企业列表
       getList() {
         let params = {
-          filter: this.search.filter,
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
+          year: this.search.year
         };
-
-        api.getSignList(params).then(res => {
+        api.getFixedList(params).then(res => {
           if (res.code === 200) {
-            this.list = res.data.list;
-            this.total = res.data.total;
+            this.list = res.data;
           }
         }).catch(err => {
           console.log(err);
         });
       },
-      // 分页更改
-      handleSizeChange(val) {
-        this.pageSize = val;
-        this.pageNum = 1;
-        this.getList();
+      // 新增编辑弹窗打开
+      goAdd(data) {
+        this.$refs.addAndEdit.open(data, this.deptTree, this.enumType.FeeMonth);
       },
-      // 换页
-      handleCurrentChange(val) {
-        this.pageNum = val;
-        this.getList();
+      openImportDialog() {
+        this.$refs.importDialog.open();
+      },
+      openExportDialog() {
+        this.$refs.exportDialog.open();
+      },
+      getTemp() {
+        api.getFixedTemp().then(res => {
+          let headers = res.headers;
+          let title = headers['x-file-name'];
+          let blob = new Blob([res.data], {
+            type: headers['content-type']
+          });
+          let link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = decodeURIComponent(title);
+          link.click();
+        });
       }
     }
   };
 </script>
+<style lang="scss">
+  .space-between{
+    justify-content: space-between;
+  }
 
-<style lang="scss" scoped>
+  .search-area{
+    margin: 15px 15px 0;
+    padding: 20px;
+    background-color: #fff;
+  }
+  .operate-buttons{
+    font-size: 0;
+    > button{
+      &:not(:last-child){
+        &::after{
+          display: inline-block;
+          width: 1px;
+          height: 10px;
+          border-left: 1px solid #ccc;
+          content: '';
+          margin-left: 12px;
+        }
+      }
+    }
+  }
+  .blue-background{
+    background-color: #f5f9ff;
+  }
 </style>
