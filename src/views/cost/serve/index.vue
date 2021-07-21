@@ -93,12 +93,6 @@
         pageNum: 1,
         pageSize: 10,
         total: 0,
-        departments: [
-          {
-            label: '全部部门',
-            value: 'all'
-          }
-        ],
         activeIndex: '1' // 默认机票tag
       };
     },
@@ -157,20 +151,6 @@
     padding: 0 15px;
     background-color: #fff;
     border-bottom: 1px solid #e6e6e6;
-    .el-menu{
-      border-bottom: 0;
-      .el-menu-item{
-        height: 40px;
-        padding: 0;
-        margin: 0 20px;
-        line-height: 40px;
-      }
-      .is-active{
-        color: #007bff;
-        background: #fff!important;
-        border-color: #007bff;
-      }
-    }
   }
   .space-between{
     justify-content: space-between;

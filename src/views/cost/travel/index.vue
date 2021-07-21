@@ -10,28 +10,7 @@
         </div>
       </div>
     </el-header>
-    <div class="search-area">
-      <el-input v-model="search.name" placeholder="请输入人员姓名" class="mr-10"></el-input>
-      <el-date-picker v-model="search.year" type="year" placeholder="请选择年份" class="mr-10"></el-date-picker>
-      <el-select v-model="search.month" class="mr-10">
-        <el-option
-            v-for="item in months"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-        </el-option>
-      </el-select>
-      <el-select v-model="search.department" class="mr-10">
-        <el-option
-            v-for="item in departments"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-        </el-option>
-      </el-select>
-      <el-button @click="getList()" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
-      <!--  -->
-    </div>
+    <CommonSearch ref="commonSearch" @doSearch="doSearch" :feeMonth="enumType.FeeMonth" :deptTree="deptTree" />
     <div class="flex space-between tag-operate-tool">
       <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelectTag">
         <el-menu-item index="1">机票</el-menu-item>
@@ -48,22 +27,22 @@
       </div>
     </div>
     <el-main class="main travel-main">
-      <el-table v-if="list && list.length>0" :data="list" style="width: 100%; margin-top:10px; " :header-cell-style="{background:'#f5f9ff'}">
+      <el-table v-show="list && list.length>0 && activeIndex === '1'" :data="list" style="width: 100%; margin-top:10px;" :header-cell-style="{background:'#f5f9ff'}">
         <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column label="部门" prop="contractName"></el-table-column>
         <el-table-column prop="contractType.name" label="乘机人" width="120"></el-table-column>
 
-        <el-table-column prop="signTime" label="订票时间" width="150">
+        <el-table-column prop="signTime" label="订票时间" width="100">
           <template slot-scope="scope">
             {{scope.row.createTime | DateTimeEn}}
           </template>
         </el-table-column>
-        <el-table-column prop="signTime" label="起飞时间" width="150">
+        <el-table-column prop="signTime" label="起飞时间" width="100">
           <template slot-scope="scope">
             {{scope.row.signTime | DateTimeEn}}
           </template>
         </el-table-column>
-        <el-table-column prop="approvalTitle" label="国际/国内" width="400"></el-table-column>
+        <el-table-column prop="approvalTitle" label="国际/国内" width="80"></el-table-column>
         <el-table-column prop="signState.name" label="航程" width="80"></el-table-column>
         <el-table-column prop="signState.name" label="航班" width="80"></el-table-column>
         <el-table-column prop="signState.name" label="航等" width="80"></el-table-column>
@@ -78,6 +57,128 @@
         <el-table-column prop="signState.name" label="入账月份" width="80"></el-table-column>
         <el-table-column prop="signState.name" label="优惠券" width="80"></el-table-column>
         <el-table-column prop="signState.name" label="备注" width="80"></el-table-column>
+        <el-table-column label="操作" width="145" fixed="right" align="left" >
+          <template slot-scope="scope">
+            <el-button type="text" @click="goEdit(scope.row)">编辑</el-button>
+            <span style="padding: 0 10px">|</span>
+            <el-button type="text" @click="goDelete(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table v-show="list && list.length>0 && activeIndex === '2'" :data="list" style="width: 100%; margin-top:10px;" :header-cell-style="{background:'#f5f9ff'}">
+        <el-table-column label="序号" type="index"></el-table-column>
+        <el-table-column label="部门" prop="contractName"></el-table-column>
+        <el-table-column prop="contractType.name" label="入住人" width="120"></el-table-column>
+        <el-table-column prop="signTime" label="订票日期" width="100">
+          <template slot-scope="scope">
+            {{scope.row.createTime | DateTimeEn}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="signTime" label="入住日期" width="100">
+          <template slot-scope="scope">
+            {{scope.row.signTime | DateTimeEn}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="signTime" label="离店日期" width="100">
+          <template slot-scope="scope">
+            {{scope.row.signTime | DateTimeEn}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="approvalTitle" label="酒店城市" width="120"></el-table-column>
+        <el-table-column prop="signState.name" label="酒店名称" width="120"></el-table-column>
+        <el-table-column prop="signState.name" label="房型" width="120"></el-table-column>
+        <el-table-column prop="signState.name" label="房间数" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="星级" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="间夜" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="单价" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="金额" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="入账月份" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="备注" width="80"></el-table-column>
+        <el-table-column label="操作" width="145" fixed="right" align="left" >
+          <template slot-scope="scope">
+            <el-button type="text" @click="goEdit(scope.row)">编辑</el-button>
+            <span style="padding: 0 10px">|</span>
+            <el-button type="text" @click="goDelete(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table v-show="list && list.length>0 && activeIndex === '3'" :data="list" style="width: 100%; margin-top:10px;" :header-cell-style="{background:'#f5f9ff'}">
+        <el-table-column label="序号" type="index"></el-table-column>
+        <el-table-column label="部门" prop="contractName"></el-table-column>
+        <el-table-column prop="contractType.name" label="出行人" width="120"></el-table-column>
+        <el-table-column prop="signTime" label="订票日期" width="100">
+          <template slot-scope="scope">
+            {{scope.row.createTime | DateTimeEn}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="signTime" label="发车日期" width="100">
+          <template slot-scope="scope">
+            {{scope.row.signTime | DateTimeEn}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="signState.name" label="发车时间" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="到达时间" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="发车站" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="到达站" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="车次" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="坐等" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="费用类型" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="资金方向" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="订单金额" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="票价/价差" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="改签费" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="退票费" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="结算金额" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="服务费" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="合计" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="入账月份" width="80"></el-table-column>
+        <el-table-column label="操作" width="145" fixed="right" align="left" >
+          <template slot-scope="scope">
+            <el-button type="text" @click="goEdit(scope.row)">编辑</el-button>
+            <span style="padding: 0 10px">|</span>
+            <el-button type="text" @click="goDelete(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table v-show="list && list.length>0 && activeIndex === '4'" :data="list" style="width: 100%; margin-top:10px;" :header-cell-style="{background:'#f5f9ff'}">
+        <el-table-column label="序号" type="index"></el-table-column>
+        <el-table-column prop="signState.name" label="账号" width="80"></el-table-column>
+        <el-table-column label="部门" prop="contractName"></el-table-column>
+        <el-table-column prop="contractType.name" label="姓名" width="120"></el-table-column>
+        <el-table-column prop="signTime" label="开始计费时间" width="200">
+          <template slot-scope="scope">
+            {{scope.row.createTime | DateTimeEn}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="signState.name" label="用车城市" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="实际出发地" width="150"></el-table-column>
+        <el-table-column prop="signState.name" label="实际目的地" width="150"></el-table-column>
+        <el-table-column prop="signState.name" label="距离" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="实付金额" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="入账月份" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="用车备注" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="补充说明" width="80"></el-table-column>
+        <el-table-column label="操作" width="145" fixed="right" align="left" >
+          <template slot-scope="scope">
+            <el-button type="text" @click="goEdit(scope.row)">编辑</el-button>
+            <span style="padding: 0 10px">|</span>
+            <el-button type="text" @click="goDelete(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table v-show="list && list.length>0 && activeIndex === '5'" :data="list" style="width: 100%; margin-top:10px;" :header-cell-style="{background:'#f5f9ff'}">
+        <el-table-column label="序号" type="index"></el-table-column>
+        <el-table-column label="面单号" prop="contractName"></el-table-column>
+        <el-table-column prop="contractType.name" label="费用归属部门" width="120"></el-table-column>
+        <el-table-column prop="signState.name" label="填报人" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="金额" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="会计编码" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="预算编码" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="预算科目" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="项目名称" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="入账月份" width="80"></el-table-column>
+        <el-table-column prop="signState.name" label="摘要" width="150"></el-table-column>
+        <el-table-column prop="signState.name" label="主体" width="150"></el-table-column>
         <el-table-column label="操作" width="145" fixed="right" align="left" >
           <template slot-scope="scope">
             <el-button type="text" @click="goEdit(scope.row)">编辑</el-button>
@@ -112,80 +213,64 @@
 </template>
 <script>
   import api from '@/api/cost';
+  import mixin from '../mixins';
+  import CommonSearch from '../components/commonSearch.vue';
   import AddAndEditDialog from './addAndEdit';
   import ImportDialog from '../components/importDialog';
   import ExportDialog from '../components/exportDialog';
   export default {
     name: '',
-    components: { AddAndEditDialog, ImportDialog, ExportDialog },
+    components: { AddAndEditDialog, ImportDialog, ExportDialog, CommonSearch },
     props: {},
     data() {
       return {
         enumType: {},
-        search: {
-          name: '',
-          year: '',
-          month: 'all',
-          department: 'all'
-        },
+        filter: {},
         list: [],
         pageNum: 1,
         pageSize: 10,
         total: 0,
-        months: [
-          {
-            label: '全部月份',
-            value: 'all'
-          },
-          { label: '1月', value: 1 },
-          { label: '2月', value: 2 },
-          { label: '3月', value: 3 },
-          { label: '4月', value: 4 },
-          { label: '5月', value: 5 },
-          { label: '6月', value: 6 },
-          { label: '7月', value: 7 },
-          { label: '8月', value: 8 },
-          { label: '9月', value: 9 },
-          { label: '10月', value: 10 },
-          { label: '11月', value: 11 },
-          { label: '12月', value: 12 }
-        ],
-        departments: [
-          {
-            label: '全部部门',
-            value: 'all'
-          }
-        ],
         activeIndex: '1' // 默认机票tag
       };
     },
+    mixins: [mixin],
     mounted() {
-      // this.getEnum('ContractSignState', true)
-      // this.getList();
+      this.init();
     },
     methods: {
-      // 获取枚举类
-      getEnum(type, isAddAll) {
-        api.getEnum(type).then(res => {
-          if (res.code === 200) {
-            if (isAddAll) {
-              res.data.unshift({ name: '全部', value: '' });
-            }
-            this.$set(this.enumType, type, res.data);
-          }
-        }).catch(err => {
-          console.log(err);
-        });
+      async init() {
+        await this.getEnum('FeeMonth');
+        await this.getDeptTree();
+        this.$refs.commonSearch.doSearch();
+      },
+      doSearch(data) {
+        this.pageNum = 1;
+        this.filter = { ...data };
+        this.getList();
       },
       // 获取企业列表
       getList() {
         let params = {
-          filter: this.search.filter,
           pageNum: this.pageNum,
-          pageSize: this.pageSize
+          pageSize: this.pageSize,
+          ...this.filter
         };
-
-        api.getSignList(params).then(res => {
+        let method = ''
+        switch (this.activeIndex) {
+          case '1':
+            method = 'getSignList';
+          case '2':
+            method = '123';
+          case '3':
+            method = '132';
+          case '4':
+            method = '123';
+          case '5':
+            method = '123';
+          default:
+            method = 'getSignList';
+        }
+        api[method](params).then(res => {
           if (res.code === 200) {
             this.list = res.data.list;
             this.total = res.data.total;
@@ -194,21 +279,12 @@
           console.log(err);
         });
       },
-      // 分页更改
-      handleSizeChange(val) {
-        this.pageSize = val;
-        this.pageNum = 1;
-        this.getList();
-      },
-      // 换页
-      handleCurrentChange(val) {
-        this.pageNum = val;
-        this.getList();
-      },
       // tag切换
       handleSelectTag(key, keyPath) {
         console.log(key);
         console.log(keyPath);
+        this.activeIndex = keyPath[0]
+        this.$refs.commonSearch.doSearch();
       },
       // 编辑
       goEdit(data) {
@@ -229,12 +305,6 @@
 </script>
 
 <style lang="scss" scoped>
-  .search-area{
-    margin: 15px 15px 0;
-    padding: 20px;
-    background-color: #fff;
-    .el-input{width: 220px;}
-  }
   .tag-operate-tool{
     margin: 15px 15px 0;
     padding: 0 15px;

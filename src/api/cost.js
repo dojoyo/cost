@@ -122,7 +122,7 @@ export default {
       responseType: 'arraybuffer'
     });
   },
-  // 业务招待费-获取详情
+  // 业务招待费-删除
   serveDelete(id) {
     return request({
       url: `/fee/pc/entertain/${id}`,
@@ -214,5 +214,330 @@ export default {
       data,
       responseType: 'arraybuffer'
     });
-  }
+  },
+  // 差旅费-机票-列表
+  getTravelAirList(data) {
+    return request({
+      url: '/fee/pc/travel/air-ticket/list',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 差旅费-机票-新增
+  addTravelAir(data) {
+    return request({
+      url: '/fee/pc/travel/air-ticket/add',
+      method: 'post',
+      data
+    });
+  },
+  // 差旅费-机票-编辑
+  editTravelAir(data) {
+    return request({
+      url: `/fee/pc/travel/air-ticket/${data.id}`,
+      method: 'put',
+      data
+    });
+  },
+  // 差旅费-机票-获取详情
+  travelAirDetail(id) {
+    return request({
+      url: `/fee/pc/travel/air-ticket/${id}`,
+      method: 'get'
+    });
+  },
+  // 差旅费-机票-模板下载
+  getTravelAirTemp() {
+    return request({
+      url: '/fee/pc/travel/air-ticket/template/download',
+      method: 'get',
+      responseType: 'arraybuffer'
+    });
+  },
+  // 差旅费-机票-导入
+  travelAirImport(data) {
+    return request({
+      url: '/fee/pc/travel/air-ticket/import',
+      method: 'post',
+      data
+    });
+  },
+  // 差旅费-机票-导出
+  travelAirExport(data) {
+    return request({
+      url: '/fee/pc/travel/air-ticket/export',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data,
+      responseType: 'arraybuffer'
+    });
+  },
+  // 差旅费-机票-删除
+  travelAirDelete(id) {
+    return request({
+      url: `/fee/pc/travel/air-ticket/${id}`,
+      method: 'DELETE'
+    });
+  },
+  // 差旅费-滴滴-列表
+  getTravelDidiList(data) {
+    return request({
+      url: '/fee/pc/travel/didi/list',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 差旅费-滴滴-新增
+  addTravelDidi(data) {
+    return request({
+      url: '/fee/pc/travel/didi/add',
+      method: 'post',
+      data
+    });
+  },
+  // 差旅费-滴滴-编辑
+  editTravelDidi(data) {
+    return request({
+      url: `/fee/pc/travel/didi/${data.id}`,
+      method: 'put',
+      data
+    });
+  },
+  // 差旅费-滴滴-获取详情
+  travelDidiDetail(id) {
+    return request({
+      url: `/fee/pc/travel/didi/${id}`,
+      method: 'get'
+    });
+  },
+  // 差旅费-滴滴-模板下载
+  getTravelDidiTemp() {
+    return request({
+      url: '/fee/pc/travel/didi/template/download',
+      method: 'get',
+      responseType: 'arraybuffer'
+    });
+  },
+  // 差旅费-滴滴-导入
+  travelDidiImport(data) {
+    return request({
+      url: '/fee/pc/travel/didi/import',
+      method: 'post',
+      data
+    });
+  },
+  // 差旅费-滴滴-导出
+  travelDidiExport(data) {
+    return request({
+      url: '/fee/pc/travel/didi/export',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data,
+      responseType: 'arraybuffer'
+    });
+  },
+  // 差旅费-滴滴-删除
+  travelDidiDelete(id) {
+    return request({
+      url: `/fee/pc/travel/didi/${id}`,
+      method: 'DELETE'
+    });
+  },
+  // 差旅费-酒店-列表
+  getTravelHotelList(data) {
+    return request({
+      url: '/fee/pc/travel/hotel/list',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 差旅费-酒店-新增
+  addTravelHotel(data) {
+    return request({
+      url: '/fee/pc/travel/hotel/add',
+      method: 'post',
+      data
+    });
+  },
+  // 差旅费-酒店-编辑
+  editTravelHotel(data) {
+    return request({
+      url: `/fee/pc/travel/hotel/${data.id}`,
+      method: 'put',
+      data
+    });
+  },
+  // 差旅费-酒店-获取详情
+  travelHotelDetail(id) {
+    return request({
+      url: `/fee/pc/travel/hotel/${id}`,
+      method: 'get'
+    });
+  },
+  // 差旅费-酒店-模板下载
+  getTravelHotelTemp() {
+    return request({
+      url: '/fee/pc/travel/hotel/template/download',
+      method: 'get',
+      responseType: 'arraybuffer'
+    });
+  },
+  // 差旅费-酒店-导入
+  travelHotelImport(data) {
+    return request({
+      url: '/fee/pc/travel/hotel/import',
+      method: 'post',
+      data
+    });
+  },
+  // 差旅费-酒店-导出
+  travelHotelExport(data) {
+    return request({
+      url: '/fee/pc/travel/hotel/export',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data,
+      responseType: 'arraybuffer'
+    });
+  },
+  // 差旅费-酒店-删除
+  travelHotelDelete(id) {
+    return request({
+      url: `/fee/pc/travel/hotel/${id}`,
+      method: 'DELETE'
+    });
+  },
+  // 差旅费-其他-列表
+  getTravelOtherList(data) {
+    return request({
+      url: '/fee/pc/travel/other/list',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 差旅费-其他-新增
+  addTravelOther(data) {
+    return request({
+      url: '/fee/pc/travel/other/add',
+      method: 'post',
+      data
+    });
+  },
+  // 差旅费-其他-编辑
+  editTravelOther(data) {
+    return request({
+      url: `/fee/pc/travel/other/${data.id}`,
+      method: 'put',
+      data
+    });
+  },
+  // 差旅费-其他-获取详情
+  travelOtherDetail(id) {
+    return request({
+      url: `/fee/pc/travel/other/${id}`,
+      method: 'get'
+    });
+  },
+  // 差旅费-其他-模板下载
+  getTravelOtherTemp() {
+    return request({
+      url: '/fee/pc/travel/other/template/download',
+      method: 'get',
+      responseType: 'arraybuffer'
+    });
+  },
+  // 差旅费-其他-导入
+  travelOtherImport(data) {
+    return request({
+      url: '/fee/pc/travel/other/import',
+      method: 'post',
+      data
+    });
+  },
+  // 差旅费-其他-导出
+  travelOtherExport(data) {
+    return request({
+      url: '/fee/pc/travel/other/export',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data,
+      responseType: 'arraybuffer'
+    });
+  },
+  // 差旅费-其他-删除
+  travelOtherDelete(id) {
+    return request({
+      url: `/fee/pc/travel/other/${id}`,
+      method: 'DELETE'
+    });
+  },
+  // 差旅费-火车票-列表
+  getTravelTrainList(data) {
+    return request({
+      url: '/fee/pc/travel/train-ticket/list',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 差旅费-火车票-新增
+  addTravelTrain(data) {
+    return request({
+      url: '/fee/pc/travel/train-ticket/add',
+      method: 'post',
+      data
+    });
+  },
+  // 差旅费-火车票-编辑
+  editTravelTrain(data) {
+    return request({
+      url: `/fee/pc/travel/train-ticket/${data.id}`,
+      method: 'put',
+      data
+    });
+  },
+  // 差旅费-火车票-获取详情
+  travelTrainDetail(id) {
+    return request({
+      url: `/fee/pc/travel/train-ticket/${id}`,
+      method: 'get'
+    });
+  },
+  // 差旅费-火车票-模板下载
+  getTravelTrainTemp() {
+    return request({
+      url: '/fee/pc/travel/train-ticket/template/download',
+      method: 'get',
+      responseType: 'arraybuffer'
+    });
+  },
+  // 差旅费-火车票-导入
+  travelTrainImport(data) {
+    return request({
+      url: '/fee/pc/travel/train-ticket/import',
+      method: 'post',
+      data
+    });
+  },
+  // 差旅费-火车票-导出
+  travelTrainExport(data) {
+    return request({
+      url: '/fee/pc/travel/train-ticket/export',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data,
+      responseType: 'arraybuffer'
+    });
+  },
+  // 差旅费-火车票-删除
+  travelTrainDelete(id) {
+    return request({
+      url: `/fee/pc/travel/train-ticket/${id}`,
+      method: 'DELETE'
+    });
+  },
 };

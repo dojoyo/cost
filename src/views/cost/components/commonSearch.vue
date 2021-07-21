@@ -75,5 +75,8 @@ export default {
     padding: 20px;
     background-color: #fff;
     .el-input{width: 220px;}
+    > * {
+        margin-bottom: 10px;
+    }
 }
 </style>
