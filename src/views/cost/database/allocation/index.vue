@@ -4,57 +4,48 @@
     <el-header class="header">
       <div class="header-wrap" style="display: flex">
         <div class="title">
-          <i class="iconfont icon-shujukufei"></i> 数据库录账号分配
-        </div>
+          <i class="iconfont icon-shujukufei"></i> 数据库录账号分配</div>
         <div style="margin-left: auto">
           <el-button type="primary" size="small" icon="el-icon-plus" @click="showAddAndEditDialog()">新增</el-button>
         </div>
       </div>
     </el-header>
+    <div class="search-area">
+      <el-input v-model="search.userName" placeholder="请输入人员姓名" class="mr-10"></el-input>
+      <el-select v-model="value" placeholder="请选择" class="mr-10">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <el-select v-model="value" placeholder="请选择" class="mr-10">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+      <el-button @click="doSearch" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
+    </div>
+   <div class="tag-operate-tool">
+        <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="openExportDialog"> 导出</el-button>
+    </div>
     <el-main class="main">
-      <div class="w-100p">
-        <el-input size="medium" style="width: 200px; margin-right: 20px" placeholder="请输入合同名称或签署人" v-model="search.filter"/>
-        <el-date-picker
-          style="margin-right: 20px"
-          v-model="search.time"
-          type="daterange"
-          value-format="yyyy-MM-dd"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
-        </el-date-picker>
-        <el-select v-model="search.contractType" placeholder="请选择分类" style="margin-right: 20px">
-          <el-option
-            v-for="item in enumType.ContractCategory"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="search.signState" placeholder="请选择合同状态" style="margin-right: 20px">
-          <el-option
-            v-for="item in enumType.ContractSignState"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-button @click="getList()" type="primary" size="small">查询</el-button>
-      </div>
-      <div class="operate-buttons">
-          <el-button type="text" icon="iconfont icon-shangchuan2" class="blue" @click="openExportDialog"> 导出</el-button>
-      </div>
-      <el-table  :data="list" style="width: 100%; margin-top:10px; " border :fit="true" :span-method="objectSpanMethod"
-        :header-cell-style="{background:'#fdfdfd'}">
-        <el-table-column label="数据库" prop="id" align="center"></el-table-column>
-        <el-table-column prop="name" label="部门"  align="center"></el-table-column>
-        <el-table-column prop="amount1" label="用户名"  align="center"></el-table-column>
-        <el-table-column prop="amount2" label="账号"  align="center"></el-table-column>
-        <el-table-column prop="amount3" label="使用频率"  align="center"></el-table-column>
-        <el-table-column label="操作" align="center" >
+      <el-table  :data="list" style="width: 100%; margin-top:10px;" :span-method="objectSpanMethod"
+       :fit="true" :header-cell-style="{background:'#f5f9ff'}">
+        <el-table-column label="数据库" type="index" width="200"></el-table-column>
+        <el-table-column label="部门" prop="contractName"></el-table-column>
+        <el-table-column label="用户名" prop="contractType.name" ></el-table-column>
+        <el-table-column label="账号" prop="signTime" ></el-table-column>
+        <el-table-column label="使用频率" prop="approvalTitle" ></el-table-column>
+        <el-table-column label="操作" fixed="right" >
           <template slot-scope="scope">
-            <el-button type="text" @click="edit(scope.row)">编辑</el-button>
-            <el-button type="text" @click="del(scope.row)">删除</el-button>
+            <el-button type="text" @click="showAddAndEditDialog(scope.row)">编辑</el-button>
+            <span style="padding: 0 10px">|</span>
+            <el-button type="text" @click="goDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -77,101 +68,42 @@
         <br><span style="font-size: 14px">暂无数据</span><br/><br/>
       </div>
     </el-main>
+    <AddAndEditDialog ref="addAndEdit" />
   </el-container>
 </template>
 <script>
+  import AddAndEditDialog from './addAndEdit.vue';
   import api from '@/api/cost';
+  import mixin from '../../mixins';
   export default {
     name: '',
-    components: {},
+    components: {AddAndEditDialog},
     props: {},
     data() {
       return {
         enumType: {},
         search: {},
-        // list: [],
         pageNum: 1,
         pageSize: 10,
         total: 0,
-        list: [{
-          id: '12987122',
-          name: '王小虎',
-          amount1: '234',
-          amount2: '3.2',
-          amount3: 10
-        }, {
-          id: '12987123',
-          name: '王小虎',
-          amount1: '165',
-          amount2: '4.43',
-          amount3: 12
-        }, {
-          id: '12987124',
-          name: '王小虎',
-          amount1: '324',
-          amount2: '1.9',
-          amount3: 9
-        }, {
-          id: '12987125',
-          name: '王小虎',
-          amount1: '621',
-          amount2: '2.2',
-          amount3: 17
-        }, {
-          id: '12987126',
-          name: '王小虎',
-          amount1: '539',
-          amount2: '4.1',
-          amount3: 15
-        }]
+        filter:{}
       };
     },
+    mixins: [mixin],
     mounted() {
-      // this.getEnum('ContractSignState', true)
-      // this.getList();
+      this.init()
     },
     methods: {
-      // 获取枚举类
-      getEnum(type, isAddAll) {
-        api.getEnum(type).then(res => {
-          if (res.code === 200) {
-            if (isAddAll) {
-              res.data.unshift({name: '全部', value: ''});
-            }
-            this.$set(this.enumType, type, res.data);
-          }
-        }).catch(err => {
-          console.log(err);
-        });
+      async init() {
+        await this.getEnum('FeeMonth');
+        await this.getDeptTree();
+        this.$refs.commonSearch.doSearch();
       },
-      // 获取企业列表
-      getList() {
-        let params = {
-          filter: this.search.filter,
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        };
-
-        api.getSignList(params).then(res => {
-          if (res.code === 200) {
-            this.list = res.data.list;
-            this.total = res.data.total;
-          }
-        }).catch(err => {
-          console.log(err);
-        });
-      },
-      // 分页更改
-      handleSizeChange(val) {
-        this.pageSize = val;
+      doSearch(data) {
         this.pageNum = 1;
-        this.getList();
+        this.filter = { ...data };
       },
-      // 换页
-      handleCurrentChange(val) {
-        this.pageNum = val;
-        this.getList();
-      },
+      getList(){},
       objectSpanMethod({ row, column, rowIndex, columnIndex }) {
         if (columnIndex === 0) {
           if (rowIndex % 2 === 0) {
@@ -186,15 +118,41 @@
             };
           }
         }
+      },
+      showAddAndEditDialog(){
+        this.$refs.addAndEdit.open();
       }
     }
   };
 </script>
 
 <style lang="scss" scoped>
-.operate-buttons{
-  text-align:right;
-  border-bottom: 1px solid #fdfdfd;
-  padding-bottom: 10px;
+.search-area{
+    margin: 15px 15px 0;
+    padding: 20px;
+    background-color: #fff;
+    .el-input{width: 220px;}
 }
+  .tag-operate-tool{
+    margin: 15px 15px 0;
+    padding: 0 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #e6e6e6;
+    text-align: right;
+    .el-menu{
+      border-bottom: 0;
+      .el-menu-item{
+        height: 40px;
+        padding: 0;
+        margin: 0 20px;
+        line-height: 40px;
+      }
+      .is-active{
+        color: #007bff;
+        background: #fff!important;
+        border-color: #007bff;
+      }
+    }
+  }
+  .main{margin-top: 0!important;padding-top: 10px;}
 </style>
