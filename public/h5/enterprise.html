@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no, width=device-width">
+    <title>企业投资事件</title>
+    <script src="js/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.2/vue-resource.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <style type="text/css">
+        * {
+            font-style: normal;
+            font-weight: normal;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Helvetica Neue", Helvetica, "Microsoft YaHei", "WenQuanYi Micro Hei", Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .ml-auto{
+            margin-left: auto;
+        }
+
+        .fs-12 {
+            font-size: 12px !important
+        }
+
+        .fs-13 {
+            font-size: 13px !important
+        }
+
+        .fs-14 {
+            font-size: 14px !important
+        }
+
+        .fs-15 {
+            font-size: 15px !important
+        }
+
+        .fs-16 {
+            font-size: 16px !important
+        }
+
+        .fs-17 {
+            font-size: 17px !important
+        }
+
+        .fs-18 {
+            font-size: 18px !important
+        }
+
+        .color-primary {
+            color: #1D6EFF !important
+        }
+
+        .color-primary-dark {
+            color: #0043C9 !important
+        }
+
+        .color-primary-light {
+            color: #8EB6FF !important
+        }
+
+        .color-number {
+            color: #FF5551 !important
+        }
+
+        .color-danger {
+            color: #F54B46 !important
+        }
+
+        .color-sucess {
+            color: #00B09F !important
+        }
+
+        .color-warning {
+            color: #FCAF34 !important
+        }
+
+        .color-white {
+            color: #fff !important
+        }
+
+        .color-title {
+            color: #32363E !important
+        }
+
+        .color-text {
+            color: #616770 !important
+        }
+
+        .color-tips {
+            color: #A5A9B2 !important
+        }
+
+        .color-placeholder {
+            color: #BBBBC2 !important
+        }
+
+        .color-divider {
+            color: #E6E8EC !important
+        }
+
+        .color-background {
+            color: #F6F6F8 !important
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .keep-all {
+            white-space: nowrap;
+            word-break: keep-all;
+            flex-shrink: 0
+        }
+
+        .break-all {
+            white-space: normal;
+            word-break: break-all;
+        }
+
+        .tag-primary {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #1D6EFF !important;
+            background: #EAF5FF !important;
+
+        }
+
+        .tag-success {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #27D497 !important;
+            background: #DBF6EC !important;
+        }
+
+        .tag-warning {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #F69C1F !important;
+            background: #FDF3E0 !important;
+        }
+
+        .tag-danger {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #F04242 !important;
+            background: #FFE9E9 !important;
+        }
+
+        .tag-gray {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #A5A9B2 !important;
+            background: #F0F0F4 !important;
+        }
+
+
+        .ml-5 {
+            margin-left: 5px
+        }
+
+        .ml-10 {
+            margin-left: 10px
+        }
+
+        .ml-12 {
+            margin-left: 12px
+        }
+
+        .mr-auto {
+            margin-right: auto
+        }
+
+        .mr-5 {
+            margin-right: 5px
+        }
+
+        .mr-10 {
+            margin-right: 10px
+        }
+
+        .mr-12 {
+            margin-right: 12px
+        }
+
+        .mt-5 {
+            margin-top: 5px
+        }
+
+        .mt-12 {
+            margin-top: 12px
+        }
+
+        .w-100p{
+            width: 100%;
+        }
+
+        .card-wrap {
+            background-image: linear-gradient(#1D6EFF, #F6F6F8);
+            padding: 12px;
+        }
+
+        .card-wrap .card {
+            background: #fff;
+            border-radius: 5px;
+            padding: 12px
+        }
+
+        .card-wrap .card .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border: solid 1px #E6E8EC;
+            font-size: 13px;
+            text-align: center;
+            flex-shrink: 0;
+            border-radius: 5px;
+            margin-right: 12px
+        }
+
+        .content-wrap {
+            padding: 12px;
+            background: #fff
+        }
+
+        .process-wrap {
+            display: flex;
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .process-wrap .item {
+            border-radius: 15px;
+            padding: 0 12px;
+        }
+
+        .process-wrap .point {
+            position: relative;
+            width: 70px;
+            text-align: right;
+            flex-shrink: 0;
+            padding-right: 20px
+        }
+
+        .process-wrap .point:before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            right: 0;
+            width: 7px;
+            height: 7px;
+            background: #fff;
+            border: solid 2px #1D6EFF;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .process-wrap .point:after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 2px;
+            height: 100vh;
+            z-index: 0;
+            border-right: solid 1px #e5e5e5
+        }
+
+        .process-wrap:last-child .point:after {
+            height: 0
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="card-wrap">
+        <div class="card flex">
+            <div class="logo color-primary">
+                <img style="width:55px" v-if="detail.logo" :src="detail.logo"/>
+                <img style="width:55px" v-else src="./images/enterprise/qy.png"/>
+            </div>
+            <div class="w-100p">
+                <div class="w-100p flex">
+                    <span class="color-title fs-16 mr-5 bold">{{detail.abbr}}</span>
+                    <span class="ml-5 tag-primary">{{detail.industry}}</span>
+                </div>
+                <div class="flex w-100p color-tips fs-12 mt-5">
+                    <span>成立时间：{{detail.establish}}</span>
+                    <img src="./images/enterprise/location.png" v-if="detail.address" style="width:12px; margin-left: auto" />
+                    <span class="ml-5">{{detail.address}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-wrap">
+        <div class="flex">
+            <div class="title-block"></div>
+            <div class="fs-15 color-title bold">标签画像</div>
+        </div>
+        <div class="mt-12 flex">
+            <span class="tag-warning mr-10" v-for="(item,index) in detail.label" :key="index">{{item}}</span>
+        </div>
+    </div>
+    <div class="w-100p" style="height:10px; background:#f6f6f6" v-if="detail.entIntroduction"></div>
+    <div class="content-wrap" v-if="detail.entIntroduction">
+        <div class="flex">
+            <div class="title-block"></div>
+            <div class="fs-15 color-title bold">企业简介</div>
+        </div>
+        <div class="mt-12">
+            <span class="fs-14 color-text lh-15">{{detail.entIntroduction}}</span>
+        </div>
+    </div>
+    <div class="w-100p" style="height:10px; background:#f6f6f6"></div>
+    <div class="content-wrap">
+        <div class="flex">
+            <div class="title-block"></div>
+            <div class="fs-15 color-title bold">最新事件</div>
+            <div class="fs-12 color-text bold ml-auto">轮次：{{detail.round}}</div>
+            <div class="fs-12 color-tips ml-10">时间：{{detail.eventDate}}</div>
+        </div>
+        <div class="mt-12">
+            <span class="fs-14 color-text lh-15">{{detail.introduction}}</span>
+        </div>
+    </div>
+    <div class="w-100p" style="height:10px; background:#f6f6f6"></div>
+    <div class="content-wrap">
+        <div class="flex">
+            <div class="title-block"></div>
+            <div class="fs-15 color-title bold">融资历程</div>
+        </div>
+        <div class="body mt-12">
+            <div class="process-wrap pb-10" v-for="(item,index) in detail.history" :key="index">
+                <div class="point fs-15 color-text">
+                    <span class="fs-12 color-tips">{{item.eventDate}}</span><br/>
+                    <span class="fs-12 color-text">{{item.financingRounds}}</span>
+                </div>
+                <div class="item">
+                    <div class="w-100p">
+                        <span class="fs-12 color-title">金额：{{item.eventMoney}}万{{item.transactionCurrency}}</span><br/>
+                        <span class="fs-12 color-title">估值：{{item.eventEnterpriseValue}}万{{item.transactionCurrency}}</span>
+                    </div>
+                    <div class="fs-12 color-text mt-5" v-for="(investor,idx) in item.investors" :key="idx">
+                        {{investor}}
+                    </div>
+                </div>
+            </div>
+            <div class="load-empty" v-if="detail.history && detail.history.length === 0">
+                <img src="./images/enterprise/list_empty.png"/><br/>
+                <span>暂无数据</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let token = decodeURIComponent(getQueryVariable('token')) || 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMTYyMjMzMjUzOTYxMTQyMjc0Iiwic3UiOmZhbHNlLCJlaSI6IjExNjczMzQyNzMzMTM2NzMyMTciLCJkaSI6IjExNjIxOTYzNTE5NTg2NTA4ODIiLCJvdSI6ZmFsc2UsImx0IjoiMTYyMTk3MTA5MDAwMCIsImVuIjoiQ0dWQyIsImd0IjoxNjIyMDAwMDc5LCJzYyI6ImV5SnBiblpsYzNRdFpHVnphM1J2Y0NJNld5SkJJbDBzSW1sdWRtVnpkQzF5WTJnaU9sc2lVME1pTENKQklpd2lVMVVpTENKVFZpSXNJbE5KSWwwc0ltWjFibVJ5WVdsemFXNW5JanBiSWxORElpd2lVMEVpWFN3aWIydHlJanBiSWxORElpd2lRU0lzSWxOV0lpd2lVMGtpTENKVFVDSmRMQ0poY21Ob2FYWmxJanBiSWtFaUxDSlRWaUpkTENKcGJuWmxjM1F0Y21semF5STZXeUpUUXlJc0lrRWlMQ0pUVlNJc0lsTldJaXdpVTBraVhTd2lhVzUyWlhOMExYWnBjMmwwSWpwYklsTkRJaXdpUVNJc0lsTlZJaXdpVTFZaUxDSlRTU0pkTENKcGJuWmxjM1F0Y0hKcUlqcGJJbE5ESWl3aVFTSXNJbE5WSWl3aVUxWWlMQ0pUU1NKZExDSnBiblpsYzNRdFpXNTBJanBiSWxORElpd2lRU0lzSWxOVklpd2lVMVlpTENKVFNTSmRmUT09IiwiYXIiOlsyNTA2NDI0MzAsNDE5NDMwMywxNTc0NDIyNCwxMzMyNjY0MzUsMzI1NzA0OTUsMjYzNDQ5NzI3LDczNTEzMjMsMTU3MzU4MTEsMzE0NTczMSw3Mzc5OTY4LDcxNjhdLCJ0aSI6ImU1MDdiNDYyZjhlYmJlOGE5MzQ2OWJiOGUzNzE5ZDU0IiwidW4iOiLmnpfmgqbmtIEiLCJpZCI6IjExNjIyMzMyNTM5NjExNDIyNzQiLCJleHAiOjE2MjIwNDMyNzksInVyIjoiQUQsVVMsU0ksU0kiLCJlYyI6ImNndmMifQ.mLrQJi8D8E1UallnrRnIQ6oN4BQSBmmIVUZsJ5v5NFkF3PJJAFyKb4BUUgzvi_oNn0Glfnv2KfJ1RKuoq8nR3Q'
+    if(token.indexOf('Bearer ')===-1){
+        token = 'Bearer '+token;
+    }
+
+    let id = decodeURIComponent(getQueryVariable('id')) || '1395323551870881794';
+    new Vue({
+        el: '#app',
+        data: {
+            detail: {}
+        },
+        http: {
+            headers: {
+                Authorization: token
+            }
+        },
+        mounted() {
+            this.getDetail();
+        },
+        methods: {
+            getDetail: function () {
+                let url = (window.location.href.indexOf('dev-work.cgvcap.com')>-1)?'https://dev-api.cgvcap.com/investData/pc/newest/':'https://api.cgvcap.com/investData/pc/newest/';
+                this.$http.get(url + id + '/info').then(
+                    function (res) {
+                        if (res.body && res.body.code === 200) {
+                            let data = res.body.data;
+                            data.label = data.label.split(',');
+                            data.establish = moment(data.establish * 1000).format('yyyy-MM-DD');
+                            data.eventDate = moment(data.eventDate * 1000).format('yyyy-MM-DD');
+                            data.history.map(item => {
+                                item.eventEnterpriseValue = money(item.eventEnterpriseValue * 100, 0);
+                                item.eventMoney = money(item.eventMoney * 100, 0);
+                                item.eventDate = moment(item.eventDate * 1000).format('yyyy-MM-DD')
+                            })
+                            if(document){
+                                document.title = data.fullName;
+                            }
+                            console.log(data)
+                            this.detail = data
+                        } else {
+                            alert('数据错误！')
+                        }
+                    }).catch(function (response) {
+                    console.log(response)
+                })
+            }
+        }
+    })
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+
+    function money(n, size) {
+        if (n || n === 0) {
+            let minus = false;
+            if (n < 0) {
+                minus = true;
+                n = Math.abs(n);
+            }
+            if (size > 0) {
+                n = n.toFixed(size)
+            }
+            n = n.toString().split(".");  // 分隔小数点
+            let arr = n[0].split("").reverse();  // 转换成字符数组并且倒序排列
+            let res = [];
+            for (let i = 0, len = arr.length; i < len; i++) {
+                if (i % 3 === 0 && i !== 0) {
+                    res.push(",");   // 添加分隔符
+                }
+                res.push(arr[i]);
+            }
+            res.reverse(); // 再次倒序成为正确的顺序
+            if (n[1]) {  // 如果有小数的话添加小数部分
+                res = res.join("").concat("." + n[1]);
+            } else {
+                res = res.join("");
+            }
+            res = minus ? ('-' + res) : res
+            return res;
+        }
+    }
+</script>
+</body>
+</html>

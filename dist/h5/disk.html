@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no, width=device-width">
+    <title>凤翎｜云盘|分享</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.3/theme-chalk/index.min.css" rel="stylesheet">
+    <script src="js/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.2/vue-resource.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/locale/zh-cn.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.3/index.min.js"></script>
+
+    <style type="text/css">
+        * {
+            font-style: normal;
+            font-weight: normal;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Helvetica Neue", Helvetica, "Microsoft YaHei", "WenQuanYi Micro Hei", Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f7f7f6;
+        }
+
+        .ml-auto {
+            margin-left: auto;
+        }
+
+        .fs-12 {
+            font-size: 12px !important
+        }
+
+        .fs-13 {
+            font-size: 13px !important
+        }
+
+        .fs-14 {
+            font-size: 14px !important
+        }
+
+        .fs-15 {
+            font-size: 15px !important
+        }
+
+        .fs-16 {
+            font-size: 16px !important
+        }
+
+        .fs-17 {
+            font-size: 17px !important
+        }
+
+        .fs-18 {
+            font-size: 18px !important
+        }
+
+        .color-primary {
+            color: #1D6EFF !important
+        }
+
+        .color-primary-dark {
+            color: #0043C9 !important
+        }
+
+        .color-primary-light {
+            color: #8EB6FF !important
+        }
+
+        .color-number {
+            color: #FF5551 !important
+        }
+
+        .color-danger {
+            color: #F54B46 !important
+        }
+
+        .color-sucess {
+            color: #00B09F !important
+        }
+
+        .color-warning {
+            color: #FCAF34 !important
+        }
+
+        .color-white {
+            color: #fff !important
+        }
+
+        .color-title {
+            color: #32363E !important
+        }
+
+        .color-text {
+            color: #616770 !important
+        }
+
+        .color-tips {
+            color: #A5A9B2 !important
+        }
+
+        .color-placeholder {
+            color: #BBBBC2 !important
+        }
+
+        .color-divider {
+            color: #E6E8EC !important
+        }
+
+        .color-background {
+            color: #F6F6F8 !important
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .keep-all {
+            white-space: nowrap;
+            word-break: keep-all;
+            flex-shrink: 0
+        }
+
+        .break-all {
+            white-space: normal;
+            word-break: break-all;
+        }
+
+        .tag-primary {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #1D6EFF !important;
+            background: #EAF5FF !important;
+
+        }
+
+        .tag-success {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #27D497 !important;
+            background: #DBF6EC !important;
+        }
+
+        .tag-warning {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #F69C1F !important;
+            background: #FDF3E0 !important;
+        }
+
+        .tag-danger {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #F04242 !important;
+            background: #FFE9E9 !important;
+        }
+
+        .tag-gray {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #A5A9B2 !important;
+            background: #F0F0F4 !important;
+        }
+
+
+        .ml-5 {
+            margin-left: 5px
+        }
+
+        .ml-10 {
+            margin-left: 10px
+        }
+
+        .ml-12 {
+            margin-left: 12px
+        }
+
+        .mr-auto {
+            margin-right: auto
+        }
+
+        .mr-5 {
+            margin-right: 5px
+        }
+
+        .mr-10 {
+            margin-right: 10px
+        }
+
+        .mr-12 {
+            margin-right: 12px
+        }
+
+        .mt-5 {
+            margin-top: 5px
+        }
+
+        .mt-12 {
+            margin-top: 12px
+        }
+
+        .w-100p {
+            width: 100%;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            margin-left: 12px;
+        }
+
+        .logo-string {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .download {
+            margin-left: auto;
+            padding: 1px 10px;
+            font-size: 14px;
+            border: solid 1px #007bff;
+            color: #007bff;
+            margin-right: 12px;
+        }
+
+        .header {
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            background: #fff;
+        }
+
+        .title {
+            font-size: 18px;
+            color: #333;
+            padding:12px 12px 3px;
+            text-align: justify;
+        }
+
+        .time {
+            font-size: 14px;
+            color: #888;
+            padding:0 12px 12px 12px;
+            text-align: left;
+        }
+
+        .more-btn {
+            padding: 10px 0;
+            background: #fff;
+            text-align: center;
+            margin-top: 8px;
+            margin-bottom: 12px;
+        }
+
+        .sub-wrap{
+            background: #fff;
+            padding: 12px;
+        }
+        .sub-title{
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .sub-list{
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 14px;
+            color: #007bff;
+            margin-bottom: 2px;
+        }
+
+        .iframe-wrap {
+            margin-top: 16px;
+            background: #fff;
+            border-radius: 5px;
+            padding: 24px;
+        }
+        .btn-full{
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            color: #999;
+        }
+        .iframe{
+            margin-top: 16px;
+            width: 100%;
+            min-height: 200px;
+            border: none;
+        }
+
+        .dialog-header{
+            border-bottom: solid 1px #eee;
+            margin: 0 -5px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="header">
+        <img src="images/knowledge/logo.png" class="logo"/>
+        <span class="logo-string">凤翎</span>
+    </div>
+    <div v-if="detail.shareFile" style="padding: 12px; background: #fff">
+        <div style="display: flex; align-items: center; padding: 15px 0; border-bottom: solid 1px #e7e7e7">
+            <img :src="detail.shareFile && detail.shareFile.icon" style="width: 40px; margin-right: 10px" />
+            <div>
+                <span style="font-size: 14px; color: #333; font-weight: bold">{{detail.shareFile.fileName}}</span><br/>
+                <span style="font-size: 12px; color: #888;">{{detail.shareTime}}{{detail.shareUser && detail.shareUser.userName?('（'+detail.shareUser.userName+'）'):''}}</span>
+            </div>
+            <el-button size="mine" type="primary" v-show="previewType && previewType !=='other' && previewType !=='folder' && detail.canDownload" @click="showDownload()">下载 {{detail.shareFile.fileSize}}</el-button>
+        </div>
+        <div class="iframe-wrap" v-if="detail.accessToken">
+            <div v-if="!previewType" class="w-100p text-center fs-14 color-gray">系统努力加载中...</div>
+            <div style="margin: -15px;">
+                 <div v-show="previewType==='image'" style="text-align: center">
+                     <img :src="image" class="image">
+                 </div>
+                <iframe v-if="previewType==='file'" class="iframe w-100p" style="border:0;" :style="{height:dialogHeight-250+'px'}" allowfullscreen id="filePreviewDialogVisible" :src="urlDialog"></iframe>
+                <div v-show="previewType==='folder'">
+                    <div style="width: 100%; display: flex; align-items: center; color: #555">
+                        <div>路径：</div>
+                        <div style="display: flex; align-items: center;margin-right: 10px; cursor: pointer" v-for="(item,index) in paths" :key="index" @click="getFolderDetail('',index)">
+                            <img :src="item.icon" style="width: 14px; margin-right: 5px" />{{item.fileName}}<span v-show="index < paths.length-1">&nbsp;&nbsp;>&nbsp;</span>
+                        </div>
+                    </div>
+                    <el-table v-if="list.length>0" :data="list" style="width: 100%;"
+                              :header-cell-style="{background:'#fdfdfd'}"
+                    >
+                        <el-table-column label="名称">
+                            <template slot-scope="scope">
+                                <div @click="showDetail(scope.row)" style="cursor: pointer">
+                                    <img :src="scope.row.icon" style="margin-right: 10px; height: 22px">
+                                    <span class="pointer">{{scope.row.fileName}}</span>
+                                </div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="修改时间（修改人）" width="250">
+                            <template slot-scope="scope">
+                                {{scope.row.editTime | formatDiskTime}}{{scope.row.editor && scope.row.editor.userName?('（'+scope.row.editor.userName+'）'):''}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="大小" width="100">
+                            <template slot-scope="scope">
+                                {{scope.row.fileSize | formatSize(2)}}
+                            </template>
+                        </el-table-column>
+                    </el-table>
+
+                    <div v-else class="w-100p gray" style="text-align: center;">
+                        <img src="./images/disk/no-list.png">
+                        <br><span style="font-size: 14px">暂无数据</span><br/><br/>
+                    </div>
+                </div>
+                <div v-show="previewType==='other'" style="width: 100%; text-align: center;padding: 120px 0 80px">
+                    <img :src="detail.shareFile && detail.shareFile.icon" style="width: 100px; margin-right: 10px" /><br/><br/><br/>
+                    <span style="font-size: 14px; color: #333; font-weight: bold">{{detail.shareFile.fileName}}</span><br/><br/>
+                    <span style="font-size: 12px; color: #888;">暂时不支持在线预览，我们会持续优化，敬请期待</span><br/><br/><br/>
+                    <div v-show="detail.canDownload" @click="showDownload(detail.shareFile)" style="margin: 0 auto; width:100px; padding: 5px 8px; border-radius: 3px; background: #6581fc; color: #fff; font-size:12px; cursor: pointer">下载 {{detail.shareFile.fileSize}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="iframe-wrap" v-if="!detail.accessToken">
+            <div style="width: 100%; text-align: center;padding: 120px 0 80px">
+                <img :src="detail.shareFile && detail.shareFile.icon" style="width: 100px; margin-right: 10px" /><br/><br/><br/>
+                <span style="font-size: 14px; color: #333; font-weight: bold">{{detail.shareFile.fileName}}</span><br/><br/>
+                <span style="font-size: 12px; color: #888;">请输入正确的分享密码</span><br/><br/>
+                <div style="width:250px; display:flex; align-items:center; margin: 0 auto">
+                    <el-input v-model="psw" size="min" placeholder="请输入密码" style="margin-right: 10px"></el-input>
+                    <el-button size="mine" type="primary" v-show="detail.canDownload" @click="getDetail()">确定</el-button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <el-dialog :visible.sync="preview.dialogVisible" :append-to-body="true" :show-close="false" :fullscreen="true"
+               :close-on-click-modal="false" :close-on-press-escape="false" class="preview">
+        <div slot="title" class="dialog-header">
+            <div  style="display: flex; align-items: center; padding-bottom: 10px">
+                <span style="font-size: 16px; color: #333; font-weight: 500">{{preview.item.fileName}}</span>
+                <img src="./images/disk/close.png" style="width: 26px; cursor:pointer;margin-left: auto" @click="preview.dialogVisible=false" />
+            </div>
+        </div>
+        <div style="margin: -15px;">
+            <div v-show="preview.previewType==='image'" style="text-align: center">
+                <img :src="preview.image" class="image">
+            </div>
+            <iframe v-if="preview.dialogVisible && preview.previewType==='file'" class="iframe w-100p" style="border:0" :style="{height:dialogHeight-78+'px'}" allowfullscreen id="previewDialogVisible" :src="urlDialog"></iframe>
+            <div v-show="preview.previewType==='other'" style="width: 100%; text-align: center;padding: 120px 0 80px">
+                <img :src="preview.item.icon" style="width: 100px; margin-right: 10px" /><br/><br/><br/>
+                <span style="font-size: 14px; color: #333; font-weight: bold">{{preview.item.fileName}}</span><br/><br/>
+                <span style="font-size: 12px; color: #888;">暂时不支持在线预览，我们会持续优化，敬请期待</span><br/><br/><br/>
+                <div v-show="verifyPermission(preview.item.permissions,'can_download')" @click="showDownload(preview.item)" style="margin: 0 auto; width:100px; padding: 5px 8px; border-radius: 3px; background: #6581fc; color: #fff; font-size:12px; cursor: pointer">下载 {{preview.item.fileSize}}</div>
+            </div>
+        </div>
+    </el-dialog>
+</div>
+
+<script>
+    let hrefString = window.location.href;
+    let hrefArray = hrefString.split('/');
+    let code = hrefArray[hrefArray.length-1];
+    // let code = decodeURIComponent(getQueryVariable('code')) || 'QXKkMyjMLf';
+    // let basic = (window.location.href.indexOf('dev-work.cgvcap.com')>-1)?'https://dev-api.cgvcap.com':'https://api.cgvcap.com'
+    let basic = 'https://dev-api.cgvcap.com'
+    new Vue({
+        el: '#app',
+        data: {
+            detail: {},
+            previewType:'',
+            image:'',
+            urlDialog: 'https://preview.imm.aliyuncs.com/index.html',
+            dialogHeight:'',
+            psw:'',
+            pageNum:1,
+            pageSize:10,
+            list:[],
+            total:0,
+            preview:{
+                dialogVisible:false,
+                previewType:'',
+                title:'',
+                image:'',
+                item:{},
+            },
+            paths:[]
+        },
+        mounted() {
+            this.getDetail();
+            this.dialogHeight = document.documentElement.clientHeight;
+        },
+        methods: {
+            // 详情
+            getDetail: function () {
+                this.$http.get(basic+'/public/disk/share/'+code+'?accessCode='+this.psw).then(
+                    function (res) {
+                        if (res.body && res.body.code === 200) {
+                            let data = res.body.data;
+                            data.shareTime = this.formatDiskTime(data.shareTime)
+                            data.shareFile.fileSize = this.formatSize(data.shareFile.fileSize,2)
+                            switch (data.shareFile.extCategory.value) {
+                                case 'folder': // 文件夹
+                                    data.shareFile.icon = data.isShare?('./images/disk/icn_share.png'):('./images/disk/icn_document.png');
+                                    break
+                                case 'zip': // 压缩文件
+                                    data.shareFile.icon = ('./images/disk/icn_zip.png');
+                                    break
+                                case 'picture': // 图片文件
+                                    data.shareFile.icon = ('./images/disk/icn_image.png');
+                                    break
+                                case 'word': // word文件
+                                    data.shareFile.icon = ('./images/disk/icn_word.png');
+                                    break
+                                case 'ppt': // word文件
+                                    data.shareFile.icon = ('./images/disk/icn_ppt.png');
+                                    break
+                                case 'excel': // word文件
+                                    data.shareFile.icon = ('./images/disk/icn_excel.png');
+                                    break
+                                case 'pdf': // word文件
+                                    data.shareFile.icon = ('./images/disk/icn_pdf.png');
+                                    break
+                                case 'video': // word文件
+                                    data.shareFile.icon = ('./images/disk/icn_video.png');
+                                    break
+                                case 'audio': // word文件
+                                    data.shareFile.icon = ('./images/disk/icn_radio.png');
+                                    break
+                                default :
+                                    data.shareFile.icon = ('./images/disk/icn_oth.png');
+                            }
+                            this.detail = data;
+                            if(this.detail.accessToken){
+                                if(this.detail.shareFile.fileType.value==='folder'){//文档
+                                    this.previewType = 'folder'
+                                    this.getFolderDetail(this.detail.shareFile)
+                                }else {//文件夹
+                                    let type = this.getFileType(data.shareFile.fileName);
+                                    if(type==='pdf' || type==='ppt' || type==='excel' || type==='word'){
+                                        this.previewType = 'file';
+                                        this.showAliPreview(this.detail.shareFile,'detail')
+                                    }else if(type==='image'){
+                                        this.previewType = 'image';
+                                        this.showImagePreview(this.detail.shareFile,'detail');
+                                    }else {
+                                        this.previewType = 'other'
+                                    }
+                                }
+                            }
+
+                        } else {
+                            alert('数据错误！')
+                        }
+                    }).catch(function (response) {
+                })
+            },
+            // 文档列表
+            getFolderDetail(folder,index){
+                if(!folder && index>-1){
+                    folder = this.paths[index];
+                    this.paths.splice(index+1,this.paths.length)
+                }else {
+                    this.paths.push({fileName:folder.fileName,icon:folder.icon,typedId:folder.typedId})
+                }
+                this.$http.get(basic+'/public/disk/share/listFolder?typedId='+folder.typedId+'&accessToken='+this.detail.accessToken).then(
+                    function (res) {
+                        if (res.body && res.body.code === 200) {
+                            res.body.data.list.map(item=>{
+                                item.editTime = this.formatDiskTime(item.editTime);
+                                item.fileSize = this.formatSize(item.fileSize,2)
+                                switch (item.extCategory.value) {
+                                    case 'folder': // 文件夹
+                                        item.icon = item.isShare?('./images/disk/icn_share.png'):('./images/disk/icn_document.png');
+                                        break
+                                    case 'zip': // 压缩文件
+                                        item.icon = ('./images/disk/icn_zip.png');
+                                        break
+                                    case 'picture': // 图片文件
+                                        item.icon = ('./images/disk/icn_image.png');
+                                        break
+                                    case 'word': // word文件
+                                        item.icon = ('./images/disk/icn_word.png');
+                                        break
+                                    case 'ppt': // word文件
+                                        item.icon = ('./images/disk/icn_ppt.png');
+                                        break
+                                    case 'excel': // word文件
+                                        item.icon = ('./images/disk/icn_excel.png');
+                                        break
+                                    case 'pdf': // word文件
+                                        item.icon = ('./images/disk/icn_pdf.png');
+                                        break
+                                    case 'video': // word文件
+                                        item.icon = ('./images/disk/icn_video.png');
+                                        break
+                                    case 'audio': // word文件
+                                        item.icon = ('./images/disk/icn_radio.png');
+                                        break
+                                    default :
+                                        item.icon = ('./images/disk/icn_oth.png');
+                                }
+                            })
+                            this.list = res.body.data.list;
+                            this.total = res.body.data.total;
+                        } else {
+                            alert('数据错误！')
+                        }
+                    }).catch(function (response) {
+                })
+            },
+            // 文档列表详情
+            showDetail(item){
+                if(item.typedId){
+                    this.preview.item = item;
+                    if(this.verifyPermission(item.permissions,'can_view')){
+                        if(item.fileType.value==='folder'){ //  文件夹
+                            this.getFolderDetail(item);
+                            // this.toPath(item.typedId);
+                        }else if(item.fileType.value==='file'){ // 文件
+                            // this.$refs.preview.show(item);
+                            this.getPreviewFileDetail(item)
+                        }
+                    }else {
+                        this.$message.warning({message: '暂无权限预览！', duration: 1500});
+                    }
+                }
+            },
+            getPreviewFileDetail(item){
+                this.preview.dialogVisible = true;
+                let type = this.getFileType(item.fileName);
+                if(type==='pdf' || type==='ppt' || type==='excel' || type==='word'){
+                    this.preview.previewType = 'file';
+                    this.showAliPreview(item,'preview')
+                }else if(type==='image'){
+                    this.preview.previewType = 'image';
+                    this.showImagePreview(item,'preview');
+                }else {
+                    this.preview.previewType = 'other'
+                }
+            },
+            // 阿里在线预览
+            showAliPreview(item,type){
+                this.$http.get(basic+'/public/disk/share/file/previewConfig?typedId='+item.typedId+'&accessToken='+this.detail.accessToken).then(
+                    function (res) {
+                        if (res.body && res.body.code === 200) {
+                            this.initIframe(res.body.data,type);
+                        } else {
+                            alert('数据错误！')
+                        }
+                    }).catch(function (response) {
+                })
+            },
+            // 图片在线预览
+            showImagePreview(item,type){
+                this.$http.get(basic+'/public/disk/share/file/getDownloadUrl?typedId='+item.typedId+'&accessToken='+this.detail.accessToken).then(
+                    function (res) {
+                        if (res.body && res.body.code === 200) {
+                            if(type==='detail'){
+                                this.image = res.body.data
+                            }else {
+                                this.preview.image = res.body.data
+                            }
+                        } else {
+                            alert('数据错误！')
+                        }
+                    }).catch(function (response) {
+                })
+            },
+            // 文档在线预览
+            showDocumentPreview(){
+                this.previewType = 'folder';
+                this.$http.get(basic+'/public/disk/share/listFolder?typedId='+this.detail.shareFile.typedId+'&accessToken='+this.detail.accessToken).then(
+                    function (res) {
+                        if (res.body && res.body.code === 200) {
+                            this.list = res.body.data
+                        } else {
+                            alert('数据错误！')
+                        }
+                    }).catch(function (response) {
+                })
+            },
+            initIframe(data,type) {
+                let _this = this;
+                let view = type === 'detail'?'filePreviewDialogVisible':'previewDialogVisible'
+                window.sendMessage = function (action, data) {
+                    // let view = 'filePreviewDialogVisible'
+                    var iframe = document.getElementById(view);
+                    iframe.contentWindow.postMessage(_this.json2str({action: action, data: data}), '*');
+                };
+                let fuc = function (e) {
+                    try {
+                        var r = JSON.parse(e.data);
+                    } catch (err) {
+                        return;
+                    }
+                    switch (r.action) {
+                        case 'preview.ready':
+                            window.sendMessage('preview.init', {
+                                url: data.url,
+                                region: data.region,
+                                bucket: data.bucket,
+                                accessKeyId: data.accessKeyId,
+                                accessKeySecret: data.accessKeySecret,
+                                stsToken: data.stsToken,
+                                wmType: 1,
+                                wmFont: '14px',
+                                wmWidth: 300,
+                                wmHeight: 150,
+                                wmColor: 'rgba(192,192,192,0.3)',
+                                wmRotate: -Math.PI / 6,
+                                copy: 1
+                            });
+                            window.sendMessage('setConfig', {
+                                writerCustomStyle: function (isMobile) {
+                                    if (!isMobile) {
+                                        return {
+                                            //隐藏翻页按钮。
+                                            paginationDisplay: false,
+                                            //隐藏全屏按钮。
+                                            fullScreenButtonDisplay: false,
+                                            //预览容器上边距。
+                                            containerMarginTop: 0,
+                                            //预览容器下边距。
+                                            containerMarginBottom: 0,
+                                            //容器背景色。
+                                            containerBackground: '#ffffff'
+                                        };
+                                    } else {
+                                        return {};
+                                    }
+                                }
+                            });
+                            window.removeEventListener('message', fuc, false);
+                            break;
+                    }
+                };
+                window.addEventListener('message', fuc, false);
+            },
+            json2str(obj) {
+                return JSON.stringify(obj, function (key, val) {
+                    if (typeof val === "function") {
+                        val = val.toString();
+                    }
+                    return val;
+                });
+            },
+            getFileType(fileName) {
+                let suffix = "";
+                // 获取类型结果
+                let result = "";
+                try {
+                    let flieArr = fileName.split(".");
+                    suffix = flieArr[flieArr.length - 1];
+                } catch (err) {
+                    suffix = "";
+                }
+                // fileName无后缀返回 false
+                if (!suffix) {
+                    result = false;
+                    return result;
+                }
+                // 图片格式
+                let imglist = ["png", "jpg", "jpeg", "bmp", "gif"];
+                // 进行图片匹配
+                result = imglist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "image";
+                    return result;
+                }
+                // 匹配txt
+                let txtlist = ["txt"];
+                result = txtlist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "txt";
+                    return result;
+                }
+                // 匹配 excel
+                let excelist = ["xls", "xlsx"];
+                result = excelist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "excel";
+                    return result;
+                }
+                // 匹配 word
+                let wordlist = ["doc", "docx"];
+                result = wordlist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "word";
+                    return result;
+                }
+                // 匹配 pdf
+                let pdflist = ["pdf"];
+                result = pdflist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "pdf";
+                    return result;
+                }
+                // 匹配 ppt
+                let pptlist = ["ppt","pptx"];
+                result = pptlist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "ppt";
+                    return result;
+                }
+                // 匹配 视频
+                let videolist = ["mp4", "m2v", "mkv"];
+                result = videolist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "video";
+                    return result;
+                }
+                // 匹配 音频
+                let radiolist = ["mp3", "wav", "wmv"];
+                result = radiolist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "radio";
+                    return result;
+                }
+                // 其他 文件类型
+                result = "other";
+                return result;
+            },
+            showDownload(item){
+                this.$http.get(basic+'/public/disk/share/file/getDownloadUrl?typedId='+item.typedId+'&accessToken='+this.detail.accessToken).then(
+                    function (res) {
+                        if (res.body && res.body.code === 200) {
+                            let link = document.createElement('a');
+                            link.href = res.body.data;
+                            link.target = '_new';
+                            link.click();
+                            setTimeout(()=>{
+                                this.canDownload = true
+                            },1000)
+                        } else {
+                            alert('数据错误！')
+                        }
+                    }).catch(function (response) {
+                })
+            },
+            formatDiskTime(time){
+                // time = (time < 10000000 && time>=0) ? time*1000 : time;
+                if(moment(time*1000).isBefore(moment().subtract(1,'months'))){ // 一个月之前
+                    return time ? moment(time*1000).format("MM-DD") : "";
+                }else {
+                    return time ? moment(time*1000).fromNow():'';
+                }
+            },
+            formatSize(n, size) {
+                function simplifyNum(obj){
+                    if(obj.num>=1024){
+                        obj.num = obj.num/1024,
+                            obj.level ++;
+                        obj = simplifyNum(obj);
+                        return obj
+                    }else{
+                        return obj
+                    }
+                }
+                if (n) {
+                    let minus = false;
+                    let unitArr = ['','KB','MB','GB'];
+                    let unit = '';
+                    if (n < 0) {
+                        minus = true;
+                        n = Math.abs(n);
+                    }
+                    let obj = simplifyNum({num:n,level:0});
+                    n = obj.num;
+                    unit = unitArr[obj.level];
+
+                    if (size > 0) {
+                        n = n.toFixed(size)
+                    }
+                    n = n.toString().split(".");  // 分隔小数点
+                    let arr = n[0].split("").reverse();  // 转换成字符数组并且倒序排列
+                    let res = [];
+                    for (let i = 0, len = arr.length; i < len; i++) {
+                        if (i % 3 === 0 && i !== 0) {
+                            res.push(",");   // 添加分隔符
+                        }
+                        res.push(arr[i]);
+                    }
+                    res.reverse(); // 再次倒序成为正确的顺序
+                    if (n[1]) {  // 如果有小数的话添加小数部分
+                        res = res.join("").concat("." + n[1]);
+                    } else {
+                        res = res.join("");
+                    }
+                    res = minus ? ('-' + res) : res
+                    res = res+unit;
+                    return res;
+                }else {
+                    return 0
+                }
+
+            },
+            verifyPermission(list,key){
+                if(list){
+                    let result = false
+                    list = list || [];
+                    list.map(item=>{
+                        if(item===key){
+                            result = true
+                        }
+                    })
+                    return result
+                }else {
+                    return false
+                }
+            },
+        }
+    })
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+</script>
+</body>
+</html>

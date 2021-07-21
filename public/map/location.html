@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+<!--    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>-->
+    <title>地图显示</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<!-- 加载地图JSAPI脚本 -->
+<script src="https://map.qq.com/api/gljs?v=1.exp&key=U5FBZ-26DCR-3D2WP-WKWUQ-RL5KT-QZFX5"></script>
+<!--<script src="https://webapi.amap.com/maps?v=1.4.15&key=24f954bfe45a9d38fab5988d5653f622"></script>-->
+<script>
+
+    var basic = decodeURIComponent(window.location.href).split('?')[1].split('=')[1];
+    let arr = basic.split(',')
+    console.log(arr);
+    //地图初始化函数，本例取名为init，开发者可根据实际情况定义
+    function initMap() {
+        //定义地图中心点坐标
+        var center = new TMap.LatLng(arr[1], arr[0])
+        //定义map变量，调用 TMap.Map() 构造函数创建地图
+        var map = new TMap.Map(document.getElementById('container'), {
+            center: center,//设置地图中心点坐标
+            zoom: 17.2,   //设置地图缩放级别
+            pitch: 43.5,  //设置俯仰角
+            rotation: 45,   //设置地图旋转角度
+            viewMode:'2D'
+        });
+        //初始化marker
+        var marker = new TMap.MultiMarker({
+            id: "marker-layer", //图层id
+            map: map,
+            styles: { //点标注的相关样式
+                "marker": new TMap.MarkerStyle({
+                    "width": 25,
+                    "height": 25,
+                    "anchor": { x: 16, y: 32 },
+                    "src": "https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerNew.png"
+                })
+            },
+            geometries: [{ //点标注数据数组
+                "id": "demo",
+                "styleId": "marker",
+                "position": center,
+                "properties": {
+                    "title": "marker"
+                }
+            }]
+        });
+
+        var infoWindow = new TMap.InfoWindow({
+            map: map,
+            position: center, //设置信息框位置
+            content: "<div style='text-align:left'><span style='font-size: 16px; font-weight: bold; color:#333'>"+arr[2]+"<br/></span><span style='font-size:14px; color:#888'>"+arr[3]+"</span></div>" //设置信息框内容
+        });
+
+        //监听回调函数（非匿名函数）
+        var eventClick = function (evt) {
+
+            new TMap.InfoWindow({
+                map: map,
+                position: center, //设置信息框位置
+                content: "<div style='text-align:left'><span style='font-size: 16px; font-weight: bold; color:#333'>"+arr[2]+"<br/></span><span style='font-size:14px; color:#888'>"+arr[3]+"</span></div>" //设置信息框内容
+            });
+
+        }
+
+        marker.on("click", eventClick)
+
+    }
+    initMap();
+    /*
+    var map = new AMap.Map('container', {
+        resizeEnable: true, //是否监控地图容器尺寸变化
+        zoom: 18, //初始化地图层级
+        center: [arr[0], arr[1]] //初始化地图中心点
+    });
+    var marker = new AMap.Marker({
+        icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+        position: [arr[0], arr[1]]
+    });
+    map.add(marker);
+    marker.on('click', openInfo);
+    var infoWindow;
+
+    function openInfo() {
+        //构建信息窗体中显示的内容
+        var info = [];
+        info.push("<div style=\"padding:0px 0px 0px 4px;\"><b>" + arr[2] + "</b>");
+        info.push(arr[3]);
+        info.push("</div>");
+        infoWindow = new AMap.InfoWindow({
+            content: info.join("<br/>")  //使用默认信息窗体框样式，显示信息内容
+        });
+        infoWindow.open(map, map.getCenter());
+    }
+    openInfo();
+    */
+</script>
+</body>
+</html>

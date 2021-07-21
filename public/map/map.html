@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>位置选取</title>
+    <script type="text/javascript" src="https://appx/web-view.min.js"></script>
+</head>
+<body style="padding: 0; margin: 0; overflow: hidden">
+<iframe id="map" src="" style="width: 100%; height: 100vh"></iframe>
+</body>
+<script>
+    (function(){
+        var lat='113.268653';
+        var lon='22.924228';
+        var query = decodeURIComponent(window.location.href).split('?')[1];
+        var basic = '';
+        if(query){
+            basic = query.split('=')[1]
+        }
+        if(basic){// 优先获取来自参数的值
+            lat = basic.split(',')[1];
+            lon = basic.split(',')[0]
+        }else if(navigator && navigator.geolocation){ // 通过浏览器获值
+            navigator.geolocation.getCurrentPosition(function (position) {
+                    lat = position.coords.latitude;
+                    lon = position.coords.longitude;
+                },
+                function (error) {}, { timeout: 5000, enableHighAccuracy: true });
+        }
+        if(lat && lon){
+            document.getElementById("map").src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&policy=1&mapdraggable=1&coord="+lon+","+lat+"&key=U5FBZ-26DCR-3D2WP-WKWUQ-RL5KT-QZFX5&referer=mini"; // 腾讯地图
+            // document.getElementById("map").src="https://m.amap.com/picker/?keywords=企业,写字楼,小区&zoom=15&center="+lat+","+lon+"&radius=1000&total=20&key=24f954bfe45a9d38fab5988d5653f622";
+        }else {
+            document.getElementById("map").src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&policy=1&mapdraggable=1&key=U5FBZ-26DCR-3D2WP-WKWUQ-RL5KT-QZFX5&referer=PC"; // 腾讯地图
+            // document.getElementById("map").src="https://m.amap.com/picker/?keywords=企业,写字楼,小区zoom=15&center=&radius=1000&total=20&key=24f954bfe45a9d38fab5988d5653f622&keywords=企业,写字楼,小区";
+        }
+        var iframe = document.getElementById('map').contentWindow;
+        document.getElementById('map').onload = function(){
+            iframe.postMessage('hello','https://m.amap.com/picker/');
+        };
+        // window.parent.addEventListener
+        window.parent.addEventListener("message", function(e){
+            my.postMessage({'data': e.data});
+        }, false);
+
+    }())
+</script>
+</html>

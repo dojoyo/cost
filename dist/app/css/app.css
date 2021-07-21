@@ -1,0 +1,257 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "方正兰亭黑", "方正兰亭中黑", PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+@media (min-width: 768px){
+    .body{
+        background: url("../img/app/bg.png") repeat-x;
+        background-size:auto 100%;
+        background-position:center ;
+        width: 100%;
+        height: 100vh;
+        display: block;
+    }
+
+    .mobile-body{
+        display: none
+    }
+
+    .top{
+        position: absolute;
+        top: 30px;
+        left: 10%;
+        right: 10%;
+        width: 80%;
+        font-size: 16px;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+    }
+
+    .copyright{
+        position: absolute;
+        bottom: 10px;
+        left: 10%;
+        right: 10%;
+        width: 80%;
+        text-align: center;
+        font-size: 14px;
+        color: #80B0FD;
+    }
+
+    .main{
+        position: absolute;
+        width: 980px;
+        height: 600px;
+        top: 50%;
+        left: 50%;
+        margin-left:-490px;
+        margin-top: -300px;
+    }
+    .swiper-content{
+        width: 250px;
+        float: left;
+        text-align: center;
+    }
+
+    .swiper-content .img-logo{
+        width: 240px;
+        margin-top: 110px;
+    }
+    .swiper-content .img2{
+        width: 250px;
+    }
+
+    .content{
+        width: 600px;
+        float: right;
+        margin-top: 50px;
+    }
+
+    .content .words{
+        width: 100%;
+        display: none;
+    }
+    .content .words.on{
+        display: block;
+        animation: show .8s;
+        -moz-animation: show .8s;	/* Firefox */
+        -webkit-animation: show .8s;	/* Safari 和 Chrome */
+        -o-animation: show .8s;	/* Opera */
+    }
+
+    @keyframes show
+    {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    @-moz-keyframes show /* Firefox */
+    {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    @-webkit-keyframes show /* Safari 和 Chrome */
+    {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    @-o-keyframes show /* Opera */
+    {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    .content .words .main-title{
+        font-size: 64px;
+        color: #FFFFFF;
+    }
+
+    .content .words .sub-title{
+        font-size: 32px;
+        color: #FFFFFF;
+    }
+
+    .content .qrcode{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin-top: 38px;
+    }
+    .content .qrcode .image{
+        width: 160px;
+        height: 160px;
+        border:solid 10px #fff;
+        border-radius: 10px;
+    }
+
+    .content .qrcode .button-ground{
+        margin-left: 35px;
+    }
+
+    .content .qrcode .button{
+        height: 36px;
+        display: flex;
+        align-items: center;
+        border: solid 1px #fff;
+        padding: 0 18px;
+        border-radius: 18px;
+        font-size: 14px;
+        color: #FFFFFF;
+        cursor: pointer;
+    }
+    .content .qrcode .button .icon{
+        height: 20px;
+        margin-right: 10px;
+    }
+    .content .qrcode .button:hover, .content .qrcode .button.on{
+        background: #2B7CFF;
+    }
+
+
+}
+@media (max-width: 767px){
+    .body{
+        display: none;
+    }
+    .mobile-body{
+        display: block;
+        background: #1166f8;
+        width: 100%;
+        overflow-x:hidden ;
+    }
+    .logo-wrap{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        color: #FFFFFF;
+        padding: 14px 0 0 17px;
+
+    }
+    .logo-wrap .image{
+        height: 32px;
+        margin-right: 12px;
+    }
+    .mobile-content{
+        width: 100%;;
+        text-align: center;
+    }
+
+    .mobile-content .img-logo{
+        margin-top: 50px;
+        width: 134px;
+    }
+
+    .mobile-content .img2{
+        width:226px;
+        margin-top: 80px;
+    }
+
+    .mobile-content .words{
+        margin-top: 37px;
+    }
+
+    .mobile-content .words .main-title{
+        font-size: 24px;
+        color: #FFFFFF;
+    }
+
+    .mobile-content .words .sub-title{
+        font-size: 16px;
+        color: #FFFFFF;
+    }
+
+    .download-wrap{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 80px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+    }
+
+    .download-wrap .image{
+        height: 47px;
+        margin-left: 16px;
+        flex-shrink: 0;
+    }
+
+    .download-wrap .tips{
+        display: flex;
+        margin-left: 8px;
+        width: 80%;
+        flex-wrap: wrap;
+    }
+    .download-wrap .tips .title{
+        width: 100%;
+        font-size: 18px;
+        color: #32363E;
+    }
+    .download-wrap .tips .sub-title{
+        width: 100%;
+        font-size: 12px;
+        color: #A5A9B2;
+    }
+
+    .download-wrap .button{
+        flex-shrink: 0;
+        margin-left: auto;
+        margin-right: 16px;
+        background: #0060FC;
+        border-radius: 5px;
+        font-size: 14px;
+        color: #FFFFFF;
+        width: 80px;
+        height: 32px;
+        text-align: center;
+        line-height: 32px;
+    }
+}

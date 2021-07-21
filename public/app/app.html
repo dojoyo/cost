@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta name="keywords" content="碧桂园创投,碧桂园,创投,创新投资,CGVC,Country Garden、Venture Capital"/>
+    <meta name="description" content="碧桂园创投,碧桂园,创投,创新投资,CGVC,Country Garden、Venture Capital"/>
+    <title>凤翎-碧桂园创投旗下办公协作平台，集即时通信、移动办公、投资管理等软件的一站式沟通协作平台</title>
+    <link href="js/swiper3/css/swiper.min.css" rel="stylesheet" type="text/css"/>
+    <link href="css/app.css?v=1" rel="stylesheet" type="text/css"/>
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/jquery.qrcode.min.js"></script>
+    <script src="js/swiper3/js/swiper.min.js"></script>
+</head>
+<body>
+<div class="body">
+    <div class="top"><img class="image" src="img/app/logo.png" style="margin-right: 12px; width:32px " /> 凤翎</div>
+    <div class="main">
+        <div class="swiper-content">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img class="img-logo" src="img/app/img_logo_pc_v1.png">
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="img2" src="img/app/2.png">
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="img2" src="img/app/3.png">
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="img2" src="img/app/4.png">
+                    </div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="words" id="words1">
+                <div class="main-title">凤翎</div>
+                <div class="sub-title">让工作更高效、协同更便捷</div>
+            </div>
+            <div class="words" id="words2">
+                <div class="main-title">自定义工作台</div>
+                <div class="sub-title">业务功能全覆盖，随时随地处理办公需求</div>
+            </div>
+            <div class="words" id="words3">
+                <div class="main-title">贴心的时间管家</div>
+                <div class="sub-title">高效组织团队会议，时刻与团队保持同步</div>
+            </div>
+            <div class="words" id="words4">
+                <div class="main-title">即时通讯、稳定安全</div>
+                <div class="sub-title">消息更易触达，让组织沟通更有效率</div>
+            </div>
+            <div class="qrcode">
+                <div class="image" id="qrcode"></div>
+                <div class="button-ground">
+                    <div class="button" id="pc_ios">
+                        <a href="#" target="_blank" style="text-decoration: none; color:#fff; display: flex; align-items: center">
+                            <img src="img/app/ios.png" class="icon"/>iOS下载
+                        </a>
+                    </div>
+                    <div class="button" id="pc_android" style="margin-top: 28px">
+                        <a href="#" target="_blank" style="text-decoration: none; color:#fff; display: flex; align-items: center">
+                        <!--<a href="https://mcube-prod.oss-cn-hangzhou.aliyuncs.com/ONEX9C6E387101723-default/1.0.6/ANDROID/cgvc_app_production_v1.0.6_release.apk" target="_blank" style="text-decoration: none; color:#fff; display: flex; align-items: center">-->
+                        <img src="img/app/anzhuo.png" class="icon"/>Android下载
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        粤ICP备19004658号<br/>©-2019 深圳市碧桂园创新投资有限公司
+    </div>
+</div>
+<div class="mobile-body">
+    <div class="logo-wrap">
+        <img class="image" src="img/app/logo.png"> 凤翎
+    </div>
+    <div class="mobile-content">
+        <img class="img-logo" src="img/app/mobile/img_logo_mobile_v1.png">
+        <div class="words">
+            <div class="main-title">凤翎</div>
+            <div class="sub-title">让工作更高效、协同更便捷</div>
+        </div>
+        <img class="img2" src="img/app/2.png">
+        <div class="words">
+            <div class="main-title">自定义工作台</div>
+            <div class="sub-title">业务功能全覆盖<br/>随时随地处理办公需求</div>
+        </div>
+        <img class="img2" src="img/app/3.png">
+        <div class="words">
+            <div class="main-title">贴心的时间管家</div>
+            <div class="sub-title">高效组织团队会议<br/>时刻与团队保持同步</div>
+        </div>
+        <img class="img2" src="img/app/4.png">
+        <div class="words">
+            <div class="main-title">即时通讯、稳定安全</div>
+            <div class="sub-title">消息更易触达，让组织沟通更有效率</div>
+        </div>
+        <div style="width: 100%; height: 140px"></div>
+    </div>
+    <div class="download-wrap">
+        <img class="image" src="img/app/logo_blue.png">
+        <div class="tips">
+            <div class="title">凤翎</div>
+            <div class="sub-title">碧桂园创投移动平台</div>
+        </div>
+        <div class="button" id="button">点击下载</div>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        var isDev = window.location.href.indexOf('https://dev-work.cgvcap.com/')===0;
+        var iosUrl = isDev?'https://apps.apple.com/cn/app/cgvc/id1538907450':'https://apps.apple.com/cn/app/cgvc/id1538907450'
+        var androidUrl = isDev?'https://mcube-prod.oss-cn-hangzhou.aliyuncs.com/ONEX9C6E387171114-default/1.0.56/ANDROID/cgvc_app_test_v1.0.56_debug.apk':'https://mcube-prod.oss-cn-hangzhou.aliyuncs.com/ONEX9C6E387101723-default/1.1.1/ANDROID/cgvc_app_production_v1.1.1_release.apk'
+        var ie = (function () {
+            if (document.all && (!window.XMLHttpRequest || !document.querySelector || !document.addEventListener || !window.atob)) {
+                window.location.href = "browser.html"
+            }
+            // if (document.all && document.addEventListener && window.atob) return 10;
+            // return 11;
+            //window.location.href="browser.html"
+        })();
+
+        var swiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            paginationClickable: true,
+            spaceBetween: 30,
+            autoplay: 3000,
+            loop: true,
+            onSlideChangeStart: function (swiper) {
+                let index = swiper.activeIndex;
+                index = index === 5 ? 1 : index;
+                index = index === 0 ? 4 : index;
+                setView(index)
+            }
+        });
+
+        function setView(index) {
+            for (let i = 1; i < 5; i++) {
+                $('#words' + i).removeClass('on')
+            }
+            $('#words' + index).addClass('on')
+        }
+
+        $('#qrcode').qrcode({
+            render: "canvas", //也可以替换为table
+            width: 160,
+            height: 160,
+            text: window.location.href
+        });
+        $("#pc_ios").on("click", {}, function (e) {
+            // $('#pc_ios').addClass('on')
+            // $('#pc_android').removeClass('on')
+            // $('#qrcode').attr("src", "img/app/qrcode-ios.png");
+            window.open(iosUrl)
+            // window.location.href = iosUrl;
+        })
+
+        $("#pc_android").on("click", {}, function (e) {
+            // $('#pc_android').addClass('on')
+            // $('#pc_ios').removeClass('on')
+            // $('#qrcode').attr("src", "img/app/qrcode-android.png");
+            window.open(androidUrl)
+            // window.location.href = androidUrl;
+        })
+
+        $("#button").on("click", {}, function (e) {
+            downloadAPP()
+        })
+
+        function downloadAPP() {
+            var u = navigator.userAgent, app = navigator.appVersion;
+            var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+            var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            if (isIOS) {
+                //这个是ios操作系统
+                // window.location.href = "https://apps.apple.com/cn/app/cgvc/id1538907450";
+                window.location.href = iosUrl;
+            }else if(isAndroid) {
+                //这个是安卓操作系统
+                // window.location.href = "https://mcube-prod.oss-cn-hangzhou.aliyuncs.com/ONEX9C6E387101723-default/1.0.6/ANDROID/cgvc_app_production_v1.0.6_release.apk"; // 正式环境
+                // window.location.href = "https://mcube-prod.oss-cn-hangzhou.aliyuncs.com/ONEX9C6E387171114-default/1.0.50/ANDROID/cgvc_app_test_v1.0.50_debug.apk"; // 测试环境
+                window.location.href = androidUrl;
+            }else {
+                alert('请用系统浏览器打开页面进行下载！')
+            }
+        }
+    })
+</script>
+</body>
+</html>

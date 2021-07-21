@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no, width=device-width">
+    <title>凤翎｜知识库|分享</title>
+    <script src="js/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue-resource/1.5.2/vue-resource.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <style type="text/css">
+        * {
+            font-style: normal;
+            font-weight: normal;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Helvetica Neue", Helvetica, "Microsoft YaHei", "WenQuanYi Micro Hei", Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f7f7f6;
+        }
+
+        .ml-auto {
+            margin-left: auto;
+        }
+
+        .fs-12 {
+            font-size: 12px !important
+        }
+
+        .fs-13 {
+            font-size: 13px !important
+        }
+
+        .fs-14 {
+            font-size: 14px !important
+        }
+
+        .fs-15 {
+            font-size: 15px !important
+        }
+
+        .fs-16 {
+            font-size: 16px !important
+        }
+
+        .fs-17 {
+            font-size: 17px !important
+        }
+
+        .fs-18 {
+            font-size: 18px !important
+        }
+
+        .color-primary {
+            color: #1D6EFF !important
+        }
+
+        .color-primary-dark {
+            color: #0043C9 !important
+        }
+
+        .color-primary-light {
+            color: #8EB6FF !important
+        }
+
+        .color-number {
+            color: #FF5551 !important
+        }
+
+        .color-danger {
+            color: #F54B46 !important
+        }
+
+        .color-sucess {
+            color: #00B09F !important
+        }
+
+        .color-warning {
+            color: #FCAF34 !important
+        }
+
+        .color-white {
+            color: #fff !important
+        }
+
+        .color-title {
+            color: #32363E !important
+        }
+
+        .color-text {
+            color: #616770 !important
+        }
+
+        .color-tips {
+            color: #A5A9B2 !important
+        }
+
+        .color-placeholder {
+            color: #BBBBC2 !important
+        }
+
+        .color-divider {
+            color: #E6E8EC !important
+        }
+
+        .color-background {
+            color: #F6F6F8 !important
+        }
+
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .keep-all {
+            white-space: nowrap;
+            word-break: keep-all;
+            flex-shrink: 0
+        }
+
+        .break-all {
+            white-space: normal;
+            word-break: break-all;
+        }
+
+        .tag-primary {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #1D6EFF !important;
+            background: #EAF5FF !important;
+
+        }
+
+        .tag-success {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #27D497 !important;
+            background: #DBF6EC !important;
+        }
+
+        .tag-warning {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #F69C1F !important;
+            background: #FDF3E0 !important;
+        }
+
+        .tag-danger {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #F04242 !important;
+            background: #FFE9E9 !important;
+        }
+
+        .tag-gray {
+            padding: 2px 3px !important;
+            font-size: 12px !important;
+            border-radius: 2px !important;
+            color: #A5A9B2 !important;
+            background: #F0F0F4 !important;
+        }
+
+
+        .ml-5 {
+            margin-left: 5px
+        }
+
+        .ml-10 {
+            margin-left: 10px
+        }
+
+        .ml-12 {
+            margin-left: 12px
+        }
+
+        .mr-auto {
+            margin-right: auto
+        }
+
+        .mr-5 {
+            margin-right: 5px
+        }
+
+        .mr-10 {
+            margin-right: 10px
+        }
+
+        .mr-12 {
+            margin-right: 12px
+        }
+
+        .mt-5 {
+            margin-top: 5px
+        }
+
+        .mt-12 {
+            margin-top: 12px
+        }
+
+        .w-100p {
+            width: 100%;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            margin-left: 12px;
+        }
+
+        .logo-string {
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .download {
+            margin-left: auto;
+            padding: 1px 10px;
+            font-size: 14px;
+            border: solid 1px #007bff;
+            color: #007bff;
+            margin-right: 12px;
+        }
+
+        .header {
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            background: #fff;
+        }
+
+        .title {
+            font-size: 18px;
+            color: #333;
+            padding:12px 12px 3px;
+            text-align: justify;
+        }
+
+        .time {
+            font-size: 14px;
+            color: #888;
+            padding:0 12px 12px 12px;
+            text-align: left;
+        }
+
+        .more-btn {
+            padding: 10px 0;
+            background: #fff;
+            text-align: center;
+            margin-top: 8px;
+            margin-bottom: 12px;
+        }
+
+        .sub-wrap{
+            background: #fff;
+            padding: 12px;
+        }
+        .sub-title{
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .sub-list{
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 14px;
+            color: #007bff;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="header">
+        <img src="images/knowledge/logo.png" class="logo"/>
+        <span class="logo-string">凤翎</span>
+<!--        <span class="download" @click="downloadAPP()">下载</span>-->
+    </div>
+    <div class="title">{{detail.title}}</div>
+    <div class="time">{{detail.createTime}}</div>
+    <div style="padding: 0 12px">
+        <img class="mt-5 w-100p" style="border: solid 1px #eee" v-for="item,index in detail.firstPages" :src="item" :key="index" @click="openFile(detail.attachment.previewConfig,detail.attachment.attachName)" />
+    </div>
+    <div class="more-btn" @click="openFile(detail.attachment.previewConfig,detail.attachment.attachName)">
+        <span class="{{percent>0?'color-primary':'color-tips'}} fs-14">{{percent>0?'继续阅读':'加载完成'}}</span><br/>
+        <span class="color-tips fs-14" v-if="percent>0">--------------剩余{{percent}}%未读--------------</span>
+    </div>
+    <div class="sub-wrap" v-show="detail.subFiles && detail.subFiles.length>0">
+        <div class="sub-title">相关文档</div>
+        <div class="sub-list" v-for="(item,index) in detail.subFiles" :key="index" @click="openFile(item.previewConfig,item.attachName,item)">
+            <img src="images/knowledge/icn_links.png" style="width: 14px; margin-right: 5px">{{item.attachName}}
+        </div>
+    </div>
+</div>
+
+<script>
+    let id = decodeURIComponent(getQueryVariable('id')) || '1402167492423454721';
+    new Vue({
+        el: '#app',
+        data: {
+            detail: {},
+            percent: ''
+        },
+        mounted() {
+            this.getDetail();
+        },
+        methods: {
+            getDetail: function () {
+                let url = (window.location.href.indexOf('dev-work.cgvcap.com')>-1)?'https://dev-api.cgvcap.com/public/knowledge/share/':'https://api.cgvcap.com/public/knowledge/share/';
+                // let url = 'https://dev-api.cgvcap.com/public/knowledge/share/';
+                this.$http.get(url + id).then(
+                    function (res) {
+                        if (res.body && res.body.code === 200) {
+                            let data = res.body.data;
+                            data.createTime = moment(data.createTime*1000).format('YYYY-MM-DD');
+                            this.percent = ((1 - 3 / data.attachment.attachPages) * 100).toFixed(0)
+                            this.detail = data;
+                            console.log(data)
+                        } else {
+                            alert('数据错误！')
+                        }
+                    }).catch(function (response) {
+                    console.log(response)
+                })
+            },
+            openFile(previewConfig,title,item){
+                let type = this.getFileType(title);
+                let query = '';
+                if(type==='pdf' || type==='ppt' || type==='excel' || type==='word'){
+                    query = "../reader/index.html";
+                    query += '?accessKeyId=' + encodeURIComponent(previewConfig.accessKeyId);
+                    query += '&accessKeySecret=' + encodeURIComponent(previewConfig.accessKeySecret);
+                    query += '&bucket=' + encodeURIComponent(previewConfig.bucket);
+                    query += '&region=' + encodeURIComponent(previewConfig.region);
+                    query += '&stsToken=' + encodeURIComponent(previewConfig.stsToken);
+                    query += '&url=' + encodeURIComponent(previewConfig.url);
+                    query += '&watermark=' + encodeURIComponent(previewConfig.watermark);
+                    query += '&title=' + encodeURIComponent(title);
+                    query += '&time=' + moment().format('X');
+                    window.location.href = query;
+                }else if(type==='image'){
+                    alert('该文档暂不支持在线预览!');
+                    // query = 'https://dev-oss.cgvcap.com/file/' + item.fileId + '/' + item.accessCode;
+                    // window.location.href = query;
+                }else {
+                    alert('该文档暂不支持在线预览!');
+                }
+            },
+            getFileType(fileName) {
+                let suffix = "";
+                // 获取类型结果
+                let result = "";
+                try {
+                    let flieArr = fileName.split(".");
+                    suffix = flieArr[flieArr.length - 1];
+                } catch (err) {
+                    suffix = "";
+                }
+                // fileName无后缀返回 false
+                if (!suffix) {
+                    result = false;
+                    return result;
+                }
+                // 图片格式
+                let imglist = ["png", "jpg", "jpeg", "bmp", "gif"];
+                // 进行图片匹配
+                result = imglist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "image";
+                    return result;
+                }
+                // 匹配txt
+                let txtlist = ["txt"];
+                result = txtlist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "txt";
+                    return result;
+                }
+                // 匹配 excel
+                let excelist = ["xls", "xlsx"];
+                result = excelist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "excel";
+                    return result;
+                }
+                // 匹配 word
+                let wordlist = ["doc", "docx"];
+                result = wordlist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "word";
+                    return result;
+                }
+                // 匹配 pdf
+                let pdflist = ["pdf"];
+                result = pdflist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "pdf";
+                    return result;
+                }
+                // 匹配 ppt
+                let pptlist = ["ppt","pptx"];
+                result = pptlist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "ppt";
+                    return result;
+                }
+                // 匹配 视频
+                let videolist = ["mp4", "m2v", "mkv"];
+                result = videolist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "video";
+                    return result;
+                }
+                // 匹配 音频
+                let radiolist = ["mp3", "wav", "wmv"];
+                result = radiolist.some(function(item) {
+                    return item == suffix;
+                });
+                if (result) {
+                    result = "radio";
+                    return result;
+                }
+                // 其他 文件类型
+                result = "other";
+                return result;
+            },
+            downloadAPP() {
+                let isDev = window.location.href.indexOf('https://dev-work.cgvcap.com/')===0;
+                let iosUrl = isDev?'https://apps.apple.com/cn/app/cgvc/id1538907450':'https://apps.apple.com/cn/app/cgvc/id1538907450'
+                let androidUrl = isDev?'https://mcube-prod.oss-cn-hangzhou.aliyuncs.com/ONEX9C6E387171114-default/1.0.56/ANDROID/cgvc_app_test_v1.0.56_debug.apk':'https://mcube-prod.oss-cn-hangzhou.aliyuncs.com/ONEX9C6E387101723-default/1.1.1/ANDROID/cgvc_app_production_v1.1.1_release.apk'
+
+                let u = navigator.userAgent, app = navigator.appVersion;
+                let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+                let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+                if (isIOS) {
+                    //这个是ios操作系统
+                    // window.location.href = "https://apps.apple.com/cn/app/cgvc/id1538907450";
+                    window.location.href = iosUrl;
+                } else if (isAndroid) {
+                    //这个是安卓操作系统
+                    // window.location.href = "https://mcube-prod.oss-cn-hangzhou.aliyuncs.com/ONEX9C6E387101723-default/1.0.6/ANDROID/cgvc_app_production_v1.0.6_release.apk"; // 正式环境
+                    // window.location.href = "https://mcube-prod.oss-cn-hangzhou.aliyuncs.com/ONEX9C6E387171114-default/1.0.50/ANDROID/cgvc_app_test_v1.0.50_debug.apk"; // 测试环境
+                    window.location.href = androidUrl;
+                } else {
+                    alert('请用系统浏览器打开页面进行下载！')
+                }
+            }
+        }
+    })
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+</script>
+</body>
+</html>

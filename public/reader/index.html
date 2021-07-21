@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>在线预览</title>
+</head>
+<body style="padding: 0; margin: 0; overflow: hidden">
+<iframe id="reader" src="" style="width: 100%; height: 100vh"></iframe>
+</body>
+<script>
+    (function(){
+        let data = {
+            accessKeyId: decodeURIComponent(getQueryVariable('accessKeyId')),
+            accessKeySecret: decodeURIComponent(getQueryVariable('accessKeySecret')),
+            bucket: decodeURIComponent(getQueryVariable('bucket')),
+            region: decodeURIComponent(getQueryVariable('region')),
+            stsToken: decodeURIComponent(getQueryVariable('stsToken')),
+            url: decodeURIComponent(getQueryVariable('url')),
+            watermark: decodeURIComponent(getQueryVariable('watermark'))
+        };
+        let name = decodeURIComponent(getQueryVariable('name'));
+        let id = decodeURIComponent(getQueryVariable('id'));
+        let time = decodeURIComponent(getQueryVariable('time'));
+        let msg = '';
+        if(name!=='false' && id!=='false' && time!=='false'){
+            msg = name + '  ' + id + '  ' + time;
+        }
+        document.title = decodeURIComponent(getQueryVariable('title')) || '在线预览';
+        // document.getElementsByTagName("title")[0].innerText = decodeURIComponent(getQueryVariable('title'));
+        document.getElementById("reader").src = "https://preview.imm.aliyuncs.com/index.html";
+        window.sendMessage = function (action, data) {
+            let view = 'reader';
+            var iframe = document.getElementById(view);
+            iframe.contentWindow.postMessage(json2str({action: action, data: data}), '*');
+        };
+        let fuc = function (e) {
+            try {
+                var r = JSON.parse(e.data);
+            } catch (err) {
+                return;
+            }
+            switch (r.action) {
+                case 'preview.ready':
+                    window.sendMessage('preview.init', {
+                        url: data.url,
+                        region: data.region,
+                        bucket: data.bucket,
+                        accessKeyId: data.accessKeyId,
+                        accessKeySecret: data.accessKeySecret,
+                        stsToken: data.stsToken,
+                        wmType: 1,
+                        wmValue: msg,
+                        wmFont: '14px',
+                        wmWidth: 300,
+                        wmHeight: 150,
+                        wmColor: 'rgba(192,192,192,0.3)',
+                        wmRotate: -Math.PI / 6,
+                        copy: 1
+                    });
+                    window.sendMessage('setConfig', {
+                        writerCustomStyle: function (isMobile) {
+                            if (!isMobile) {
+                                return {
+                                    //隐藏翻页按钮。
+                                    paginationDisplay: false,
+                                    //隐藏全屏按钮。
+                                    fullScreenButtonDisplay: false,
+                                    //预览容器上边距。
+                                    containerMarginTop: 0,
+                                    //预览容器下边距。
+                                    containerMarginBottom: 0,
+                                    //容器背景色。
+                                    containerBackground: '#ffffff'
+                                };
+                            } else {
+                                return {};
+                            }
+                        }
+                    });
+                    window.removeEventListener('message', fuc, false);
+                    break;
+            }
+        };
+        window.addEventListener('message', fuc, false);
+
+        function json2str(obj) {
+            return JSON.stringify(obj, function (key, val) {
+                if (typeof val === "function") {
+                    val = val.toString();
+                }
+                return val;
+            });
+        }
+
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                }
+            }
+            return (false);
+        }
+    }())
+</script>
+</html>
