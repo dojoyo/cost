@@ -77,6 +77,7 @@ export default {
     return request({
       url: '/fee/pc/entertain/list',
       method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -227,6 +228,7 @@ export default {
     return request({
       url: '/fee/pc/travel/air-ticket/list',
       method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -293,6 +295,7 @@ export default {
     return request({
       url: '/fee/pc/travel/didi/list',
       method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -301,7 +304,6 @@ export default {
     return request({
       url: '/fee/pc/travel/didi/add',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -310,7 +312,6 @@ export default {
     return request({
       url: `/fee/pc/travel/didi/${data.id}`,
       method: 'put',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -359,6 +360,7 @@ export default {
     return request({
       url: '/fee/pc/travel/hotel/list',
       method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -367,7 +369,6 @@ export default {
     return request({
       url: '/fee/pc/travel/hotel/add',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -376,7 +377,6 @@ export default {
     return request({
       url: `/fee/pc/travel/hotel/${data.id}`,
       method: 'put',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -425,6 +425,7 @@ export default {
     return request({
       url: '/fee/pc/travel/other/list',
       method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -433,7 +434,6 @@ export default {
     return request({
       url: '/fee/pc/travel/other/add',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -442,7 +442,6 @@ export default {
     return request({
       url: `/fee/pc/travel/other/${data.id}`,
       method: 'put',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -491,6 +490,7 @@ export default {
     return request({
       url: '/fee/pc/travel/train-ticket/list',
       method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -499,7 +499,6 @@ export default {
     return request({
       url: '/fee/pc/travel/train-ticket/add',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -508,7 +507,6 @@ export default {
     return request({
       url: `/fee/pc/travel/train-ticket/${data.id}`,
       method: 'put',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -560,5 +558,47 @@ export default {
       headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
-  }
+  },
+   // 其他收入- 编辑
+  editIncomeDetail(data){
+    return request({
+      url: `/fee/pc/other-income/${data.id}`,
+      method: 'put',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+   // 其他收入- 新增
+   addIncome(data){
+    return request({
+      url: `/fee/pc/other-income/add`,
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+   // 其他收入- 详情
+   getIncomeDetail(id){
+    return request({
+      url: `/fee/pc/other-income/${id}`,
+      method: 'get',
+    });
+  },
+  // 其他收入- 删除
+  delIncome(id){
+    return request({
+      url: `/fee/pc/other-income/${id}`,
+      method: 'delete',
+    });
+  },
+  // 其他收入- 导出
+  exportIncome(data){
+    return request({
+      url: '/fee/pc/other-income/export',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data,
+      responseType: 'arraybuffer'
+    });
+  },
 };

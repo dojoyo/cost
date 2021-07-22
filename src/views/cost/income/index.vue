@@ -14,71 +14,91 @@
     </el-header>
     <div class="search-area">
       <div>
-        <el-date-picker  v-model="year" type="years" placeholder="选择年" class="mr-10"></el-date-picker>
-        <el-button @click="doSearch" type="primary" size="small" icon="iconfont icon-sousuo fs-12">查询</el-button>
+        <el-date-picker  v-model="requestParams.year" type="year" format="yyyy年" value-format="yyyy" placeholder="选择年" class="mr-10"></el-date-picker>
+         <el-select v-model="requestParams.month" placeholder="全部月份" class="mr-10">
+            <el-option
+              v-for="item in enumType.FeeMonth"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+            </el-option>
+        </el-select>
+        <el-select v-model="requestParams.incomeType" placeholder="全部费用类型">
+            <el-option
+               v-for="item in enumType.FeeIncomeType"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+            </el-option>
+        </el-select>
+        <el-button @click="getList()" type="primary" size="small" icon="iconfont icon-sousuo fs-12">查询</el-button>
       </div>
       <div class="tag-operate-tool">
         <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" 
-        @click="openExportDialog">
-          导出</el-button>
+        @click="openExportDialog">导出</el-button>
       </div>
     </div>
     <el-main class="main">
       <el-table :data="list" style="width:100%" :fit="true" :header-cell-style="{'background':'#f5f9ff'}">
         <el-table-column prop="belongMonth" label="月份"></el-table-column>
-        <el-table-column prop="incomeType" label="部门">
+        <el-table-column prop="incomeType" label="费用类型">
           <template slot-scope="scope">
             <span> {{scope.row.incomeType.name}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="amount" label="金额"></el-table-column>
+        <el-table-column prop="amount" label="金额">
+          <template slot-scope="scope">
+            <span> {{scope.row.amount.toLocaleString()}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="edit(scope)">编辑</el-button>
+            <el-button type="text" @click="showAddAndEditDialog(scope.row)">编辑</el-button>
             <el-button type="text" @click="del(scope)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-main>
-    <AddAndEditDialog ref="addAndEdit" :deptTree="deptTree" :FeeIncomeType="enumType.FeeIncomeType" />
+    <AddAndEditDialog ref="addAndEdit"  :enumType="enumType"/>
+    <ExportDialog ref="exportFile" @export="exportFile"/>
   </el-container>
 </template>
 <script>
 import api from "@/api/cost";
 import AddAndEditDialog from './addAndEdit'
+import ExportDialog from '../components/exportDialog'
 import mixin from '../mixins'
 export default {
   name: "",
-  components: {AddAndEditDialog},
+  components: {AddAndEditDialog,ExportDialog},
   props: {},
   data() {
     return {
-      enumType: {
-          FeeIncomeType: []
-      },
       search: {},
       list: [],
-      pageNum: 1,
-      pageSize: 10,
+      requestParams:{
+        pageNum: 1,
+        pageSize: 10,
+        year: new Date().getFullYear() + '',
+        month:'',
+        incomeType:''
+      },
       total: 0,
-      year: "",
-      deptTree:[]
+      deptTree:[],
+      enumType: {
+        FeeMonth: [],
+        FeeFlightType: []
+      },
     };
   },
-   mixins: [mixin],
+  mixins: [mixin],
   mounted() {
     this.init()
   },
   methods: {
     // 获取企业列表
     getList() {
-      let params = {
-        year: this.year,
-        pageNum: this.pageNum,
-        pageSize: this.pageSize
-      };
-
-      api.getIncomeList(params).then(res => {
+      api.getIncomeList(this.requestParams).then(res => {
           if (res.code === 200) {
             this.list = res.data.list;
             this.total = res.data.total;
@@ -88,19 +108,49 @@ export default {
           console.log(err);
         });
     },
-    async init(){
-      this.getList()
-      await this.getDeptTree()
-      this.getEnum('FeeIncomeType')
-    },
     showAddAndEditDialog(data){
       this.$refs.addAndEdit.open(data)
     },
-    doSearch(){
+    del(data){
+      this.$confirm('即将删除数据，是否继续？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          api.delIncome(data.id).then(res => {
+            if (res.code === 200) {
+              this.getList();
+              this.$message.success({message: '删除成功!', duration: 1500})
+            }
+          }).catch(err => {
+            console.log(err);
+          })
 
+        }).catch(err => {});
     },
     openExportDialog(){
-
+       this.$refs.exportFile.open()
+    },
+    exportFile(data){
+      console.log(data)
+      api.exportIncome(data).then(res=>{
+        if(res.code===200){
+          let headers = res.headers;
+          let title = headers['x-file-name'];
+          let blob = new Blob([res.data], {
+            type: headers['content-type']
+          });
+          let link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = decodeURIComponent(title);
+          link.click();
+        }
+      })
+    },
+    async init(){
+      await this.getEnum('FeeMonth')
+      await this.getEnum('FeeIncomeType')
+      this.getList()
     }
   }
 };

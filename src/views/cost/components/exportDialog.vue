@@ -8,7 +8,7 @@
     >
         <div slot="title" class="header">
             <div class="title">
-                导入
+                导出
             </div>
             <div class="options">
                 <i class="iconfont icon-guanbi pointer fs-22" @click="visible=false"></i>
@@ -17,14 +17,14 @@
         </div>
         <el-form :model="form" :rules="rules" ref="form">
             <el-form-item label="年份" :label-width="labelWidth" required class="w-100p" prop="year">
-                <el-date-picker v-model="form.year" type="year" placeholder="请选择年份"></el-date-picker>
+                <el-date-picker v-model="form.year" type="year" value-format="yyyy" format="yyyy" placeholder="请选择年份"></el-date-picker>
             </el-form-item>
             <el-form-item label="月份" :label-width="labelWidth" required prop="month">
                 <el-select v-model="form.month" placeholder="请选择月份">
                     <el-option
-                        v-for="item in monthOptions"
+                        v-for="item in enumType.FeeMonth"
                         :key="item.value"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.value">
                     </el-option>
                 </el-select>
@@ -37,6 +37,7 @@
     </el-dialog>
 </template>
 <script>
+import minix from '../mixins'
 export default {
     name: 'exportDialog',
     data() {
@@ -60,60 +61,14 @@ export default {
                     }
                 ]
             },
-            monthOptions: [
-                {
-                    label: '1月',
-                    value: 1
-                },
-                {
-                    label: '2月',
-                    value: 2
-                },
-                {
-                    label: '3月',
-                    value: 3
-                },
-                {
-                    label: '4月',
-                    value: 4
-                },
-                {
-                    label: '5月',
-                    value: 5
-                },
-                {
-                    label: '6月',
-                    value: 6
-                },
-                {
-                    label: '7月',
-                    value: 7
-                },
-                {
-                    label: '8月',
-                    value: 8
-                },
-                {
-                    label: '9月',
-                    value: 9
-                },
-                {
-                    label: '10月',
-                    value: 10
-                },
-                {
-                    label: '11月',
-                    value: 11
-                },
-                {
-                    label: '12月',
-                    value: 12
-                }
-            ]
+            enumType: {
+                FeeMonth: []
+            },
         };
     },
+    mixins:[minix],
     mounted() {
-
+        this.getEnum('FeeMonth')
     },
     methods: {
         // 打开弹窗
@@ -135,7 +90,9 @@ export default {
         submitForm() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    console.log('submit!');
+                   this.$emit('export', this.form);
+                   this.visible = false;
+                   this.initForm()
                 } else {
                     console.log('error submit!!');
                     return false;
