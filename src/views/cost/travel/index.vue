@@ -23,7 +23,7 @@
         <el-button type="text" icon="iconfont icon-xinzeng fs-12" class="blue" @click="goAddAndEdit"> 新增</el-button>
         <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue" @click="openImportDialog"> 导入</el-button>
         <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="openExportDialog"> 导出</el-button>
-        <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue"> 下载模板</el-button>
+        <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue" @click="getTemp"> 下载模板</el-button>
       </div>
     </div>
     <el-main class="main travel-main">
@@ -214,10 +214,10 @@
       </div>
     </el-main>
     <AddAndEditDialogAir ref="addAndEditAir" :deptTree="deptTree" :flightType="enumType.FeeFlightType" />
-    <AddAndEditDialogTrain ref="addAndEditTrain" />
-    <AddAndEditDialogHotel ref="addAndEditHotel" />
-    <AddAndEditDialogDidi ref="addAndEditDidi" />
-    <AddAndEditDialogOther ref="addAndEditOther" />
+    <AddAndEditDialogTrain ref="addAndEditTrain" :deptTree="deptTree" />
+    <AddAndEditDialogHotel ref="addAndEditHotel" :deptTree="deptTree" />
+    <AddAndEditDialogDidi ref="addAndEditDidi" :deptTree="deptTree" />
+    <AddAndEditDialogOther ref="addAndEditOther" :deptTree="deptTree" />
     <ImportDialog ref="importDialog"/>
     <ExportDialog ref="exportDialog"/>
   </el-container>
@@ -353,6 +353,36 @@
       },
       openExportDialog() {
         this.$refs.exportDialog.open();
+      },
+      getTemp() {
+        api.getTravelAirTemp().then(res => {
+          let headers = res.headers;
+          let title = headers['x-file-name'];
+          let blob = new Blob([res.data], {
+            type: headers['content-type']
+          });
+          let link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = decodeURIComponent(title);
+          link.click();
+        });
+      },
+      goDelete(data) {
+        this.$confirm('即将删除数据，是否继续？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          api.travelAirDelete(data.id).then(res => {
+            if (res.code === 200) {
+              this.getList();
+              this.$message.success({message: '删除成功!', duration: 1500})
+            }
+          }).catch(err => {
+            console.log(err);
+          })
+
+        }).catch(err => {});
       }
     }
   };

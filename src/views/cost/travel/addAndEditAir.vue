@@ -260,9 +260,9 @@ export default {
                 this.form = Object.assign({}, query);
                 if (this.form.flightType) {
                     this.form.flightType = this.form.flightType.value
-                    this.form.bookingTime = filter.DateTimeEn(this.form.bookingTime)
-                    this.form.departureTime = filter.DateTimeEn(this.form.departureTime)
                 }
+                this.form.bookingTime = filter.DateTimeEn(this.form.bookingTime)
+                this.form.departureTime = filter.DateTimeEn(this.form.departureTime)
                 this.userOptions = [{
                     userName: this.form.userName,
                     userId: this.form.userId
@@ -319,7 +319,7 @@ export default {
                     api[method](params).then(res => {
                         if (res.code === 200) {
                             this.$message.success('操作成功')
-                            this.$parent.$parent.$refs.commonSearch.doSearch()
+                            this.$parent.$parent.getList()
                             this.visible = false
                         } else {
                             this.$message.error('操作失败')

@@ -17,31 +17,31 @@
       <div class="operate-buttons">
         <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue" @click="openImportDialog"> 导入</el-button>
         <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="openExportDialog"> 导出</el-button>
-        <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue"> 下载模板</el-button>
+        <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue" @click="getTemp"> 下载模板</el-button>
       </div>
     </div>
     <el-main class="main travel-main">
       <el-table v-if="list && list.length>0" :data="list" style="width: 100%; margin-top:10px; " :header-cell-style="{background:'#f5f9ff'}">
         <el-table-column label="序号" type="index"></el-table-column>
-        <el-table-column label="部门" prop="contractName" width="120"></el-table-column>
-        <el-table-column prop="contractType.name" label="报销人员" width="120"></el-table-column>
-        <el-table-column prop="signTime" label="发票日期" width="150">
+        <el-table-column label="部门" prop="deptName" width="120"></el-table-column>
+        <el-table-column prop="userName" label="报销人员" width="80"></el-table-column>
+        <el-table-column prop="invoiceDate" label="发票日期" width="100">
           <template slot-scope="scope">
-            {{scope.row.createTime | DateTimeEn}}
+            {{scope.row.invoiceDate | DateTimeEn}}
           </template>
         </el-table-column>
-        <el-table-column prop="approvalTitle" label="项目名称" width="300"></el-table-column>
-        <el-table-column prop="signState.name" label="招待类别" width="120"></el-table-column>
-        <el-table-column prop="signState.name" label="我方最高领导" width="120"></el-table-column>
-        <el-table-column prop="signState.name" label="我方人数" width="120"></el-table-column>
-        <el-table-column prop="signState.name" label="对方最高领导（title）" width="1120"></el-table-column>
-        <el-table-column prop="signState.name" label="对方人数" width="120"></el-table-column>
-        <el-table-column prop="signState.name" label="人数合计" width="120"></el-table-column>
-        <el-table-column prop="signState.name" label="金额" width="120"></el-table-column>
-        <el-table-column prop="signState.name" label="人均" width="120"></el-table-column>
-        <el-table-column prop="signState.name" label="单据号" width="120"></el-table-column>
-        <el-table-column prop="signState.name" label="入账月份" width="120"></el-table-column>
-        <el-table-column prop="signState.name" label="备注" width="120"></el-table-column>
+        <el-table-column prop="projectName" label="项目名称" width="180"></el-table-column>
+        <el-table-column prop="entertainType" label="招待类别" width="120"></el-table-column>
+        <el-table-column prop="ourLeader" label="我方最高领导" width="120"></el-table-column>
+        <el-table-column prop="ourPeople" label="我方人数" width="120"></el-table-column>
+        <el-table-column prop="opposingLeader" label="对方最高领导（title）" width="160"></el-table-column>
+        <el-table-column prop="opposingPeople" label="对方人数" width="120"></el-table-column>
+        <el-table-column prop="totalNumber" label="人数合计" width="120"></el-table-column>
+        <el-table-column prop="amount" label="金额" width="120"></el-table-column>
+        <el-table-column prop="average" label="人均" width="120"></el-table-column>
+        <el-table-column prop="number" label="单据号" width="120"></el-table-column>
+        <el-table-column prop="belongMonth" label="入账月份" width="120"></el-table-column>
+        <el-table-column prop="remark" label="备注" width="120"></el-table-column>
         <el-table-column label="操作" width="145" fixed="right" align="left" >
           <template slot-scope="scope">
             <el-button type="text" @click="goEdit(scope.row)">编辑</el-button>
@@ -140,6 +140,36 @@
       },
       openExportDialog() {
         this.$refs.exportDialog.open();
+      },
+      getTemp() {
+        api.getServeTemp().then(res => {
+          let headers = res.headers;
+          let title = headers['x-file-name'];
+          let blob = new Blob([res.data], {
+            type: headers['content-type']
+          });
+          let link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = decodeURIComponent(title);
+          link.click();
+        });
+      },
+      goDelete(data) {
+        this.$confirm('即将删除数据，是否继续？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          api.serveDelete(data.id).then(res => {
+            if (res.code === 200) {
+              this.getList();
+              this.$message.success({message: '删除成功!', duration: 1500})
+            }
+          }).catch(err => {
+            console.log(err);
+          })
+
+        }).catch(err => {});
       }
     }
   };
