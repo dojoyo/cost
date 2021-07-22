@@ -132,9 +132,9 @@ export default {
         },
         // 新增、编辑
         submitForm() {
-            const node = this.$refs.department.getCheckedNodes();
             this.$refs.form.validate((valid) => {
                 if (valid) {
+                    const node = this.$refs.department.getCheckedNodes();
                     let params = {
                         year: this.form.year,
                         month: this.form.month,
@@ -165,7 +165,7 @@ export default {
             padding-left: 15px;
         }
         .el-form-item{
-            .el-input__inner{width: 220px;}
+            .el-input{width: 220px;}
         }
         .dialog-footer{
             padding: 5px;

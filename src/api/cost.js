@@ -21,6 +21,14 @@ export default {
       method: 'get'
     });
   },
+  // 用户查询
+  getUser(data) {
+    return request({
+      url: '/contacts/userSearch',
+      method: 'get',
+      params: data
+    })
+  },
   // 人工费（人力成本）
   getLaborList(data) {
     return request({
@@ -229,6 +237,7 @@ export default {
     return request({
       url: '/fee/pc/travel/air-ticket/add',
       method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -237,6 +246,7 @@ export default {
     return request({
       url: `/fee/pc/travel/air-ticket/${data.id}`,
       method: 'put',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },

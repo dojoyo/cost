@@ -19,7 +19,7 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="年份" :label-width="labelWidth" required class="w-100p" prop="year">
-                        <el-date-picker v-model="form.year" type="year" format="yyyy年" value-format="yyyy" placeholder="请选择年份"></el-date-picker>
+                        <el-date-picker v-model="form.year" type="year" placeholder="请选择年份"></el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -28,7 +28,7 @@
                             <el-option
                                 v-for="item in monthOptions"
                                 :key="item.value"
-                                :label="item.name"
+                                :label="item.label"
                                 :value="item.value">
                             </el-option>
                         </el-select>
@@ -38,13 +38,14 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="部门" :label-width="labelWidth" required prop="department">
-                        <el-cascader
-                        ref="department"
-                        v-model="form.department"
-                        :options="deptTree"
-                        :show-all-levels="false"
-                        :props="{ checkStrictly: true, emitPath: false }"
-                        clearable></el-cascader>
+                        <el-select v-model="form.department" placeholder="请选择部门">
+                            <el-option
+                                v-for="item in monthOptions"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -61,15 +62,13 @@
     </el-dialog>
 </template>
 <script>
-import api from '@/api/cost';
 export default {
-    name: 'officeAddAndEdit',
+    name: 'travelAddAndEdit',
     data() {
         return {
             visible: false,
             labelWidth: '100px',
             title: '',
-            deptTree: [],
             form: {
                 year: '',
                 month: '',
@@ -98,7 +97,56 @@ export default {
                     }
                 ]
             },
-            monthOptions: []
+            monthOptions: [
+                {
+                    label: '1月',
+                    value: 1
+                },
+                {
+                    label: '2月',
+                    value: 2
+                },
+                {
+                    label: '3月',
+                    value: 3
+                },
+                {
+                    label: '4月',
+                    value: 4
+                },
+                {
+                    label: '5月',
+                    value: 5
+                },
+                {
+                    label: '6月',
+                    value: 6
+                },
+                {
+                    label: '7月',
+                    value: 7
+                },
+                {
+                    label: '8月',
+                    value: 8
+                },
+                {
+                    label: '9月',
+                    value: 9
+                },
+                {
+                    label: '10月',
+                    value: 10
+                },
+                {
+                    label: '11月',
+                    value: 11
+                },
+                {
+                    label: '12月',
+                    value: 12
+                }
+            ]
         };
     },
     mounted() {
@@ -106,9 +154,7 @@ export default {
     },
     methods: {
         // 打开弹窗
-        open(query, tree, month) {
-            this.deptTree = tree;
-            this.monthOptions = month;
+        open(query) {
             this.initForm();
             if (query) {
                 this.title = '编辑';
@@ -129,26 +175,13 @@ export default {
             this.$nextTick(() => {
                 this.$refs.form.clearValidate();
             });
+            // this.$refs['form'].resetFields();
         },
         // 新增、编辑
         submitForm() {
-            const node = this.$refs.department.getCheckedNodes();
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    let params = {
-                        year: this.form.year,
-                        month: this.form.month,
-                        deptId: this.form.department,
-                        deptName: node[0].label,
-                        cost: this.form.cost
-                    };
-                    api.setFixed(params).then(res => {
-                        if (res.code === 200) {
-                            this.$message.success({ message: '操作成功' });
-                            this.$parent.$parent.getList();
-                            this.visible = false;
-                        }
-                    });
+                    console.log('submit!');
                 } else {
                     console.log('error submit!!');
                     return false;
@@ -165,7 +198,7 @@ export default {
             padding-left: 15px;
         }
         .el-form-item{
-            .el-input{width: 220px;}
+            .el-input__inner{width: 220px;}
         }
         .dialog-footer{
             padding: 5px;

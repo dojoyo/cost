@@ -165,7 +165,7 @@ export default {
             padding-left: 15px;
         }
         .el-form-item{
-            .el-input__inner{width: 220px;}
+            .el-input{width: 220px;}
         }
         .dialog-footer{
             padding: 5px;
