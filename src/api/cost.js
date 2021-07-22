@@ -550,4 +550,13 @@ export default {
       method: 'DELETE'
     });
   },
+  // 其他收入-列表
+  getIncomeList(data){
+    return request({
+      url: '/fee/pc/other-income/list',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  }
 };
