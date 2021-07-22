@@ -34,6 +34,7 @@ export default new Router({
         { path: 'database/entering', name: 'cost-database-entering', component: _import('cost/database/entering/index'), meta: { title: 'cost-database-entering' } },
         { path: 'database/allocation', name: 'cost-database-allocation', component: _import('cost/database/allocation/index'), meta: { title: 'cost-database-allocation' } },
         { path: 'database/expert', name: 'cost-database-expert', component: _import('cost/database/expert/index'), meta: { title: 'cost-database-expert' } },
+        { path: 'quotaalert', name: 'cost-quotaalert', component: _import('cost/quotaalert/index'), meta: { title: 'cost-quotaalert' } },
       ]
     },
     {
