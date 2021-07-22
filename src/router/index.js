@@ -31,10 +31,11 @@ export default new Router({
         { path: 'other', name: 'cost-other', component: _import('cost/other/index'), meta: { title: 'cost-other' } },
         { path: 'income', name: 'cost-income', component: _import('cost/income/index'), meta: { title: 'cost-income' } },
         { path: 'distribution', name: 'cost-distribution', component: _import('cost/distribution/index'), meta: { title: 'cost-distribution' } },
+        { path: 'overage', name: 'cost-overage', component: _import('cost/overage/index'), meta: { title: 'cost-overage' } },
+        { path: 'setting', name: 'cost-setting', component: _import('cost/setting/index'), meta: { title: 'cost-setting' } },
         { path: 'database/entering', name: 'cost-database-entering', component: _import('cost/database/entering/index'), meta: { title: 'cost-database-entering' } },
         { path: 'database/allocation', name: 'cost-database-allocation', component: _import('cost/database/allocation/index'), meta: { title: 'cost-database-allocation' } },
         { path: 'database/expert', name: 'cost-database-expert', component: _import('cost/database/expert/index'), meta: { title: 'cost-database-expert' } },
-        { path: 'quotaalert', name: 'cost-quotaalert', component: _import('cost/quotaalert/index'), meta: { title: 'cost-quotaalert' } },
       ]
     },
     {

@@ -31,6 +31,8 @@ const app = {
           { name: '其他费用', icon: 'icon-qitafeiyong', path: '/cost/other', code: '' },
           { name: '其他收入', icon: 'icon-qitashouru', path: '/cost/income', code: '' },
           { name: '数据分布', icon: 'icon-feiyongfentanbilishezhi', path: '/cost/distribution', code: '' },
+          { name: '超额提醒', icon: 'icon-chaoetixing', path: '/cost/overage', code: '' },
+          { name: '费用分摊比例设置', icon: 'icon-feiyongfentanbilishezhi', path: '/cost/setting', code: '' },
         ]
       },
       { name: '归档',
