@@ -214,7 +214,7 @@
       </div>
     </el-main>
     <AddAndEditDialogAir ref="addAndEditAir" :deptTree="deptTree" :flightType="enumType.FeeFlightType" />
-    <AddAndEditDialogTrain ref="addAndEditTrain" :deptTree="deptTree" />
+    <AddAndEditDialogTrain ref="addAndEditTrain" :deptTree="deptTree" :feeFundingDirection="enumType.FeeFundingDirection"/>
     <AddAndEditDialogHotel ref="addAndEditHotel" :deptTree="deptTree" />
     <AddAndEditDialogDidi ref="addAndEditDidi" :deptTree="deptTree" />
     <AddAndEditDialogOther ref="addAndEditOther" :deptTree="deptTree" />
@@ -270,6 +270,7 @@
         await this.getDeptTree();
         this.$refs.commonSearch.doSearch();
         this.getEnum('FeeFlightType')
+        this.getEnum('FeeFundingDirection')
       },
       doSearch(data) {
         this.pageNum = 1;
@@ -355,7 +356,28 @@
         this.$refs.exportDialog.open();
       },
       getTemp() {
-        api.getTravelAirTemp().then(res => {
+        let method = ''
+        switch (this.activeIndex) {
+          case '1':
+            method = 'getTravelAirTemp';
+            break
+          case '2':
+            method = 'getTravelHotelTemp';
+            break
+          case '3':
+            method = 'getTravelTrainTemp';
+            break
+          case '4':
+            method = 'getTravelDidiTemp';
+            break
+          case '5':
+            method = 'getTravelOtherTemp';
+            break
+          default:
+            method = 'getTravelAirTemp';
+            break
+        }
+        api[method]().then(res => {
           let headers = res.headers;
           let title = headers['x-file-name'];
           let blob = new Blob([res.data], {
@@ -373,7 +395,28 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          api.travelAirDelete(data.id).then(res => {
+          let method = ''
+          switch (this.activeIndex) {
+            case '1':
+              method = 'travelAirDelete';
+              break
+            case '2':
+              method = 'travelHotelDelete';
+              break
+            case '3':
+              method = 'travelTrainDelete';
+              break
+            case '4':
+              method = 'travelDidiDelete';
+              break
+            case '5':
+              method = 'travelOtherDelete';
+              break
+            default:
+              method = 'travelAirDelete';
+              break
+          }
+          api[method](data.id).then(res => {
             if (res.code === 200) {
               this.getList();
               this.$message.success({message: '删除成功!', duration: 1500})

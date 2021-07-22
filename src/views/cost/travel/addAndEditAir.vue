@@ -65,7 +65,7 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="入账月份" :label-width="labelWidth" required prop="belongMonth">
-                        <el-date-picker v-model="form.belongMonth" type="month"></el-date-picker>
+                        <el-date-picker v-model="form.belongMonth" type="month" value-format="yyyy-MM"></el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
