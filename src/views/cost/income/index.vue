@@ -39,7 +39,7 @@
       </div>
     </div>
     <el-main class="main">
-      <el-table :data="list" style="width:100%" :fit="true" :header-cell-style="{'background':'#f5f9ff'}">
+      <el-table v-if="list&&list.length>0" :data="list" style="width:100%" :fit="true" :header-cell-style="{'background':'#f5f9ff'}">
         <el-table-column prop="belongMonth" label="月份"></el-table-column>
         <el-table-column prop="incomeType" label="费用类型">
           <template slot-scope="scope">
@@ -54,10 +54,24 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="showAddAndEditDialog(scope.row)">编辑</el-button>
-            <el-button type="text" @click="del(scope)">删除</el-button>
+            <el-button type="text" @click="del(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
+      <div class="txt-right">
+        <el-pagination
+          v-if="list && list.length>0"
+          style="margin-top: 20px"
+          :current-page="pageNum"
+          :page-sizes="[5, 10, 20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        >
+        </el-pagination>
+      </div>
     </el-main>
     <AddAndEditDialog ref="addAndEdit"  :enumType="enumType"/>
     <ExportDialog ref="exportFile" :url="'/fee/pc/other-income/export'"/>
@@ -130,6 +144,14 @@ export default {
     },
     openExportDialog(){
        this.$refs.exportFile.open()
+    },
+    handleSizeChange(val){
+      this.requestParams.pageSize = val
+      this.getList()
+    },
+    handleCurrentChange(val){
+      this.requestParams.pageNum = val
+      this.getList()
     },
     async init(){
       await this.getEnum('FeeMonth')

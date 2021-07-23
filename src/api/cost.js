@@ -596,7 +596,6 @@ export default {
     return request({
       url: url,
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,
       responseType: 'arraybuffer'
     });

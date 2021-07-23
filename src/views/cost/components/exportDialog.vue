@@ -94,9 +94,7 @@ export default {
         submitForm() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                   this.$emit('export', this.form);
                    this.visible = false;
-                   console.log(this.url)
                    this.exportFile(this.url,this.form)
                 } else {
                     console.log('error submit!!');
@@ -111,17 +109,11 @@ export default {
                 let blob = new Blob([res.data], {
                     type: headers['content-type']
                 });
-                    let link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = decodeURIComponent(title);
-                    link.click();
-                    // const a = document.createElement('a');
-                    // const url = URL.createObjectURL(blob);
-                    // a.download = fileName;
-                    // a.href = url;
-                    // a.click();
-                    // URL.revokeObjectURL(url);
-                // }
+                let link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = decodeURIComponent(title);
+                link.click();
+                this.initForm()
             })
         }
     }
