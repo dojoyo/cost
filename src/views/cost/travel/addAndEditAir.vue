@@ -195,17 +195,17 @@ export default {
                 ],
                 bookingTime: [
                     {
-                        required: true, message: '请选择订票时间', trigger: 'change'
+                        required: true, message: '请选择订票时间', trigger: ['change', 'blur']
                     }
                 ],
                 departureTime: [
                     {
-                        required: true, message: '请选择起飞时间', trigger: 'change'
+                        required: true, message: '请选择起飞时间', trigger: ['change', 'blur']
                     }
                 ],
                 belongMonth: [
                     {
-                        required: true, message: '请选择入账月份', trigger: 'change'
+                        required: true, message: '请选择入账月份', trigger: ['change', 'blur']
                     }
                 ],
                 flightType: [
@@ -215,34 +215,22 @@ export default {
                 ],
                 voyage: [
                     {
-                        required: true, message: '请输入航程', trigger: 'blur'
-                    },
-                    {
-                        required: true, message: '请输入航程', trigger: 'change'
+                        required: true, message: '请输入航程', trigger: ['change', 'blur']
                     }
                 ],
                 flight: [
                     {
-                        required: true, message: '请输入航班', trigger: 'blur'
-                    },
-                    {
-                        required: true, message: '请输入航班', trigger: 'change'
+                        required: true, message: '请输入航班', trigger: ['change', 'blur']
                     }
                 ],
                 cabin: [
                     {
-                        required: true, message: '请输入航等', trigger: 'blur'
-                    },
-                    {
-                        required: true, message: '请输入航等', trigger: 'change'
+                        required: true, message: '请输入航等', trigger: ['change', 'blur']
                     }
                 ],
                 receivedOrPaid: [
                     {
-                        required: true, message: '请输入实收/实付', trigger: 'blur'
-                    },
-                    {
-                        required: true, message: '请输入实收/实付', trigger: 'change'
+                        required: true, message: '请输入实收/实付', trigger: ['change', 'blur']
                     }
                 ],
             }

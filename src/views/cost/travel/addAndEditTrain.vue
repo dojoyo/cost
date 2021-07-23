@@ -65,12 +65,12 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="发车时间" :label-width="labelWidth" required prop="departureTime">
-                        <el-time-picker v-model="form.departureTime"></el-time-picker>
+                        <el-time-picker v-model="form.departureTime" value-format="timestamp"></el-time-picker>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="到达时间" :label-width="labelWidth" required prop="arrivalTime">
-                        <el-time-picker v-model="form.arrivalTime"></el-time-picker>
+                        <el-time-picker v-model="form.arrivalTime" value-format="timestamp"></el-time-picker>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -106,7 +106,9 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="资金方向" :label-width="labelWidth" required prop="fundingDirection">
-                        <el-input v-model="form.fundingDirection" autocomplete="off"></el-input>
+                        <el-radio-group v-model="form.fundingDirection">
+                            <el-radio v-for="(funding, index) in feeFundingDirection" :key="'funding'+index" :label="funding.value">{{funding.name}}</el-radio>
+                        </el-radio-group>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -149,7 +151,7 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="合计" :label-width="labelWidth" prop="total">
-                        <el-input v-model="form.total" type="textarea" autocomplete="off"></el-input>
+                        <el-input v-model="form.total" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -196,49 +198,57 @@ export default {
                 ],
                 bookingTime: [
                     {
-                        required: true, message: '请选择订票日期', trigger: 'change'
+                        required: true, message: '请选择订票日期', trigger: ['change', 'blur']
                     }
                 ],
-                checkInDate: [
+                departureDate: [
                     {
-                        required: true, message: '请选择发车日期', trigger: 'change'
+                        required: true, message: '请选择发车日期', trigger: ['change', 'blur']
                     }
                 ],
-                checkOutDate: [
+                departureTime: [
                     {
-                        required: true, message: '请选择离店日期', trigger: 'change'
+                        required: true, message: '请选择发车时间', trigger: ['change', 'blur']
                     }
                 ],
-                hotelCity: [
+                arrivalTime: [
                     {
-                        required: true, message: '请输入酒店城市', trigger: 'blur'
-                    },
-                    {
-                        required: true, message: '请输入酒店城市', trigger: 'change'
+                        required: true, message: '请选择到达时间', trigger: ['change', 'blur']
                     }
                 ],
-                hotelName: [
+                departureStation: [
                     {
-                        required: true, message: '请输入酒店名称', trigger: 'blur'
-                    },
-                    {
-                        required: true, message: '请输入酒店名称', trigger: 'change'
+                        required: true, message: '请输入发车站', trigger: ['change', 'blur']
                     }
                 ],
-                unitPrice: [
+                arrivalStation: [
                     {
-                        required: true, message: '请输入单价', trigger: 'blur'
-                    },
-                    {
-                        required: true, message: '请输入单价', trigger: 'change'
+                        required: true, message: '请输入到达站', trigger: ['change', 'blur']
                     }
                 ],
-                amount: [
+                feeType: [
                     {
-                        required: true, message: '请输入金额', trigger: 'blur'
-                    },
+                        required: true, message: '请输入费用类型', trigger: ['change', 'blur']
+                    }
+                ],
+                fundingDirection: [
                     {
-                        required: true, message: '请输入金额', trigger: 'change'
+                        required: true, message: '请选择资金方向', trigger: 'change'
+                    }
+                ],
+                fareOrSpread: [
+                    {
+                        required: true, message: '请输入票价/价差', trigger: ['change', 'blur']
+                    }
+                ],
+                settlementAmount: [
+                    {
+                        required: true, message: '请输入结算金额', trigger: ['change', 'blur']
+                    }
+                ],
+                belongMonth: [
+                    {
+                        required: true, message: '请选择入账月份', trigger: ['change', 'blur']
                     }
                 ]
             }
@@ -255,8 +265,12 @@ export default {
                 this.title = '编辑';
                 this.form = Object.assign({}, query);
                 this.form.bookingTime = filter.DateTimeEn(this.form.bookingTime)
-                this.form.checkInDate = filter.DateTimeEn(this.form.checkInDate)
-                this.form.checkOutDate = filter.DateTimeEn(this.form.checkOutDate)
+                this.form.departureDate = filter.DateTimeEn(this.form.departureDate)
+                // this.form.departureTime = filter.DateTimeSecondEn(this.form.departureTime)
+                // this.form.arrivalTime = filter.DateTimeSecondEn(this.form.arrivalTime)
+                if (this.form.fundingDirection) {
+                    this.form.fundingDirection = this.form.fundingDirection.value
+                }
                 this.userOptions = [{
                     userName: this.form.userName,
                     userId: this.form.userId
@@ -273,18 +287,23 @@ export default {
                 userName: '',
                 userId: '',
                 bookingTime: '',
-                checkInDate: '',
-                checkOutDate: '',
-                belongMonth: '',
-                hotelCity: '',
-                hotelName: '',
-                unitPrice: '',
-                amount: '',
-                roomType: '',
-                numberOfRoom: '',
-                starLevel: '',
-                stayDays: '',
-                remarks: ''
+                departureDate: '',
+                departureTime: '',
+                arrivalTime: '',
+                departureStation: '',
+                arrivalStation: '',
+                trainNumber: '',
+                seat: '',
+                feeType: '',
+                fundingDirection: '',
+                orderAmount: '',
+                fareOrSpread: '',
+                changeFee: '',
+                refundFee: '',
+                settlementAmount: '',
+                serviceCharge: '',
+                total: '',
+                belongMonth: ''
             };
             this.userOptions = []
             this.$nextTick(() => {
@@ -303,6 +322,10 @@ export default {
                         userName,
                         deptName: node[0].label
                     }
+                    // this.form.departureTime = filter.HourMinSecond(this.form.departureTime)
+                    // this.form.arrivalTime = filter.HourMinSecond(this.form.arrivalTime)
+                    console.log(params)
+                    // params.departureTime = new Date(this.form.departureTime).getTime()
                     if (params.id) {
                         method = 'editTravelTrain'
                     }

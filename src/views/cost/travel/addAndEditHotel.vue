@@ -166,49 +166,42 @@ export default {
                 ],
                 bookingTime: [
                     {
-                        required: true, message: '请选择订票日期', trigger: 'change'
+                        required: true, message: '请选择订票日期', trigger: ['change', 'blur']
                     }
                 ],
                 checkInDate: [
                     {
-                        required: true, message: '请选择入住时间', trigger: 'change'
+                        required: true, message: '请选择入住时间', trigger: ['change', 'blur']
                     }
                 ],
                 checkOutDate: [
                     {
-                        required: true, message: '请选择离店日期', trigger: 'change'
+                        required: true, message: '请选择离店日期', trigger: ['change', 'blur']
                     }
                 ],
                 hotelCity: [
                     {
-                        required: true, message: '请输入酒店城市', trigger: 'blur'
-                    },
-                    {
-                        required: true, message: '请输入酒店城市', trigger: 'change'
+                        required: true, message: '请输入酒店城市', trigger: ['change', 'blur']
                     }
                 ],
                 hotelName: [
                     {
-                        required: true, message: '请输入酒店名称', trigger: 'blur'
-                    },
-                    {
-                        required: true, message: '请输入酒店名称', trigger: 'change'
+                        required: true, message: '请输入酒店名称', trigger: ['change', 'blur']
                     }
                 ],
                 unitPrice: [
                     {
-                        required: true, message: '请输入单价', trigger: 'blur'
-                    },
-                    {
-                        required: true, message: '请输入单价', trigger: 'change'
+                        required: true, message: '请输入单价', trigger: ['change', 'blur']
                     }
                 ],
                 amount: [
                     {
-                        required: true, message: '请输入金额', trigger: 'blur'
-                    },
+                        required: true, message: '请输入金额', trigger: ['change', 'blur']
+                    }
+                ],
+                belongMonth: [
                     {
-                        required: true, message: '请输入金额', trigger: 'change'
+                        required: true, message: '请选择入账月份', trigger: ['change', 'blur']
                     }
                 ]
             }
