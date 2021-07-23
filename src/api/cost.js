@@ -591,10 +591,10 @@ export default {
       method: 'delete',
     });
   },
-  // 其他收入- 导出
-  exportIncome(data){
+  // 导出 - 公共
+  exportFile(url,data){
     return request({
-      url: '/fee/pc/other-income/export',
+      url: url,
       method: 'post',
       headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,

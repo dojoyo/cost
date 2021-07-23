@@ -38,8 +38,12 @@
 </template>
 <script>
 import minix from '../mixins'
+import api from "@/api/cost";
 export default {
     name: 'exportDialog',
+    props:{
+        url:String
+    },
     data() {
         return {
             visible: false,
@@ -92,12 +96,33 @@ export default {
                 if (valid) {
                    this.$emit('export', this.form);
                    this.visible = false;
-                   this.initForm()
+                   console.log(this.url)
+                   this.exportFile(this.url,this.form)
                 } else {
                     console.log('error submit!!');
                     return false;
                 }
             });
+        },
+        exportFile(url,data){
+            api.exportFile(url,data).then(res=>{
+                let headers = res.headers;
+                let title = headers['x-file-name'];
+                let blob = new Blob([res.data], {
+                    type: headers['content-type']
+                });
+                    let link = document.createElement('a');
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = decodeURIComponent(title);
+                    link.click();
+                    // const a = document.createElement('a');
+                    // const url = URL.createObjectURL(blob);
+                    // a.download = fileName;
+                    // a.href = url;
+                    // a.click();
+                    // URL.revokeObjectURL(url);
+                // }
+            })
         }
     }
 };

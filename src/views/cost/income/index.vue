@@ -60,7 +60,7 @@
       </el-table>
     </el-main>
     <AddAndEditDialog ref="addAndEdit"  :enumType="enumType"/>
-    <ExportDialog ref="exportFile" @export="exportFile"/>
+    <ExportDialog ref="exportFile" :url="'/fee/pc/other-income/export'"/>
   </el-container>
 </template>
 <script>
@@ -130,22 +130,6 @@ export default {
     },
     openExportDialog(){
        this.$refs.exportFile.open()
-    },
-    exportFile(data){
-      console.log(data)
-      api.exportIncome(data).then(res=>{
-        if(res.code===200){
-          let headers = res.headers;
-          let title = headers['x-file-name'];
-          let blob = new Blob([res.data], {
-            type: headers['content-type']
-          });
-          let link = document.createElement('a');
-          link.href = window.URL.createObjectURL(blob);
-          link.download = decodeURIComponent(title);
-          link.click();
-        }
-      })
     },
     async init(){
       await this.getEnum('FeeMonth')
