@@ -44,7 +44,7 @@
       <el-table
         v-if="list && list.length > 0"
         :data="list"
-        style="width: 100%; margin-top:10px; "
+        style="width: 100%;"
         :header-cell-style="{ background: '#f5f9ff' }">
        <el-table-column type="index" label="序号"> </el-table-column>
         <el-table-column label="部门" prop="deptName"></el-table-column>
@@ -111,13 +111,6 @@ export default {
       pageNum: 1,
       pageSize: 10,
       total: 0,
-      requestParams:{
-        deptId:'',
-        month:'',
-        year:'',
-        pageSize:5,
-        pageNum:1
-      }
     };
   },
   mixins:[mixin],
@@ -142,13 +135,20 @@ export default {
         await this.getDeptTree();
         this.$refs.commonSearch.doSearch();
     },
-    doSearch() {
-      this.requestParams.pageNum = 1
+    doSearch(data) {
+      this.pageNum = 1;
+      this.filter = { ...data };
+      this.getList();
       this.getList();
     },
     // 获取企业列表
     getList() {
-      api.hunterList(this.requestParams).then(res => {
+      let params = {
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        ...this.filter
+      };
+      api.hunterList(params).then(res => {
           if (res.code === 200) {
             this.list = res.data.list;
             this.total = res.data.total;
@@ -160,20 +160,20 @@ export default {
     },
     // 分页更改
     handleSizeChange(val) {
-      this.requestParams.pageNum = 1 ;
-      this.requestParams.pageSize = val;
+      this.pageNum = 1 ;
+      this.pageSize = val;
       this.getList();
     },
     // 换页
     handleCurrentChange(val) {
-      this.requestParams.pageNum = val;
+      this.pageNum = val;
       this.getList();
     },
     showAddAndEditDialog(data){
       this.$refs.addAndEditDialog.open(data)
     },
     getTemp(){
-      this.downLoadTempFile('exportHunter')
+      this.downLoadTempFile('downLoadHunter')
     },
     openExportDialog(){
       this.$refs.exportDialog.open()

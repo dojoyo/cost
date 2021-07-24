@@ -665,12 +665,78 @@ export default {
     })
   },
   // 猎头费 - 模板下载
-  exportHunter(){
+  downLoadHunter(){
     return request({
       url: '/fee/pc/headhunting/template/download',
       method: 'get',
       responseType: 'arraybuffer'
     });
-  }
-
+  },
+  //工商类 - 列表
+  bizExpenseList(data){
+    return request({
+      url: '/fee/pc/biz-expense/list',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  //工商类 - 新增
+  addExpenseList(data){
+    return request({
+      url: '/fee/pc/biz-expense/add',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  //工商类 - 编辑
+  editExpenseList(data){
+    return request({
+      url: `/fee/pc/biz-expense/${data.id}`,
+      method: 'put',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  //工商类 - 详情
+  expenseDetail(id){
+    return request({
+      url: `/fee/pc/biz-expense/${id}`,
+      method: 'get',
+    });
+  },
+  //工商类 - 模板下载
+  expenseDownTemplate(){
+    return request({
+      url: '/fee/pc/biz-expense/template/download',
+      method: 'get',
+      responseType: 'arraybuffer'
+    });
+  },
+  //工商类 - 导出
+  exportExpense(data){
+    return request({
+      url: '/fee/pc/biz-expense/export',
+      method: 'post',
+      responseType: 'arraybuffer',
+      data
+    });
+  },
+  //工商类 - 删除
+  delExpense(id){
+    return request({
+      url: `/fee/pc/biz-expense/${id}`,
+      method: 'delete'
+    });
+  },
+  //工商类 - 导入
+  importExpense(data){
+    return request({
+      url: '/fee/pc/biz-expense/import',
+      method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
+      data
+    });
+  },
 };

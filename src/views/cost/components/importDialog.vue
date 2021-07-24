@@ -30,15 +30,14 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="文件选择" :label-width="labelWidth"  prop="file">
-                <input type="file" ref="uploader" @change="uploadFile($event)" />
-                <!-- <el-upload
+                <!-- <input type="file" ref="uploader" @change="uploadFile($event)" /> -->
+                <el-upload
                     class="upload-demo"
                     action="#"
                     :on-change="handleChange"
                     :file-list="form.file">
                     <el-button size="small" type="primary">点击上传</el-button>
-                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                </el-upload> -->
+                </el-upload>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -62,7 +61,8 @@ export default {
             files:'',
             form: {
                 year: '',
-                month: ''
+                month: '',
+                file:[]
             },
             rules: {
                 year: [
@@ -75,6 +75,11 @@ export default {
                         required: true, message: '请选择月份', trigger: 'change'
                     }
                 ],
+                file: [
+                    {
+                        required: true, message: '请上传文件', trigger: 'click'
+                    }
+                ],
             },
              enumType: {
                 FeeMonth: []
@@ -84,7 +89,6 @@ export default {
     mixins:[minix],
     mounted() {
         this.getEnum('FeeMonth')
-        console.log('导入')
     },
     methods: {
         // 打开弹窗
@@ -97,7 +101,7 @@ export default {
             this.form = {
                 year: '',
                 month: '',
-                file: ''
+                file: []
             };
             this.$nextTick(() => {
                 this.$refs.form.clearValidate();
@@ -124,9 +128,16 @@ export default {
                 }
             });
         },
-        uploadFile(el){
-            this.files = el.target.files[0]
-        },
+        // uploadFile(el){
+        //     this.files = el.target.files[0]
+        // },
+        handleChange(file,fileList){
+            this.files = file.raw
+            this.form.file.push({
+                name:file.name,
+                url:'#'
+            })
+        }
         
     }
 };

@@ -4,12 +4,10 @@
         width="400px"
         :show-close="false"
         :close-on-click-modal="false"
-        custom-class="cost-dialog"
+        custom-class="export-dialog"
     >
         <div slot="title" class="header">
-            <div class="title">
-                导出
-            </div>
+            <div class="title">导出</div>
             <div class="options">
                 <i class="iconfont icon-guanbi pointer fs-22" @click="visible=false"></i>
             </div>
@@ -120,7 +118,7 @@ export default {
 };
 </script>
 <style lang="scss">
-    .cost-dialog{
+    .export-dialog{
         .el-dialog__title{
             line-height: 48px;
             padding-left: 15px;

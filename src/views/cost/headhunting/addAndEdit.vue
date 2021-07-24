@@ -102,6 +102,7 @@ export default {
   },
   methods:{
     open(query){
+      this.userOptions = []
       this.$nextTick(()=>{
         this.$refs.form.resetFields();
       })
@@ -109,6 +110,10 @@ export default {
       this.title = query.id ? '编辑':'新增'
       if(query.id){
         this.form.id = query.id
+        this.userOptions = [{
+            userName: this.form.userName,
+            userId: this.form.userId
+        }]
         this.getData(query.id)
       }
     },
