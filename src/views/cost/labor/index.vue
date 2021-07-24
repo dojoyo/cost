@@ -48,8 +48,8 @@
       </div>
     </el-main>
     <AddAndEditDialog ref="addAndEdit" />
-    <ImportDialog ref="importDialog" />
-    <ExportDialog ref="exportDialog" />
+    <ImportDialog ref="importDialog" method="laborImport" />
+    <ExportDialog ref="exportDialog" method="laborExport" />
   </el-container>
 </template>
 <script>

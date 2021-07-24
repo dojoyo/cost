@@ -175,7 +175,7 @@
       </el-table>
       <el-table v-show="list && list.length>0 && activeIndex === '5'" :data="list" style="width: 100%; margin-top:10px;" :header-cell-style="{background:'#f5f9ff'}">
         <el-table-column label="序号" type="index"></el-table-column>
-        <el-table-column label="面单号" prop="number"></el-table-column>
+        <el-table-column label="面单号" prop="number" width="120"></el-table-column>
         <el-table-column prop="deptName" label="费用归属部门" width="120"></el-table-column>
         <el-table-column prop="userName" label="填报人" width="80"></el-table-column>
         <el-table-column prop="amount" label="金额" width="80"></el-table-column>
@@ -214,12 +214,12 @@
       </div>
     </el-main>
     <AddAndEditDialogAir ref="addAndEditAir" :deptTree="deptTree" :flightType="enumType.FeeFlightType" />
-    <AddAndEditDialogTrain ref="addAndEditTrain" :deptTree="deptTree" :feeFundingDirection="enumType.FeeFundingDirection"/>
+    <AddAndEditDialogTrain ref="addAndEditTrain" :deptTree="deptTree" :feeFundingDirection="enumType.FeeFundingDirection" />
     <AddAndEditDialogHotel ref="addAndEditHotel" :deptTree="deptTree" />
     <AddAndEditDialogDidi ref="addAndEditDidi" :deptTree="deptTree" />
-    <AddAndEditDialogOther ref="addAndEditOther" :deptTree="deptTree" />
-    <ImportDialog ref="importDialog"/>
-    <ExportDialog ref="exportDialog"/>
+    <AddAndEditDialogOther ref="addAndEditOther" :deptTree="deptTree" :feeBudgetAccount="enumType.FeeBudgetAccount" />
+    <ImportDialog ref="importDialog" :method="`travel${importExportMethod[parseInt(activeIndex)-1]}Import`" />
+    <ExportDialog ref="exportDialog" :method="`travel${importExportMethod[parseInt(activeIndex)-1]}Export`" />
   </el-container>
 </template>
 <script>
@@ -257,7 +257,8 @@
         pageNum: 1,
         pageSize: 10,
         total: 0,
-        activeIndex: '1' // 默认机票tag
+        activeIndex: '1', // 默认机票tag
+        importExportMethod: ['Air','Hotel','Train','Didi','Other'],
       };
     },
     mixins: [mixin],
@@ -271,6 +272,7 @@
         this.$refs.commonSearch.doSearch();
         this.getEnum('FeeFlightType')
         this.getEnum('FeeFundingDirection')
+        this.getEnum('FeeBudgetAccount')
       },
       doSearch(data) {
         this.pageNum = 1;
