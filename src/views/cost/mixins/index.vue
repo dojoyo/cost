@@ -3,7 +3,6 @@
 </template>
 <script>
 import api from '@/api/cost';
-
 export default {
     data() {
         return {
@@ -65,6 +64,20 @@ export default {
                 }
             }
             return temp;
+        },
+        //下载模板
+        downLoadTempFile(method){
+            api[method]().then(res => {
+                let headers = res.headers;
+                let title = headers['x-file-name'];
+                let blob = new Blob([res.data], {
+                    type: headers['content-type']
+                });
+                let link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = decodeURIComponent(title);
+                link.click();
+            });
         }
     }
 };

@@ -599,13 +599,78 @@ export default {
       method: 'delete',
     });
   },
-  // 导出 - 公共
-  exportFile(url,data){
+  exportIncomeFile(data){
     return request({
-      url: url,
+      url: '/fee/pc/other-income/export',
       method: 'post',
       data,
       responseType: 'arraybuffer'
     });
   },
+  // 猎头费-列表
+  hunterList(data){
+    return request({
+      url: '/fee/pc/headhunting/list',
+      method: 'post',
+      data
+    });
+  },
+  // 猎头费-新增-编辑
+  addHunter(data){
+    return request({
+      url: '/fee/pc/headhunting/add',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  editHunter(data){
+    return request({
+      url: `/fee/pc/headhunting/${data.id}`,
+      method: 'put',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+   // 猎头费-详情
+   hunterDetail(id){
+    return request({
+      url: `/fee/pc/headhunting/${id}`,
+      method: 'get'
+    });
+  },
+   // 猎头费 - 删除
+  delHunter(id){
+    return request({
+      url: `/fee/pc/headhunting/${id}`,
+      method: 'delete'
+    });
+  },
+  // 猎头费 - 导出
+  exportHunter(data){
+    return request({
+      url: '/fee/pc/headhunting/export',
+      method: 'post',
+      data,
+      responseType: 'arraybuffer'
+    });
+  },
+  // 猎头费 - 导入
+  importHunter(data){
+    return request({
+      url: '/fee/pc/headhunting/import',
+      method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
+      data
+    })
+  },
+  // 猎头费 - 模板下载
+  exportHunter(){
+    return request({
+      url: '/fee/pc/headhunting/template/download',
+      method: 'get',
+      responseType: 'arraybuffer'
+    });
+  }
+
 };

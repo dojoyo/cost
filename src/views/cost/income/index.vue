@@ -48,7 +48,7 @@
         </el-table-column>
         <el-table-column prop="amount" label="金额">
           <template slot-scope="scope">
-            <span> {{scope.row.amount.toLocaleString()}}</span>
+            {{ formatMoney(scope.row.amount) }}
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -74,7 +74,7 @@
       </div>
     </el-main>
     <AddAndEditDialog ref="addAndEdit"  :enumType="enumType"/>
-    <ExportDialog ref="exportFile" :url="'/fee/pc/other-income/export'"/>
+    <ExportDialog ref="exportFile" method="exportIncomeFile"/>
   </el-container>
 </template>
 <script>
@@ -106,6 +106,13 @@ export default {
     };
   },
   mixins: [mixin],
+  computed:{
+    formatMoney(){
+       return function(money){
+        return filters.formatMoney(money)
+      }
+    }
+  },
   mounted() {
     this.init()
   },

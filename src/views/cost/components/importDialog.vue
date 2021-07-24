@@ -17,26 +17,28 @@
         </div>
         <el-form :model="form" :rules="rules" ref="form">
             <el-form-item label="年份" :label-width="labelWidth" required class="w-100p" prop="year">
-                <el-date-picker v-model="form.year" type="year" placeholder="请选择年份"></el-date-picker>
+                <el-date-picker v-model="form.year" type="year" value-format="yyyy" format="yyyy" placeholder="请选择年份"></el-date-picker>
             </el-form-item>
             <el-form-item label="月份" :label-width="labelWidth" required prop="month">
                 <el-select v-model="form.month" placeholder="请选择月份">
                     <el-option
-                        v-for="item in monthOptions"
+                        v-for="item in enumType.FeeMonth"
                         :key="item.value"
-                        :label="item.label"
+                        :label="item.name"
                         :value="item.value">
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="文件选择" :label-width="labelWidth" required prop="file">
-                <el-upload
-                class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :file-list="form.file">
-                <el-button size="small" type="primary">点击上传</el-button>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                </el-upload>
+            <el-form-item label="文件选择" :label-width="labelWidth"  prop="file">
+                <input type="file" ref="uploader" @change="uploadFile($event)" />
+                <!-- <el-upload
+                    class="upload-demo"
+                    action="#"
+                    :on-change="handleChange"
+                    :file-list="form.file">
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                </el-upload> -->
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -46,16 +48,21 @@
     </el-dialog>
 </template>
 <script>
+import minix from '../mixins'
+import api from "@/api/cost";
 export default {
     name: 'importDialog',
+    props:{
+        method:String
+    },
     data() {
         return {
             visible: false,
             labelWidth: '100px',
+            files:'',
             form: {
                 year: '',
-                month: '',
-                file: []
+                month: ''
             },
             rules: {
                 year: [
@@ -68,66 +75,16 @@ export default {
                         required: true, message: '请选择月份', trigger: 'change'
                     }
                 ],
-                file: [
-                    {
-                        required: true, message: '请选择文件', trigger: 'change'
-                    }
-                ]
             },
-            monthOptions: [
-                {
-                    label: '1月',
-                    value: 1
-                },
-                {
-                    label: '2月',
-                    value: 2
-                },
-                {
-                    label: '3月',
-                    value: 3
-                },
-                {
-                    label: '4月',
-                    value: 4
-                },
-                {
-                    label: '5月',
-                    value: 5
-                },
-                {
-                    label: '6月',
-                    value: 6
-                },
-                {
-                    label: '7月',
-                    value: 7
-                },
-                {
-                    label: '8月',
-                    value: 8
-                },
-                {
-                    label: '9月',
-                    value: 9
-                },
-                {
-                    label: '10月',
-                    value: 10
-                },
-                {
-                    label: '11月',
-                    value: 11
-                },
-                {
-                    label: '12月',
-                    value: 12
-                }
-            ]
+             enumType: {
+                FeeMonth: []
+            },
         };
     },
+    mixins:[minix],
     mounted() {
-
+        this.getEnum('FeeMonth')
+        console.log('导入')
     },
     methods: {
         // 打开弹窗
@@ -148,15 +105,29 @@ export default {
         },
         // 新增、编辑
         submitForm() {
+           const fileData = new FormData()
+           fileData.append('file',this.files)
+           fileData.append('year',this.form.year)
+           fileData.append('month',this.form.month)
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    console.log('submit!');
+                    api[this.method](fileData).then(res=>{
+                        this.visible = false
+                        if(res.code===200){
+                            this.$parent.$parent.getList();
+                            this.$message.success({message: '操作成功!', duration: 1500})
+                        }
+                    })
                 } else {
                     console.log('error submit!!');
                     return false;
                 }
             });
-        }
+        },
+        uploadFile(el){
+            this.files = el.target.files[0]
+        },
+        
     }
 };
 </script>

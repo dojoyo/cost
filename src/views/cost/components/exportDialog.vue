@@ -42,7 +42,7 @@ import api from "@/api/cost";
 export default {
     name: 'exportDialog',
     props:{
-        url:String
+        method:String
     },
     data() {
         return {
@@ -95,15 +95,15 @@ export default {
             this.$refs.form.validate((valid) => {
                 if (valid) {
                    this.visible = false;
-                   this.exportFile(this.url,this.form)
+                   this.exportFile(this.form)
                 } else {
                     console.log('error submit!!');
                     return false;
                 }
             });
         },
-        exportFile(url,data){
-            api.exportFile(url,data).then(res=>{
+        exportFile(data){
+            api[this.method](data).then(res=>{
                 let headers = res.headers;
                 let title = headers['x-file-name'];
                 let blob = new Blob([res.data], {

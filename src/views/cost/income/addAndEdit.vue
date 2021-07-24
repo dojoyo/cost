@@ -55,7 +55,6 @@
 </template>
 <script>
 import api from "@/api/cost";
-
 export default {
   props:{
      enumType:Object
@@ -114,22 +113,20 @@ export default {
           console.log(err);
         });
     },
-    addIncome(){
-      api.addIncome(this.form).then(res => {
-        if (res.code === 200) {
-           this.$message.success({ message: '操作成功' });
-            this.$parent.$parent.getList();
-            this.visible = false;
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    },
     submitForm(){
       this.$refs['form'].validate((valid) => {
           if (valid) {
-            this.addIncome()
+            const methods = this.form.id ?'editIncomeDetail':'addIncome'
+             api[methods](this.form).then(res => {
+                if (res.code === 200) {
+                  this.$message.success({ message: '操作成功' });
+                    this.$parent.$parent.getList();
+                    this.visible = false;
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
           } else {
             console.log('error submit!!');
             return false;
