@@ -379,17 +379,7 @@
             method = 'getTravelAirTemp';
             break
         }
-        api[method]().then(res => {
-          let headers = res.headers;
-          let title = headers['x-file-name'];
-          let blob = new Blob([res.data], {
-            type: headers['content-type']
-          });
-          let link = document.createElement('a');
-          link.href = window.URL.createObjectURL(blob);
-          link.download = decodeURIComponent(title);
-          link.click();
-        });
+        this.downLoadTempFile(method);
       },
       goDelete(data) {
         this.$confirm('即将删除数据，是否继续？', '提示', {
