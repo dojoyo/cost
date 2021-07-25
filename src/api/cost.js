@@ -616,7 +616,7 @@ export default {
       data
     });
   },
-  // 猎头费-新增-编辑
+  // 猎头费-新增
   addHunter(data){
     return request({
       url: '/fee/pc/headhunting/add',
@@ -625,6 +625,7 @@ export default {
       data
     });
   },
+   // 猎头费 - 编辑
   editHunter(data){
     return request({
       url: `/fee/pc/headhunting/${data.id}`,
@@ -678,7 +679,6 @@ export default {
     return request({
       url: '/fee/pc/biz-expense/list',
       method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -745,7 +745,6 @@ export default {
     return request({
       url: '/fee/pc/release/list',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -763,7 +762,6 @@ export default {
     return request({
       url:'/fee/pc/share/list',
       method:'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     })
   },
@@ -781,7 +779,6 @@ export default {
     return request({
       url:'/fee/pc/excess-remind/list',
       method:'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     })
   },

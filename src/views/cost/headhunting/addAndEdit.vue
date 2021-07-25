@@ -103,33 +103,19 @@ export default {
   methods:{
     open(query){
       this.userOptions = []
+      this.visible = true
       this.$nextTick(()=>{
         this.$refs.form.resetFields();
+        this.title = query.id ? '编辑':'新增'
+        if(query.id){
+          this.form = query
+          this.userOptions = [{
+              userName: this.form.userName,
+              userId: this.form.userId
+          }]
+        }
       })
-      this.visible = true
-      this.title = query.id ? '编辑':'新增'
-      if(query.id){
-        this.userOptions = [{
-            userName: this.form.userName,
-            userId: this.form.userId
-        }]
-        this.getData(query.id)
-      }
-    },
-    getData(id){
-      api.hunterDetail(id).then(res => {
-          if (res.code === 200) {
-            this.form = res.data
-            this.form.paymentDate = filters.DateTimeEn(res.data.paymentDate)
-            this.userOptions = {
-              userName:res.data.userName,
-              userId:res.data.userId
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      
     },
     submitForm(){
       this.$refs['form'].validate((valid) => {
