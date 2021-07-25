@@ -69,9 +69,9 @@
         <br><span style="font-size: 14px">暂无数据</span><br/><br/>
       </div>
     </el-main>
-    <AddAndEditDialog ref="addAndEdit" />
-    <ImportDialog ref="importDialog"/>
-    <ExportDialog ref="exportDialog"/>
+    <AddAndEditDialog ref="addAndEdit" :deptTree="deptTree" />
+    <ImportDialog ref="importDialog" method="serveImport" />
+    <ExportDialog ref="exportDialog" method="serveExport" />
   </el-container>
 </template>
 <script>
@@ -142,17 +142,7 @@
         this.$refs.exportDialog.open();
       },
       getTemp() {
-        api.getServeTemp().then(res => {
-          let headers = res.headers;
-          let title = headers['x-file-name'];
-          let blob = new Blob([res.data], {
-            type: headers['content-type']
-          });
-          let link = document.createElement('a');
-          link.href = window.URL.createObjectURL(blob);
-          link.download = decodeURIComponent(title);
-          link.click();
-        });
+        this.downLoadTempFile('getServeTemp');
       },
       goDelete(data) {
         this.$confirm('即将删除数据，是否继续？', '提示', {

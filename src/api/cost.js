@@ -77,7 +77,6 @@ export default {
     return request({
       url: '/fee/pc/entertain/list',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -86,6 +85,7 @@ export default {
     return request({
       url: '/fee/pc/entertain/add',
       method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -94,6 +94,7 @@ export default {
     return request({
       url: `/fee/pc/entertain/${data.id}`,
       method: 'put',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },

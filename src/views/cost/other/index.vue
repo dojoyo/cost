@@ -48,8 +48,8 @@
       </div>
     </el-main>
     <AddAndEditDialog ref="addAndEdit" />
-    <ImportDialog ref="importDialog" />
-    <ExportDialog ref="exportDialog" />
+    <ImportDialog ref="importDialog" method="otherImport" />
+    <ExportDialog ref="exportDialog" method="otherExport" />
   </el-container>
 </template>
 <script>
@@ -111,17 +111,7 @@
         this.$refs.exportDialog.open();
       },
       getTemp() {
-        api.getOtherTemp().then(res => {
-          let headers = res.headers;
-          let title = headers['x-file-name'];
-          let blob = new Blob([res.data], {
-            type: headers['content-type']
-          });
-          let link = document.createElement('a');
-          link.href = window.URL.createObjectURL(blob);
-          link.download = decodeURIComponent(title);
-          link.click();
-        });
+        this.downLoadTempFile('getOtherTemp');
       }
     }
   };
