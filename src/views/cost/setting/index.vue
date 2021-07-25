@@ -22,14 +22,19 @@
     </div>
     <el-main class="main">
       <el-table  :data="list">
-        <el-table-column label="费用部门" prop="expenseDeptList">
-          <template slot-scope="scope">
-            {{scope.row.expenseShareDept.deptPathName}}
-          </template>
+        <el-table-column label="费用部门" prop="expenseShareDept.deptPathName">
         </el-table-column>
-        <el-table-column label="创投费用" prop="expenseShareDept"></el-table-column>
-        <el-table-column label="非创投费用" prop="expenseShareDept"></el-table-column>
-        <el-table-column label="合计" prop="expenseShareDept"></el-table-column>
+        <el-table-column v-for="(item,index) in dymData" :label="item.title" align="center" :key="index">
+          <el-table-column v-for="(stageItem, indexChild) in item.list" :key="indexChild" align="center" :label="stageItem.expenseShareDept.deptName">
+             <template slot-scope="scope">
+                <span v-if="scope.row.isSetRatio">
+                  <el-input v-model="scope.row.planList[index].stageList[indexChild].value" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')" />
+                </span>
+                <span v-else>{{ scope.row.planList[index].stageList[indexChild].value }}</span>
+             </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="合计"></el-table-column>
         <el-table-column label="操作" fixed="right">
           <template slot-scope="scope">
             <el-button type="text" @click="edit(scope.row)">编辑</el-button>
@@ -71,6 +76,10 @@
           month:''
         },
         list: [],
+        dymData:[
+          {title:'创投部门',isCGVCDept:true,list:[]},
+          {title:'非创投部门',isCGVCDept:true,list:[]},
+        ]
       };
     },
     mounted() {
@@ -83,6 +92,14 @@
         api.shareList(this.search).then(res => {
           if (res.code === 200) {
             this.list = res.data;
+            res.data.forEach(item => {
+              if(!item.isCGVCDept){
+                this.dymData[1].list.push(item.expenseDeptList)
+              }else{
+                this.dymData[0].list.push(item.expenseDeptList)
+              }
+            });
+            console.log(this.dymData)
           }
           console.log(this.list)
         }).catch(err => {

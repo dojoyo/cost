@@ -91,7 +91,8 @@
         enumType: {},
         search: {
           month: '',
-          year: new Date().getFullYear() + ''
+          year: new Date().getFullYear() + '',
+          feeType:'OF'
         },
         list: [],
         total: 0,

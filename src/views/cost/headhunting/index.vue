@@ -132,6 +132,7 @@ export default {
   methods: {
     async init() {
         await this.getEnum('FeeMonth');
+        await this.getEnum('FeeType');
         await this.getDeptTree();
         this.$refs.commonSearch.doSearch();
     },
