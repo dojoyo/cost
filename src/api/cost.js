@@ -815,4 +815,70 @@ export default {
       method:'delete'
     })
   },
+  // 咨询中介费-列表
+  getAdvisoryList(data) {
+    return request({
+      url: '/fee/pc/advisory/list',
+      method: 'post',
+      data
+    });
+  },
+  // 咨询中介费-新增
+  addAdvisory(data) {
+    return request({
+      url: '/fee/pc/advisory/add',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 咨询中介费-编辑
+  editAdvisory(data) {
+    return request({
+      url: `/fee/pc/advisory/${data.id}`,
+      method: 'put',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 咨询中介费-获取详情
+  advisoryDetail(id) {
+    return request({
+      url: `/fee/pc/advisory/${id}`,
+      method: 'get'
+    });
+  },
+  // 咨询中介费-模板下载
+  getAdvisoryTemp() {
+    return request({
+      url: '/fee/pc/advisory/template/download',
+      method: 'get',
+      responseType: 'arraybuffer'
+    });
+  },
+  // 咨询中介费-导入
+  advisoryImport(data) {
+    return request({
+      url: '/fee/pc/advisory/import',
+      method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
+      data
+    });
+  },
+  // 咨询中介费-导出
+  advisoryExport(data) {
+    return request({
+      url: '/fee/pc/advisory/export',
+      method: 'post',
+      data,
+      responseType: 'arraybuffer'
+    });
+  },
+  // 咨询中介费-删除
+  advisoryDelete(id) {
+    return request({
+      url: `/fee/pc/advisory/${id}`,
+      method: 'DELETE'
+    });
+  },
 };
