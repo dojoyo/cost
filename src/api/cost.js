@@ -766,7 +766,7 @@ export default {
       data
     })
   },
-  //费用分摊设置 - 列表
+  //费用分摊设置 - 编辑
   editShareList(data){
     return request({
       url:'/fee/pc/share/edit',
@@ -774,5 +774,53 @@ export default {
       headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     })
-  }
+  },
+  //超额提醒 - 列表
+  excessRemindList(data){
+    return request({
+      url:'/fee/pc/excess-remind/list',
+      method:'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    })
+  },
+  //超额提醒 - 新增
+  addExcessRemind(data){
+    return request({
+      url:'/fee/pc/excess-remind/add',
+      method:'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    })
+  },
+  //超额提醒 - 详情
+  excessRemindDetail(id){
+    return request({
+      url:`/fee/pc/excess-remind/${id}`,
+      method:'get'
+    })
+  },
+  //超额提醒 - 编辑
+  editExcessRemind(data){
+    return request({
+      url:`/fee/pc/excess-remind/${data.id}`,
+      method:'put',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    })
+  },
+  //超额提醒 - 删除
+  delExcessRemind(id){
+    return request({
+      url:`/fee/pc/excess-remind/${id}`,
+      method:'delete'
+    })
+  },
+  //超额提醒 - 推送
+  pushExcessRemind(id){
+    return request({
+      url:`/fee/pc/excess-remind/${id}/push`,
+      method:'delete'
+    })
+  },
 };

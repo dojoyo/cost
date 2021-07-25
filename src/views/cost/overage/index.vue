@@ -7,39 +7,18 @@
           <i class="iconfont icon-chaoetixing"></i> 超额提醒
         </div>
         <div style="margin-left: auto">
+           <el-button type="primary" size="small" icon="iconfont icon-xinzeng fs-12" @click="showAddAndEditDialog">
+            新增</el-button>
         </div>
       </div>
     </el-header>
+     <CommonSearch
+      ref="commonSearch"
+      @doSearch="doSearch"
+      :feeMonth="enumType.FeeMonth"
+      :deptTree="deptTree"
+    ></CommonSearch>
     <el-main class="main">
-      <div class="w-100p">
-        <el-input size="medium" style="width: 200px; margin-right: 20px" placeholder="请输入合同名称或签署人" v-model="search.filter"/>
-        <el-date-picker
-          style="margin-right: 20px"
-          v-model="search.time"
-          type="daterange"
-          value-format="yyyy-MM-dd"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
-        </el-date-picker>
-        <el-select v-model="search.contractType" placeholder="请选择分类" style="margin-right: 20px">
-          <el-option
-            v-for="item in enumType.ContractCategory"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="search.signState" placeholder="请选择合同状态" style="margin-right: 20px">
-          <el-option
-            v-for="item in enumType.ContractSignState"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-button @click="getList()" type="primary" size="small">查询</el-button>
-      </div>
       <el-table v-if="list && list.length>0" :data="list" style="width: 100%; margin-top:10px; " :header-cell-style="{background:'#fdfdfd'}">
         <el-table-column label="合同名称" width="300"  prop="contractName"></el-table-column>
         <el-table-column prop="contractType.name" label="分类" width="120"></el-table-column>
@@ -96,9 +75,10 @@
 </template>
 <script>
   import api from '@/api/cost';
+  import CommonSearch from "../components/commonSearch";
   export default {
     name: '',
-    components: {},
+    components: {CommonSearch},
     props: {},
     data() {
       return {
@@ -111,29 +91,25 @@
       };
     },
     mounted() {
-      // this.getEnum('ContractSignState', true)
-      // this.getList();
+      this.init()
     },
     methods: {
-      // 获取枚举类
-      getEnum(type, isAddAll) {
-        api.getEnum(type).then(res => {
-          if (res.code === 200) {
-            if (isAddAll) {
-              res.data.unshift({name: '全部', value: ''});
-            }
-            this.$set(this.enumType, type, res.data);
-          }
-        }).catch(err => {
-          console.log(err);
-        });
+      async init() {
+        await this.getEnum('FeeMonth');
+        await this.getDeptTree();
+        this.$refs.commonSearch.doSearch();
+      },
+      doSearch(data) {
+        this.pageNum = 1;
+        this.filter = { ...data };
+        this.getList();
       },
       // 获取企业列表
       getList() {
         let params = {
-          filter: this.search.filter,
           pageNum: this.pageNum,
-          pageSize: this.pageSize
+          pageSize: this.pageSize,
+          ...this.filter
         };
 
         api.getSignList(params).then(res => {

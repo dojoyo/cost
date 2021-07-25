@@ -139,7 +139,6 @@ export default {
       this.pageNum = 1;
       this.filter = { ...data };
       this.getList();
-      this.getList();
     },
     // 获取企业列表
     getList() {
