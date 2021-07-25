@@ -4,7 +4,7 @@
     <el-header class="header">
       <div class="header-wrap" style="display: flex">
         <div class="title">
-          <i class="iconfont icon-feiyongfentanbilishezhi"></i> 数据分布
+          <i class="iconfont icon-shujufabu"></i> 数据发布
         </div>
       </div>
     </el-header>
@@ -125,8 +125,11 @@
           if (res.code === 200) {
             this.list = res.data.list;
             this.total = res.data.total;
+          } else {
+            this.list = []
           }
         }).catch(err => {
+          this.list = []
           console.log(err);
         });
       },

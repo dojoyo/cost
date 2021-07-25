@@ -63,14 +63,12 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="24">
+                <el-col :span="12">
                     <el-form-item label="会计编码" :label-width="labelWidth" prop="accountCode">
                         <el-input v-model="form.accountCode" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="24">
+                <el-col :span="12">
                     <el-form-item label="预算编码" :label-width="labelWidth" prop="budgetCode">
                         <el-input v-model="form.budgetCode" autocomplete="off"></el-input>
                     </el-form-item>
