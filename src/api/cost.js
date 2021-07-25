@@ -59,6 +59,7 @@ export default {
     return request({
       url: '/fee/pc/labor-cost/import',
       method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
       data
     });
   },
@@ -67,7 +68,6 @@ export default {
     return request({
       url: '/fee/pc/labor-cost/export',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,
       responseType: 'arraybuffer'
     });
@@ -117,6 +117,7 @@ export default {
     return request({
       url: '/fee/pc/entertain/import',
       method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
       data
     });
   },
@@ -125,7 +126,6 @@ export default {
     return request({
       url: '/fee/pc/entertain/export',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,
       responseType: 'arraybuffer'
     });
@@ -167,6 +167,7 @@ export default {
     return request({
       url: '/fee/pc/fixed-office/import',
       method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
       data
     });
   },
@@ -175,7 +176,6 @@ export default {
     return request({
       url: '/fee/pc/fixed-office/export',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,
       responseType: 'arraybuffer'
     });
@@ -210,6 +210,7 @@ export default {
     return request({
       url: '/fee/pc/other/import',
       method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
       data
     });
   },
@@ -218,7 +219,6 @@ export default {
     return request({
       url: '/fee/pc/other/export',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,
       responseType: 'arraybuffer'
     });
@@ -270,6 +270,7 @@ export default {
     return request({
       url: '/fee/pc/travel/air-ticket/import',
       method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
       data
     });
   },
@@ -278,7 +279,6 @@ export default {
     return request({
       url: '/fee/pc/travel/air-ticket/export',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,
       responseType: 'arraybuffer'
     });
@@ -337,6 +337,7 @@ export default {
     return request({
       url: '/fee/pc/travel/didi/import',
       method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
       data
     });
   },
@@ -345,7 +346,6 @@ export default {
     return request({
       url: '/fee/pc/travel/didi/export',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,
       responseType: 'arraybuffer'
     });
@@ -404,6 +404,7 @@ export default {
     return request({
       url: '/fee/pc/travel/hotel/import',
       method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
       data
     });
   },
@@ -412,7 +413,6 @@ export default {
     return request({
       url: '/fee/pc/travel/hotel/export',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,
       responseType: 'arraybuffer'
     });
@@ -471,6 +471,7 @@ export default {
     return request({
       url: '/fee/pc/travel/other/import',
       method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
       data
     });
   },
@@ -479,7 +480,6 @@ export default {
     return request({
       url: '/fee/pc/travel/other/export',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,
       responseType: 'arraybuffer'
     });
@@ -538,6 +538,7 @@ export default {
     return request({
       url: '/fee/pc/travel/train-ticket/import',
       method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
       data
     });
   },
@@ -546,7 +547,6 @@ export default {
     return request({
       url: '/fee/pc/travel/train-ticket/export',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data,
       responseType: 'arraybuffer'
     });
