@@ -75,19 +75,23 @@ export default {
   methods:{
     open(query){
       this.userOptions = []
+      this.visible = true
       this.$nextTick(()=>{
         this.$refs.form.resetFields();
+        this.title = query.id ? '编辑':'新增'
+        if(query.id){
+          this.form = {
+            reminder:query.reminder,
+            userId:query.user.userId,
+            id:query.id
+          }
+          this.userOptions = [{
+              userName: query.user.userName,
+              userId: query.user.userId
+          }]
+        }
       })
-      this.visible = true
-      this.title = query.id ? '编辑':'新增'
-      if(query.id){
-        this.form.userId = query.user.userId
-        this.form.reminder = query.reminder
-        this.userOptions = [{
-            userName: query.user.userName,
-            userId: query.user.userId
-        }]
-      }
+      
     },
     submitForm(){
       this.$refs['form'].validate((valid) => {
