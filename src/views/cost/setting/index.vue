@@ -21,17 +21,17 @@
       <el-button @click="getList" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
     </div>
     <el-main class="main">
-      <el-table  :data="list">
-        <el-table-column label="费用部门" prop="expenseShareDept.deptPathName">
-        </el-table-column>
-        <el-table-column v-for="(item,index) in dymData" :label="item.title" align="center" :key="index">
-          <el-table-column v-for="(stageItem, indexChild) in item.list" :key="indexChild" align="center" :label="stageItem.expenseShareDept.deptName">
-             <template slot-scope="scope">
-                <span v-if="scope.row.isSetRatio">
-                  <el-input v-model="scope.row.planList[index].stageList[indexChild].value" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')" />
-                </span>
-                <span v-else>{{ scope.row.planList[index].stageList[indexChild].value }}</span>
-             </template>
+      <el-table  :data="dataList">
+        <el-table-column label="费用部门" prop="dep.deptName"></el-table-column>
+        <el-table-column label="创投部门" ></el-table-column>
+        <el-table-column label="非创投部门" align="center">
+          <el-table-column v-for="(item,index) in ventureDep" :key="index" :label="item">
+            <template slot-scope="scope">
+              <span v-if="scope.row.isSetRatio">
+                <el-input v-model="scope.row.ratio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')" />
+              </span>
+              <span v-else>{{ scope.row.ratio }}</span>
+            </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="合计"></el-table-column>
@@ -41,20 +41,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="txt-right">
-        <el-pagination
-          v-if="list && list.length>0"
-          style="margin-top: 20px"
-          :current-page="pageNum"
-          :page-sizes="[5, 10, 20]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        >
-        </el-pagination>
-      </div>
       <div v-show="list && list.length===0" class="w-100p gray" style="text-align: center;">
         <img src="@/assets/no-list.png">
         <br><span style="font-size: 14px">暂无数据</span><br/><br/>
@@ -79,12 +65,15 @@
         dymData:[
           {title:'创投部门',isCGVCDept:true,list:[]},
           {title:'非创投部门',isCGVCDept:true,list:[]},
-        ]
+        ],
+        ventureDep:[],
+        dataList:[]
       };
     },
     mounted() {
       // this.getEnum('ContractSignState', true)
       this.getList();
+      
     },
     methods: {
       // 获取企业列表
@@ -92,16 +81,21 @@
         api.shareList(this.search).then(res => {
           if (res.code === 200) {
             this.list = res.data;
-            res.data.forEach(item => {
-              if(!item.isCGVCDept){
-                this.dymData[1].list.push(item.expenseDeptList)
-              }else{
-                this.dymData[0].list.push(item.expenseDeptList)
-              }
+            res.data[0].expenseDeptList.forEach(item => {
+              this.dataList.push({
+                dep:{
+                 depId:item.expenseShareDept.deptId,
+                 deptName: item.expenseShareDept.deptName},
+                isSetRatio:item.isSetRatio,
+                ratio:item.ratio
+              })
+              res.data.forEach(item=>{
+                if(!item.isCGVCDept && this.ventureDep.indexOf(item.expenseShareDept.deptName)===-1){
+                  this.ventureDep.push(item.expenseShareDept.deptName)
+                }
+              })
             });
-            console.log(this.dymData)
           }
-          console.log(this.list)
         }).catch(err => {
           console.log(err);
         });
@@ -116,13 +110,6 @@
       handleCurrentChange(val) {
         this.pageNum = val;
         this.getList();
-      },
-      setLabel(h, { column, $index }){
-        let obj = renderHeaderList.find(item => item.key == column.property);
-	      return [
-	        h("p", {}, ['嘻嘻哈哈']),
-	        h("p", { style: "font-size:10px" }, [`danwei`])
-	      ];
       }
     }
   };
