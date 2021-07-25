@@ -18,34 +18,7 @@
         <el-form :model="form" :rules="rules" ref="form">
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="单据号" :label-width="labelWidth" prop="number">
-                        <el-input v-model="form.number" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="报销人员" :label-width="labelWidth" required class="w-100p" prop="userId">
-                        <el-select
-                            v-model="form.userId"
-                            ref="userSelect"
-                            filterable
-                            remote
-                            reserve-keyword
-                            placeholder="请输入关键词"
-                            :remote-method="remoteMethod"
-                            :loading="loading">
-                            <el-option
-                            v-for="item in userOptions"
-                            :key="item.userId"
-                            :label="item.userName"
-                            :value="item.userId">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="部门" :label-width="labelWidth" required prop="deptId" class="lh-18">
+                    <el-form-item label="部门" :label-width="labelWidth" required prop="deptId">
                         <el-cascader
                         ref="department"
                         class="mr-10"
@@ -57,75 +30,29 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="发票日期" :label-width="labelWidth" prop="invoiceDate">
-                        <el-date-picker v-model="form.invoiceDate" type="date"></el-date-picker>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="项目名称" :label-width="labelWidth" prop="projectName">
+                    <el-form-item label="项目" :label-width="labelWidth" prop="projectName">
                         <el-input v-model="form.projectName" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="招待类别" :label-width="labelWidth" prop="entertainType">
-                        <el-input v-model="form.entertainType" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="我方最高领导" :label-width="labelWidth" prop="ourLeader">
-                        <el-input v-model="form.ourLeader" autocomplete="off"></el-input>
+                    <el-form-item label="费用类别" :label-width="labelWidth" prop="advisoryType">
+                        <el-select v-model="form.advisoryType">
+                            <el-option v-for="item in feeAdvisoryType" :key="item.value" :label="item.name" :value="item.value"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="我方人数" :label-width="labelWidth" required prop="ourPeople">
-                        <el-input v-model="form.ourPeople" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="对方最高领导(title)" :label-width="labelWidth" prop="opposingLeader" class="lh-18">
-                        <el-input v-model="form.opposingLeader" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="对方人数" :label-width="labelWidth" required prop="opposingPeople">
-                        <el-input v-model="form.opposingPeople" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
                     <el-form-item label="金额" :label-width="labelWidth" required prop="amount">
                         <el-input v-model="form.amount" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="入账月份" :label-width="labelWidth" required prop="belongMonth">
-                        <el-date-picker v-model="form.belongMonth" type="month" value-format="yyyy-MM"></el-date-picker>
-                    </el-form-item>
-                </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="人数合计" :label-width="labelWidth" prop="totalNumber">
-                        <el-input v-model="form.totalNumber" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="人均" :label-width="labelWidth" prop="average">
-                        <el-input v-model="form.average" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="24">
-                    <el-form-item label="备注" :label-width="labelWidth" prop="remark">
-                        <el-input v-model="form.remark" type="textarea" autocomplete="off"></el-input>
+                    <el-form-item label="费用发生日期" :label-width="labelWidth" required prop="expenseDate" class="lh-18">
+                        <el-date-picker v-model="form.expenseDate" type="date"></el-date-picker>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -142,7 +69,8 @@ import filter from '@/utils/filters'
 export default {
     name: 'serveAddAndEdit',
     props: {
-        deptTree: Array
+        deptTree: Array,
+        feeAdvisoryType: Array
     },
     data() {
         return {
@@ -150,43 +78,21 @@ export default {
             labelWidth: '100px',
             loading: false,
             title: '',
-            tree: [],
-            userOptions: [], // 查询
             form: {},
             rules: {
-                userId: [
-                    {
-                        required: true, message: '请选择报销人员', trigger: 'change'
-                    }
-                ],
                 deptId: [
                     {
                         required: true, message: '请选择部门', trigger: 'change'
                     }
                 ],
-                number: [
+                expenseDate: [
                     {
-                        required: true, message: '请输入单据号', trigger: ['change', 'blur']
-                    }
-                ],
-                ourPeople: [
-                    {
-                        required: true, message: '请输入我方人数', trigger: ['change', 'blur']
-                    }
-                ],
-                opposingPeople: [
-                    {
-                        required: true, message: '请输入对方人数', trigger: ['change', 'blur']
+                        required: true, message: '请选择费用发生日期', trigger: ['change', 'blur']
                     }
                 ],
                 amount: [
                     {
                         required: true, message: '请输入金额', trigger: ['change', 'blur']
-                    }
-                ],
-                belongMonth: [
-                    {
-                        required: true, message: '请选择入账月份', trigger: ['change', 'blur']
                     }
                 ]
             }
@@ -202,11 +108,10 @@ export default {
             if (query && query.id) {
                 this.title = '编辑';
                 this.form = Object.assign({}, query);
-                this.form.invoiceDate = filter.DateTimeEn(this.form.invoiceDate)
-                this.userOptions = [{
-                    userName: this.form.userName,
-                    userId: this.form.userId
-                }]
+                if (this.form.advisoryType) {
+                    this.form.advisoryType = this.form.advisoryType.value
+                }
+                this.form.expenseDate = filter.DateTimeEn(this.form.expenseDate)
             } else {
                 this.title = '新增';
             }
@@ -216,23 +121,11 @@ export default {
         initForm() {
             this.form = {
                 deptId: '',
-                userName: '',
-                userId: '',
-                belongMonth: '',
                 amount: '',
-                projectName: '',
-                remark: '',
-                invoiceDate: '',
-                entertainType: '',
-                ourLeader: '',
-                ourPeople: '',
-                opposingLeader: '',
-                opposingPeople: '',
-                amount: '',
-                totalNumber: '',
-                average: ''
+                advisoryType: '',
+                expenseDate: '',
+                projectName: ''
             };
-            this.userOptions = []
             this.$nextTick(() => {
                 this.$refs.form.clearValidate();
             });
@@ -242,15 +135,13 @@ export default {
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     const node = this.$refs.department.getCheckedNodes();
-                    const userName = this.$refs.userSelect.selected.label
-                    let method = 'addServe'
+                    let method = 'addAdvisory'
                     let params = {
                         ...this.form,
-                        userName,
                         deptName: node[0].label
                     }
                     if (params.id) {
-                        method = 'editServe'
+                        method = 'editAdvisory'
                     }
                     api[method](params).then(res => {
                         if (res.code === 200) {
@@ -265,19 +156,6 @@ export default {
                     return false;
                 }
             });
-        },
-        remoteMethod(query) {
-            if (query !== '') {
-                this.loading = true
-                api.getUser({filter: query}).then(res => {
-                    this.loading = false
-                    if (res.code === 200) {
-                        this.userOptions = res.data
-                    } else {
-                        this.userOptions = []
-                    }
-                })
-            }
         }
     }
 };

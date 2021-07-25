@@ -9,8 +9,8 @@
       </div>
     </el-header>
     <div class="search-area">
-        <el-date-picker v-model="search.year" type="year" format="yyyy年" value-format="yyyy" placeholder="请选择年份" class="mr-10"></el-date-picker>
-        <el-select v-model="search.month" class="mr-10" placeholder="全部月份">
+        <el-date-picker v-model="search.year" type="year" format="yyyy年" value-format="yyyy" placeholder="请选择年份" class="mr-10 mb-10"></el-date-picker>
+        <el-select v-model="search.month" class="mr-10 mb-10" placeholder="全部月份">
             <el-option
                 v-for="item in enumType.FeeMonth"
                 :key="item.value"
@@ -21,7 +21,7 @@
       <el-button @click="getList" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
     </div>
     <div class="tag-operate-tool">
-      <span>最近发布时间：2021-07-12 10:00:00</span>
+      <span>最近发布时间：{{releaseTime | DateTimeSecondEn}}</span>
        <el-button type="text" icon="iconfont icon-shujufabu fs-12" class="blue" @click="publishRelease">发布数据</el-button>
     </div>
     <el-main class="main">
@@ -91,8 +91,7 @@
         enumType: {},
         search: {
           month: '',
-          year: new Date().getFullYear() + '',
-          feeType:'OF'
+          year: new Date().getFullYear() + ''
         },
         list: [],
         total: 0,
@@ -103,28 +102,14 @@
     mounted() {
       this.getEnum('FeeMonth', true)
       this.getList();
-      this.releaseTime =  "2021-07-12 10:00:00",
-      this.list = [
-        {
-          "deptCostVos": [
-            {
-              "feeType": "LC-人工费用",
-              "historyAmount": 2000,
-              "isSame": true,
-              "realtimeAmount": 2000
-            }
-          ],
-          "deptName": "股权投资一部"
-        }
-      ]
     },
     methods: {
       // 获取企业列表
       getList() {
         api.releaseList(this.search).then(res => {
           if (res.code === 200) {
-            this.list = res.data.list;
-            this.total = res.data.total;
+            this.releaseTime = res.data.releaseTime
+            this.list = res.data.releaseWithTypeVos;
           } else {
             this.list = []
           }
@@ -132,17 +117,6 @@
           this.list = []
           console.log(err);
         });
-      },
-      // 分页更改
-      handleSizeChange(val) {
-        this.pageSize = val;
-        this.pageNum = 1;
-        this.getList();
-      },
-      // 换页
-      handleCurrentChange(val) {
-        this.pageNum = val;
-        this.getList();
       }
     }
   };
@@ -173,4 +147,5 @@
 .main{
   margin:0 15px!important;
 }
+.mb-10{margin-bottom: 10px;}
 </style>

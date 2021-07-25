@@ -11,7 +11,7 @@
         </div>
       </div>
     </el-header>
-    <CommonSearch ref="commonSearch" @doSearch="doSearch" :feeMonth="enumType.FeeMonth" :deptTree="deptTree" />
+    <CommonSearch ref="commonSearch" @doSearch="doSearch" :feeMonth="enumType.FeeMonth" :deptTree="deptTree" :showUserName="false" />
     <div class="flex space-between tag-operate-tool">
       <div></div>
       <div class="operate-buttons">
@@ -24,24 +24,14 @@
       <el-table v-if="list && list.length>0" :data="list" style="width: 100%; margin-top:10px; " :header-cell-style="{background:'#f5f9ff'}">
         <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column label="部门" prop="deptName" width="120"></el-table-column>
-        <el-table-column prop="userName" label="报销人员" width="80"></el-table-column>
-        <el-table-column prop="invoiceDate" label="发票日期" width="100">
+        <el-table-column prop="projectName" label="项目"></el-table-column>
+        <el-table-column prop="advisoryType.name" label="费率类别"></el-table-column>
+        <el-table-column prop="amount" label="金额"></el-table-column>
+        <el-table-column prop="expenseDate" label="费用发生日期" width="150">
           <template slot-scope="scope">
-            {{scope.row.invoiceDate | DateTimeEn}}
+            {{scope.row.expenseDate | DateTimeEn}}
           </template>
         </el-table-column>
-        <el-table-column prop="projectName" label="项目名称" width="180"></el-table-column>
-        <el-table-column prop="entertainType" label="招待类别" width="120"></el-table-column>
-        <el-table-column prop="ourLeader" label="我方最高领导" width="120"></el-table-column>
-        <el-table-column prop="ourPeople" label="我方人数" width="120"></el-table-column>
-        <el-table-column prop="opposingLeader" label="对方最高领导（title）" width="160"></el-table-column>
-        <el-table-column prop="opposingPeople" label="对方人数" width="120"></el-table-column>
-        <el-table-column prop="totalNumber" label="人数合计" width="120"></el-table-column>
-        <el-table-column prop="amount" label="金额" width="120"></el-table-column>
-        <el-table-column prop="average" label="人均" width="120"></el-table-column>
-        <el-table-column prop="number" label="单据号" width="120"></el-table-column>
-        <el-table-column prop="belongMonth" label="入账月份" width="120"></el-table-column>
-        <el-table-column prop="remark" label="备注" width="120"></el-table-column>
         <el-table-column label="操作" width="145" fixed="right" align="left" >
           <template slot-scope="scope">
             <el-button type="text" @click="goEdit(scope.row)">编辑</el-button>
@@ -69,9 +59,9 @@
         <br><span style="font-size: 14px">暂无数据</span><br/><br/>
       </div>
     </el-main>
-    <AddAndEditDialog ref="addAndEdit" :deptTree="deptTree" />
-    <ImportDialog ref="importDialog" method="serveImport" />
-    <ExportDialog ref="exportDialog" method="serveExport" />
+    <AddAndEditDialog ref="addAndEdit" :deptTree="deptTree" :feeAdvisoryType="enumType.FeeAdvisoryType" />
+    <ImportDialog ref="importDialog" method="advisoryImport" />
+    <ExportDialog ref="exportDialog" method="advisoryExport" />
   </el-container>
 </template>
 <script>
@@ -105,6 +95,7 @@
         await this.getEnum('FeeMonth');
         await this.getDeptTree();
         this.$refs.commonSearch.doSearch();
+        this.getEnum('FeeAdvisoryType');
       },
       doSearch(data) {
         this.pageNum = 1;
@@ -118,7 +109,7 @@
           pageSize: this.pageSize,
           ...this.filter
         };
-        api.getServeList(params).then(res => {
+        api.getAdvisoryList(params).then(res => {
           if (res.code === 200) {
             this.list = res.data.list;
             this.total = res.data.total;
@@ -142,7 +133,7 @@
         this.$refs.exportDialog.open();
       },
       getTemp() {
-        this.downLoadTempFile('getServeTemp');
+        this.downLoadTempFile('getAdvisoryTemp');
       },
       goDelete(data) {
         this.$confirm('即将删除数据，是否继续？', '提示', {
@@ -150,7 +141,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          api.serveDelete(data.id).then(res => {
+          api.advisoryDelete(data.id).then(res => {
             if (res.code === 200) {
               this.getList();
               this.$message.success({message: '删除成功!', duration: 1500})

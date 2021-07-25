@@ -1,6 +1,6 @@
 <template>
     <div class="search-area">
-        <el-input v-model="search.userName" placeholder="请输入人员姓名" class="mr-10"></el-input>
+        <el-input v-model="search.userName" placeholder="请输入人员姓名" class="mr-10" v-if="showUserName"></el-input>
         <el-date-picker v-model="search.year" type="year" format="yyyy年" value-format="yyyy" placeholder="请选择年份" class="mr-10"></el-date-picker>
         <el-select v-model="search.month" class="mr-10">
             <el-option
@@ -26,7 +26,11 @@ export default {
     name: 'commonSearch',
     props: {
         feeMonth: Array,
-        deptTree: Array
+        deptTree: Array,
+        showUserName: {
+            type: Boolean,
+            default: true
+        }
     },
     data() {
         return {
