@@ -19,34 +19,35 @@
       :deptTree="deptTree"
     ></CommonSearch>
     <el-main class="main">
-      <el-table v-if="list && list.length>0" :data="list" style="width: 100%; margin-top:10px; " :header-cell-style="{background:'#fdfdfd'}">
-        <el-table-column label="合同名称" width="300"  prop="contractName"></el-table-column>
-        <el-table-column prop="contractType.name" label="分类" width="120"></el-table-column>
-        <el-table-column prop="approvalTitle" label="审批流程" width="400"></el-table-column>
-        <el-table-column prop="signTime" label="创建时间" width="150">
+      <el-table v-if="list && list.length>0" :data="list" style="width: 100%; " :header-cell-style="{background:'#f5f9ff'}">
+        <el-table-column type="index" label="序号" ></el-table-column>
+        <el-table-column prop="contractType.name" label="部门" min-width="120">
           <template slot-scope="scope">
-            {{scope.row.createTime | DateTimeEn}}
+            {{scope.row.dept&&scope.row.dept.deptName || ''}}
           </template>
         </el-table-column>
-        <el-table-column prop="signTime" label="签订时间" width="150">
+        <el-table-column prop="user" label="人员" min-width="100">
           <template slot-scope="scope">
-            {{scope.row.signTime | DateTimeEn}}
+            {{scope.row.user.userName}}
           </template>
         </el-table-column>
-        <el-table-column prop="signState.name" label="状态" width="80"></el-table-column>
-        <el-table-column prop="promoter.userName" label="发起人" width="120"></el-table-column>
-        <el-table-column prop="signer" label="签署方" width="120"></el-table-column>
-
+        <el-table-column prop="pushTime" label="推送时间" width="150">
+          <template slot-scope="scope">
+            {{DateTimeEn(scope.row.createTime)}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="reminder" label="提醒内容" width="150"></el-table-column>
         <el-table-column label="操作" width="145" fixed="right" header-align="center" align="center" >
           <template slot-scope="scope">
-            <el-button type="text" :disabled="scope.row.permission && scope.row.signState && (!scope.row.permission.canDownload || scope.row.signState.value!=='COMPLETE')" @click="downloadFile(scope.row.instanceId)">下载</el-button>
+            <el-button type="text"  @click="push(scope.row.id)">推送</el-button>
             <span style="padding: 0 10px">|</span>
             <el-dropdown trigger="click">
             <span class="el-dropdown-link" style="cursor: pointer">
               更多<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="cancelSign(scope.row.instanceId)">取消签署</el-dropdown-item>
+                <el-dropdown-item @click.native="showAddAndEditDialog(scope.row)">编辑</el-dropdown-item>
+                <el-dropdown-item @click.native="del(scope.row.id)">删除</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -71,28 +72,42 @@
         <br><span style="font-size: 14px">暂无数据</span><br/><br/>
       </div>
     </el-main>
+     <AddAndEditDialog ref="addAndEditDialog" />
   </el-container>
 </template>
 <script>
   import api from '@/api/cost';
   import CommonSearch from "../components/commonSearch";
+  import mixin from '../mixins'
+  import filters from "@/utils/filters";
+  import AddAndEditDialog from './addAndEdit'
   export default {
     name: '',
-    components: {CommonSearch},
+    components: {CommonSearch,AddAndEditDialog},
     props: {},
     data() {
       return {
-        enumType: {},
-        search: {},
+        enumType: {
+          FeeMonth:[]
+        },
+        filter: {},
         list: [],
         pageNum: 1,
         pageSize: 10,
-        total: 0
+        total: 0,
       };
+    },
+    computed:{
+      DateTimeEn(){
+        return function(time){
+          return filters.DateTimeEn(time)
+        }
+      }
     },
     mounted() {
       this.init()
     },
+    mixins:[mixin],
     methods: {
       async init() {
         await this.getEnum('FeeMonth');
@@ -104,7 +119,6 @@
         this.filter = { ...data };
         this.getList();
       },
-      // 获取企业列表
       getList() {
         let params = {
           pageNum: this.pageNum,
@@ -112,7 +126,7 @@
           ...this.filter
         };
 
-        api.getSignList(params).then(res => {
+        api.excessRemindList(params).then(res => {
           if (res.code === 200) {
             this.list = res.data.list;
             this.total = res.data.total;
@@ -131,6 +145,15 @@
       handleCurrentChange(val) {
         this.pageNum = val;
         this.getList();
+      },
+      showAddAndEditDialog(data){
+        this.$refs.addAndEditDialog.open(data)
+      },
+      push(id){
+
+      },
+      del(id){
+
       }
     }
   };

@@ -4,7 +4,7 @@
     width="800px"
     :show-close="false"
     :close-on-click-modal="false"
-    custom-class="hunter-dialog"
+    custom-class="overage-dialog"
   >
     <div slot="title" class="header">
       <div class="title"> {{ title }} </div>
@@ -13,25 +13,15 @@
       </div>
       <div class="clear"></div>
     </div>
-    <el-form :model="form" :inline="true"  :rules="rules" ref="form" label-width="90px">
-         <el-form-item label="部门" required prop="deptId">
-            <el-cascader
-              ref="department"
-              class="mr-10"
-              v-model="form.deptId"
-              :options="deptTree"
-              :show-all-levels="false"
-              :props="{ checkStrictly: true, emitPath: false }"
-              clearable></el-cascader>
-          </el-form-item>
-          <el-form-item label="入职人" required prop="userId">
+    <el-form :model="form"  :rules="rules" ref="form" label-width="90px">
+          <el-form-item label="人员" required prop="userId">
              <el-select
                 v-model="form.userId"
                 ref="userSelect"
                 filterable
                 remote
                 reserve-keyword
-                placeholder="请输入关键词"
+                placeholder="请输入人员名称"
                 :remote-method="remoteMethod"
                 :loading="loading">
                   <el-option
@@ -42,18 +32,10 @@
                   </el-option>
             </el-select>
           </el-form-item>
-           <el-form-item label="费用" required prop="amount">
-              <el-input v-model="form.amount" placeholder="请输入费用"></el-input>
+           <el-form-item label="提醒内容" required prop="reminder">
+              <el-input type="textarea" v-model="form.reminder"></el-input>
            </el-form-item>
-          <el-form-item label="费用发生日期" required prop="paymentDate">
-            <el-date-picker
-              v-model="form.paymentDate"
-              type="date"
-              value-format="yyyy-MM-dd"
-              format="yyyy-MM-dd"
-              placeholder="选择日期">
-            </el-date-picker>
-          </el-form-item>
+
     </el-form>
      <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -76,26 +58,16 @@ export default {
       userOptions:[],
       loading:false,
       form:{
-        deptId:'',
-        amount:'',
-        paymentDate:'',
         userId:'',
         id:'',
-        userName:'',
-        deptName:''
+        reminder:'',
       },
       rules:{
-        deptId:[
-           { required: true, message: '请选择部门', trigger: 'change' }
-        ],
-        paymentDate:[
-           { required: true, message: '请选择费用日期', trigger: 'change' }
-        ],
-        amount:[
-           { required: true, message: '请输入金额', trigger: 'blur' }
+        reminder:[
+           { required: true, message: '请输入提醒内容', trigger: 'blur' }
         ],
         userId:[
-           { required: true, message: '请选择入职人', trigger: 'change' }
+           { required: true, message: '请选择人员', trigger: 'change' }
         ]
       }
     }
@@ -109,37 +81,20 @@ export default {
       this.visible = true
       this.title = query.id ? '编辑':'新增'
       if(query.id){
+        this.form.userId = query.user.userId
+        this.form.reminder = query.reminder
         this.userOptions = [{
-            userName: this.form.userName,
-            userId: this.form.userId
+            userName: query.user.userName,
+            userId: query.user.userId
         }]
-        this.getData(query.id)
       }
-    },
-    getData(id){
-      api.hunterDetail(id).then(res => {
-          if (res.code === 200) {
-            this.form = res.data
-            this.form.paymentDate = filters.DateTimeEn(res.data.paymentDate)
-            this.userOptions = {
-              userName:res.data.userName,
-              userId:res.data.userId
-            }
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
     },
     submitForm(){
       this.$refs['form'].validate((valid) => {
           if (valid) {
-            const node = this.$refs.department.getCheckedNodes();
-            this.form.userName = this.$refs.userSelect.selected.label
-            this.form.deptName = node[0].label
-            let method = 'addHunter'
+            let method = 'addExcessRemind'
             if (this.form.id) {
-                method = 'editHunter'
+                method = 'editExcessRemind'
             }
             api[method](this.form).then(res => {
               if (res.code === 200) {
@@ -177,7 +132,7 @@ export default {
 };
 </script>
 <style lang="scss">
-  .hunter-dialog{
+  .overage-dialog{
       .el-dialog__title{
           line-height: 48px;
           padding-left: 15px;

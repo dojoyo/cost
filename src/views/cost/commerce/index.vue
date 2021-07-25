@@ -209,4 +209,7 @@ export default {
   border-bottom: 1px solid #e6e6e6;
   border-radius: 5px 5px 0 0 ;
 }
+.main{
+  margin:0 15px!important;
+}
 </style>
