@@ -71,16 +71,16 @@ export default {
       },
       rules:{
         year:[
-           { required: true, message: '请选择年份', trigger: 'change' }
+           { required: true, message: '请选择年份', trigger: ['change','blur'] }
         ],
         month:[
-           { required: true, message: '请选择月份', trigger: 'change' }
+           { required: true, message: '请选择月份', trigger: ['change','blur'] }
         ],
         amount:[
-           { required: true, message: '请输入金额', trigger: 'blur' }
+           { required: true, message: '请输入金额', trigger: ['change','blur'] }
         ],
         incomeType:[
-           { required: true, message: '请选择费用类型', trigger: 'change' }
+           { required: true, message: '请选择费用类型', trigger: ['change','blur'] }
         ]
       }
     }

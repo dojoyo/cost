@@ -15,17 +15,17 @@
     <div class="search-area">
       <div>
         <el-date-picker  v-model="requestParams.year" type="year" format="yyyy年" value-format="yyyy" placeholder="选择年" class="mr-10 mb-10"></el-date-picker>
-         <el-select v-model="requestParams.month" placeholder="全部月份" class="mr-10 mb-10">
+         <el-select v-model="requestParams.month" class="mr-10 mb-10">
             <el-option
-              v-for="item in enumType.FeeMonth"
+              v-for="item in enumType.FeeMonthAll"
               :key="item.value"
               :label="item.name"
               :value="item.value">
             </el-option>
         </el-select>
-        <el-select v-model="requestParams.incomeType" placeholder="全部费用类型" class="mr-10 mb-10">
+        <el-select v-model="requestParams.incomeType" class="mr-10 mb-10">
             <el-option
-               v-for="item in enumType.FeeIncomeType"
+               v-for="item in enumType.FeeIncomeTypeAll"
               :key="item.value"
               :label="item.name"
               :value="item.value">
@@ -69,6 +69,10 @@
         >
         </el-pagination>
       </div>
+      <div v-show="list && list.length===0" class="w-100p gray" style="text-align: center;">
+        <img src="@/assets/no-list.png">
+        <br><span style="font-size: 14px">暂无数据</span><br/><br/>
+      </div>
     </el-main>
     <AddAndEditDialog ref="addAndEdit"  :enumType="enumType"/>
     <ExportDialog ref="exportFile" method="exportIncomeFile"/>
@@ -96,7 +100,9 @@ export default {
       deptTree:[],
       enumType: {
         FeeMonth: [],
-        FeeFlightType: []
+        FeeMonthAll: [],
+        FeeIncomeType: [],
+        FeeIncomeTypeAll: []
       },
     };
   },
@@ -149,6 +155,8 @@ export default {
     async init(){
       await this.getEnum('FeeMonth')
       await this.getEnum('FeeIncomeType')
+      this.enumType.FeeMonthAll = [{name: '全部月份', value: ''}].concat(this.enumType.FeeMonth)
+      this.enumType.FeeIncomeTypeAll = [{name: '全部费用类型', value: ''}].concat(this.enumType.FeeIncomeType)
       this.getList()
     }
   }

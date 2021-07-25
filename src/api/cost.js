@@ -229,7 +229,6 @@ export default {
     return request({
       url: '/fee/pc/travel/air-ticket/list',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -296,7 +295,6 @@ export default {
     return request({
       url: '/fee/pc/travel/didi/list',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -363,7 +361,6 @@ export default {
     return request({
       url: '/fee/pc/travel/hotel/list',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -430,7 +427,6 @@ export default {
     return request({
       url: '/fee/pc/travel/other/list',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -497,7 +493,6 @@ export default {
     return request({
       url: '/fee/pc/travel/train-ticket/list',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -564,7 +559,6 @@ export default {
     return request({
       url: '/fee/pc/other-income/list',
       method: 'post',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
