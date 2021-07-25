@@ -739,4 +739,40 @@ export default {
       data
     });
   },
+  //数据发布 - 列表
+  releaseList(data){
+    return request({
+      url: '/fee/pc/release/list',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  //数据发布 - 发布数据
+  publishRelease(data){
+    return request({
+      url: '/fee/pc/release/data',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  //费用分摊设置 - 列表
+  shareList(data){
+    return request({
+      url:'/fee/pc/share/list',
+      method:'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    })
+  },
+  //费用分摊设置 - 列表
+  editShareList(data){
+    return request({
+      url:'/fee/pc/share/edit',
+      method:'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    })
+  }
 };

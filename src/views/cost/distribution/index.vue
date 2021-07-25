@@ -6,41 +6,26 @@
         <div class="title">
           <i class="iconfont icon-feiyongfentanbilishezhi"></i> 数据分布
         </div>
-        <div style="margin-left: auto">
-        </div>
       </div>
     </el-header>
+    <div class="search-area">
+        <el-date-picker v-model="search.year" type="year" format="yyyy年" value-format="yyyy" placeholder="请选择年份" class="mr-10"></el-date-picker>
+        <el-select v-model="search.month" class="mr-10" placeholder="全部月份">
+            <el-option
+                v-for="item in enumType.FeeMonth"
+                :key="item.value"
+                :label="item.name"
+                :value="item.value">
+            </el-option>
+        </el-select>
+      <el-button @click="getList" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
+    </div>
+    <div class="tag-operate-tool">
+      <span>最近发布时间：2021-07-12 10:00:00</span>
+       <el-button type="text" icon="iconfont icon-shujufabu fs-12" class="blue" @click="publishRelease">发布数据</el-button>
+    </div>
     <el-main class="main">
-      <div class="w-100p">
-        <el-input size="medium" style="width: 200px; margin-right: 20px" placeholder="请输入合同名称或签署人" v-model="search.filter"/>
-        <el-date-picker
-          style="margin-right: 20px"
-          v-model="search.time"
-          type="daterange"
-          value-format="yyyy-MM-dd"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
-        </el-date-picker>
-        <el-select v-model="search.contractType" placeholder="请选择分类" style="margin-right: 20px">
-          <el-option
-            v-for="item in enumType.ContractCategory"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-select v-model="search.signState" placeholder="请选择合同状态" style="margin-right: 20px">
-          <el-option
-            v-for="item in enumType.ContractSignState"
-            :key="item.value"
-            :label="item.name"
-            :value="item.value">
-          </el-option>
-        </el-select>
-        <el-button @click="getList()" type="primary" size="small">查询</el-button>
-      </div>
-      <el-table v-if="list && list.length>0" :data="list" style="width: 100%; margin-top:10px; " :header-cell-style="{background:'#fdfdfd'}">
+      <el-table v-if="list && list.length>0" :data="list" style="width: 100%;" :header-cell-style="{background:'#f5f9ff'}">
         <el-table-column label="合同名称" width="300"  prop="contractName"></el-table-column>
         <el-table-column prop="contractType.name" label="分类" width="120"></el-table-column>
         <el-table-column prop="approvalTitle" label="审批流程" width="400"></el-table-column>
@@ -95,7 +80,8 @@
   </el-container>
 </template>
 <script>
-  import api from '@/api/cost';
+  import api from '@/api/cost'
+  import mixin from '../mixins'
   export default {
     name: '',
     components: {},
@@ -103,40 +89,38 @@
     data() {
       return {
         enumType: {},
-        search: {},
+        search: {
+          month: '',
+          year: new Date().getFullYear() + ''
+        },
         list: [],
-        pageNum: 1,
-        pageSize: 10,
-        total: 0
+        total: 0,
+        releaseTime:''
       };
     },
+    mixins:[mixin],
     mounted() {
-      // this.getEnum('ContractSignState', true)
-      // this.getList();
+      this.getEnum('FeeMonth', true)
+      this.getList();
+      this.releaseTime =  "2021-07-12 10:00:00",
+      this.list = [
+        {
+          "deptCostVos": [
+            {
+              "feeType": "LC-人工费用",
+              "historyAmount": 2000,
+              "isSame": true,
+              "realtimeAmount": 2000
+            }
+          ],
+          "deptName": "股权投资一部"
+        }
+      ]
     },
     methods: {
-      // 获取枚举类
-      getEnum(type, isAddAll) {
-        api.getEnum(type).then(res => {
-          if (res.code === 200) {
-            if (isAddAll) {
-              res.data.unshift({name: '全部', value: ''});
-            }
-            this.$set(this.enumType, type, res.data);
-          }
-        }).catch(err => {
-          console.log(err);
-        });
-      },
       // 获取企业列表
       getList() {
-        let params = {
-          filter: this.search.filter,
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        };
-
-        api.getSignList(params).then(res => {
+        api.releaseList(this.search).then(res => {
           if (res.code === 200) {
             this.list = res.data.list;
             this.total = res.data.total;
@@ -161,4 +145,28 @@
 </script>
 
 <style lang="scss" scoped>
+.search-area{
+    margin: 15px 15px 0;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    .el-input{width: 220px;}
+    > * {
+        margin-bottom: 10px;
+    }
+}
+.tag-operate-tool{
+  margin: 15px auto 0;
+  padding: 0 15px;
+  width: calc(100% - 30px);
+  background-color: #fff;
+  border-bottom: 1px solid #e6e6e6;
+  border-radius: 5px 5px 0 0 ;
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.main{
+  margin:0 15px!important;
+}
 </style>
