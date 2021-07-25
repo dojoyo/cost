@@ -14,8 +14,8 @@
     </el-header>
     <div class="search-area">
       <div>
-        <el-date-picker  v-model="requestParams.year" type="year" format="yyyy年" value-format="yyyy" placeholder="选择年" class="mr-10"></el-date-picker>
-         <el-select v-model="requestParams.month" placeholder="全部月份" class="mr-10">
+        <el-date-picker  v-model="requestParams.year" type="year" format="yyyy年" value-format="yyyy" placeholder="选择年" class="mr-10 mb-10"></el-date-picker>
+         <el-select v-model="requestParams.month" placeholder="全部月份" class="mr-10 mb-10">
             <el-option
               v-for="item in enumType.FeeMonth"
               :key="item.value"
@@ -23,7 +23,7 @@
               :value="item.value">
             </el-option>
         </el-select>
-        <el-select v-model="requestParams.incomeType" placeholder="全部费用类型">
+        <el-select v-model="requestParams.incomeType" placeholder="全部费用类型" class="mr-10 mb-10">
             <el-option
                v-for="item in enumType.FeeIncomeType"
               :key="item.value"
@@ -41,14 +41,11 @@
     <el-main class="main">
       <el-table v-if="list&&list.length>0" :data="list" style="width:100%" :fit="true" :header-cell-style="{'background':'#f5f9ff'}">
         <el-table-column prop="belongMonth" label="月份"></el-table-column>
-        <el-table-column prop="incomeType" label="费用类型">
-          <template slot-scope="scope">
-            <span> {{scope.row.incomeType.name}}</span>
-          </template>
+        <el-table-column prop="incomeType.name" label="费用类型">
         </el-table-column>
         <el-table-column prop="amount" label="金额">
           <template slot-scope="scope">
-            {{ formatMoney(scope.row.amount) }}
+            {{ scope.row.amount | formatMoney }}
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -91,8 +88,6 @@ export default {
       search: {},
       list: [],
       requestParams:{
-        pageNum: 1,
-        pageSize: 10,
         year: new Date().getFullYear() + '',
         month:'',
         incomeType:''
@@ -106,20 +101,19 @@ export default {
     };
   },
   mixins: [mixin],
-  computed:{
-    formatMoney(){
-       return function(money){
-        return filters.formatMoney(money)
-      }
-    }
-  },
+  computed:{},
   mounted() {
     this.init()
   },
   methods: {
     // 获取企业列表
     getList() {
-      api.getIncomeList(this.requestParams).then(res => {
+      let params = {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          ...this.requestParams
+        };
+      api.getIncomeList(params).then(res => {
           if (res.code === 200) {
             this.list = res.data.list;
             this.total = res.data.total;
@@ -152,14 +146,6 @@ export default {
     openExportDialog(){
        this.$refs.exportFile.open()
     },
-    handleSizeChange(val){
-      this.requestParams.pageSize = val
-      this.getList()
-    },
-    handleCurrentChange(val){
-      this.requestParams.pageNum = val
-      this.getList()
-    },
     async init(){
       await this.getEnum('FeeMonth')
       await this.getEnum('FeeIncomeType')
@@ -188,4 +174,5 @@ export default {
 .main {
   border-radius: 5px;
 }
+.mb-10{margin-bottom: 10px}
 </style>

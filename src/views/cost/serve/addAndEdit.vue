@@ -138,6 +138,7 @@
 </template>
 <script>
 import api from '@/api/cost';
+import filter from '@/utils/filters'
 export default {
     name: 'serveAddAndEdit',
     props: {
@@ -201,6 +202,7 @@ export default {
             if (query && query.id) {
                 this.title = '编辑';
                 this.form = Object.assign({}, query);
+                this.form.invoiceDate = filter.DateTimeEn(this.form.invoiceDate)
                 this.userOptions = [{
                     userName: this.form.userName,
                     userId: this.form.userId

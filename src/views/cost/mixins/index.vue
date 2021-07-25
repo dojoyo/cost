@@ -7,7 +7,11 @@ export default {
     data() {
         return {
             enumType: {},
-            deptTree: []
+            deptTree: [],
+            pageNum: 1,
+            pageSize: 10,
+            total: 0,
+            list: []
         };
     },
     methods: {
