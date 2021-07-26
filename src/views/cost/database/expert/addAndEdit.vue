@@ -13,37 +13,85 @@
             </div>
             <div class="clear"></div>
         </div>
-        <el-form :inline="true"  :model="form" ref="form"  label-width="80px">
-          <el-form-item label="部门"  required >
-           <el-select v-model="form.region" placeholder="请选择活动区域">
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="Date" required >
-            <el-date-picker v-model="value1" type="date" placeholder="选择日期"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="用户名" required >
-             <el-input v-model="form.name" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Project"  required>
-            <el-input v-model="form.name" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Expert's Company" required class="expert">
-            <el-input v-model="form.name" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Expert's Position" required class="expert">
-            <el-input v-model="form.name" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Type" required>
-            <el-input v-model="form.name" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Hours" required>
-            <el-input v-model="form.name" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="Remarks" required class="remarks">
-            <el-input type="textarea" v-model="form.name" autocomplete="off" :autosize="{ minRows: 2, maxRows: 4}"/>
-          </el-form-item>
+        <el-form  :model="form" ref="form" :rules="rules" label-width="80px">
+          <el-row>
+            <el-col :span="12">
+               <el-form-item label="部门"  required  prop="deptId">
+                  <el-cascader
+                    ref="department"
+                    class="mr-10"
+                    v-model="form.deptId"
+                    :options="deptTree"
+                    :show-all-levels="false"
+                    :props="{ checkStrictly: true, emitPath: false }"
+                    clearable
+                  ></el-cascader>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="Date" required  prop="useDate">
+                <el-date-picker v-model="form.useDate" type="date" placeholder="选择日期"></el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="用户名" required prop="userId">
+                    <el-select
+                      v-model="form.userId"
+                      ref="userSelect"
+                      filterable
+                      remote
+                      reserve-keyword
+                      placeholder="请输入关键词"
+                      :remote-method="remoteMethod"
+                      :loading="loading">
+                        <el-option
+                        v-for="item in userOptions"
+                        :key="item.userId"
+                        :label="item.userName"
+                        :value="item.userId">
+                        </el-option>
+                  </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="Project" required prop="project">
+                <el-input v-model="form.project" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="Expert's Company" prop="expertCompany" required class="expert">
+                <el-input v-model="form.expertCompany" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="Expert's Position" prop="expertPosition" required class="expert">
+                <el-input v-model="form.expertPosition" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="Type" required prop="type">
+                <el-input v-model="form.type" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item label="Hours" required prop="hours">
+                  <el-input v-model="form.hours" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-col>
+          </el-row>
+         <el-row>
+           <el-col :span="24">
+              <el-form-item label="Remarks" required prop="remark" class="remarks">
+                <el-input type="textarea" v-model="form.remark" autocomplete="off" :autosize="{ minRows: 2, maxRows: 4}"/>
+              </el-form-item>
+           </el-col>
+         </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -52,51 +100,108 @@
     </el-dialog>
 </template>
 <script>
+import api from "@/api/cost";
 export default {
     name: 'laborAddAndEdit',
+    props:{
+      enumType: Object,
+      deptTree: Array
+    },
     data() {
         return {
             title:'新增',
-            formLabelWidth:200,
             form:{
-                name:'',
-                region:'区域一'
+                deptId:'',
+                expertCompany:'',
+                expertPosition:'',
+                hours:'',
+                project:'',
+                remark:'',
+                type:'',
+                useDate:'',
+                userId:'',
+                databaseType:'KS-凯盛专家库'
             },
+            rules:{
+               deptId: [{ required: true, message: "请选择部门", trigger: "change" }],
+               expertCompany: [{ required: true, message: "请输入企业", trigger: ['change','blur'] }],
+               expertPosition: [{ required: true, message: "请输入职位", trigger: ['change','blur'] }],
+               hours: [{ required: true, message: "请输入小时", trigger: ['change','blur'] }],
+               project: [{ required: true, message: "请输入项目", trigger: ['change','blur'] }],
+               remark: [{ required: true, message: "请输入备注",  trigger: ['change', 'blur'] }],
+               useDate: [{ required: true, message: "请选择时间", trigger: 'change' }],
+               userId: [{ required: true, message: "请输入用户名",  trigger: ['change', 'blur'] }],
+               type: [{ required: true, message: "请输入类型",  trigger: ['change', 'blur'] }],
+            },
+            userOptions: [],
+            loading: false,
             visible:false
         };
     },
-    mounted() {
 
+    mounted() {
+      
     },
     methods: {
         // 打开弹窗
         open(query) {
-                this.title=query?'编辑':'新增'
-            this.visible = true;
-        },
-        // 初始化表单
-        initForm() {
-            this.form = {
-                year: '',
-                month: '',
-                department: '',
-                cost: ''
-            };
-            this.$nextTick(() => {
-                // this.$refs.form.clearValidate();
-            });
-            // this.$refs['form'].resetFields();
+          this.userOptions = []
+          this.visible = true
+          this.$nextTick(()=>{
+            this.$refs.form.resetFields();
+            this.title = query.id ? '编辑':'新增'
+            if(query.id){
+              this.form = query
+              this.userOptions = [{
+                  userName: this.form.userName,
+                  userId: this.form.userId
+              }]
+            }
+          })
+              
         },
         // 新增、编辑
         submitForm() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    console.log('submit!');
+                    const node = this.$refs.department.getCheckedNodes();
+                    const userName = this.$refs.userSelect.selected.label
+                    let method = 'addDatabaseList'
+                    let params = {
+                        ...this.form,
+                        userName,
+                        deptName: node[0].label
+                    }
+                    if (params.id) {
+                        method = 'editDatabase'
+                    }
+                    api[method](params).then(res => {
+                        if (res.code === 200) {
+                            this.$message.success('操作成功')
+                            this.$parent.$parent.getList()
+                            this.visible = false
+                        } else {
+                            this.$message.error('操作失败')
+                        }
+                    })
                 } else {
                     console.log('error submit!!');
                     return false;
                 }
             });
+        },
+        remoteMethod(query) {
+            if (query !== '') {
+                this.loading = true
+                api.getUser({filter: query}).then(res => {
+                    this.loading = false
+                    if (res.code === 200) {
+                        this.userOptions = res.data
+                    } else {
+                        this.userOptions = []
+                    }
+                })
+            }
         }
     }
 };

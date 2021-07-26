@@ -51,12 +51,12 @@
         <el-table-column label="入职人" prop="userName"></el-table-column>
         <el-table-column label="费用" prop="amount">
           <template slot-scope="scope">
-            {{ formatMoney(scope.row.amount) }}
+            {{ scope.row.amount | formatMoney }}
           </template>
         </el-table-column>
         <el-table-column label="费用发生日期" prop="paymentDate" width="150">
           <template slot-scope="scope">
-            {{ DateTimeEn(scope.row.paymentDate) }}
+             {{ scope.row.paymentDate | DateTimeEn }}
           </template>
         </el-table-column>
         <el-table-column label="操作" width="145" fixed="right" header-align="center" align="center">
@@ -97,7 +97,6 @@ import AddAndEditDialog from "./addAndEdit";
 import ExportDialog from "../components/exportDialog";
 import ImportDialog from "../components/importDialog";
 import mixin from '../mixins'
-import filters from "@/utils/filters";
 export default {
   name: "",
   components: { CommonSearch,AddAndEditDialog,ExportDialog,ImportDialog},
@@ -116,18 +115,6 @@ export default {
   mixins:[mixin],
   mounted() {
     this.init()
-  },
-  computed:{
-    DateTimeEn(){
-      return function(time){
-        return filters.DateTimeEn(time)
-      }
-    },
-    formatMoney(){
-       return function(money){
-        return filters.formatMoney(money)
-      }
-    }
   },
   methods: {
     async init() {

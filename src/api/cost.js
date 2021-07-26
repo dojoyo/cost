@@ -881,4 +881,63 @@ export default {
       method: 'DELETE'
     });
   },
+  //数据库费 - 使用情况- 列表
+  databaseUseList(data) {
+    return request({
+      url: '/fee/pc/database/usage/list',
+      method: 'post',
+      data
+    });
+  },
+  //数据库费 - 使用情况- 导入
+  importDatabaseList(data) {
+    return request({
+      url: '/fee/pc/database/usage/import',
+      method: 'post',
+      headers:{ 'Content-Type': 'multipart/form-data' },
+      data
+    });
+  },
+  //数据库费 - 使用情况- 导出
+  exportDatabaseList(data) {
+    return request({
+      url: '/fee/pc/database/usage/export',
+      method: 'post',
+      data,
+      responseType: 'arraybuffer'
+    });
+  },
+  //数据库费 - 使用情况- 模板下载
+  downDatabaseList() {
+    return request({
+      url: '/fee/pc/database/usage/template/download',
+      method: 'get',
+      responseType:'arraybuffer'
+    });
+  },
+  //数据库费 - 使用情况- 删除
+  deDatabaseList(id) {
+    return request({
+      url: `/fee/pc/database/usage/${id}`,
+      method: 'delete'
+    });
+  },
+  //数据库费 - 使用情况- 编辑
+ editDatabase(data) {
+    return request({
+      url: `/fee/pc/database/usage/${data.id}`,
+      method: 'put',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  //数据库费 - 使用情况- 新增
+  addDatabaseList(data) {
+    return request({
+      url: `/fee/pc/database/usage/add`,
+      method: 'post',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
 };

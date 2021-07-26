@@ -25,7 +25,7 @@
         <el-table-column label="费用部门" prop="dep.deptName"></el-table-column>
         <el-table-column label="创投部门" ></el-table-column>
         <el-table-column label="非创投部门" align="center">
-          <el-table-column v-for="(item,index) in ventureDep" :key="index" :label="item">
+          <el-table-column v-for="(item,index) in ventureDep" :key="index" :label="item.deptName">
             <template slot-scope="scope">
               <span v-if="scope.row.isSetRatio">
                 <el-input v-model="scope.row.ratio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')" />
@@ -85,15 +85,25 @@
               this.dataList.push({
                 dep:{
                  depId:item.expenseShareDept.deptId,
-                 deptName: item.expenseShareDept.deptName},
+                 deptName: item.expenseShareDept.deptName
+                },
+                ventureDep:[],
                 isSetRatio:item.isSetRatio,
                 ratio:item.ratio
               })
+              console.log(this.dataList)
               res.data.forEach(item=>{
-                if(!item.isCGVCDept && this.ventureDep.indexOf(item.expenseShareDept.deptName)===-1){
-                  this.ventureDep.push(item.expenseShareDept.deptName)
+                const sameIndex = this.ventureDep.findIndex(venItem=>{
+                  return venItem.depId === item.expenseShareDept.deptId
+                })
+                if(!item.isCGVCDept && sameIndex === -1){
+                  this.ventureDep.push({
+                    depId:item.expenseShareDept.deptId,
+                    deptName: item.expenseShareDept.deptName
+                  })
                 }
               })
+              console.log(this.ventureDep)
             });
           }
         }).catch(err => {
@@ -110,6 +120,10 @@
       handleCurrentChange(val) {
         this.pageNum = val;
         this.getList();
+      },
+      edit(data,index){
+        console.log(data)
+        console.log(inde)
       }
     }
   };

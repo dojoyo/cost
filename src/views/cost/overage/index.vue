@@ -44,7 +44,7 @@
         </el-table-column>
         <el-table-column prop="pushTime" label="推送时间" width="150">
           <template slot-scope="scope">
-            {{ DateTimeEn(scope.row.pushTime) }}
+            {{ scope.row.pushTime | DateTimeEn }}
           </template>
         </el-table-column>
         <el-table-column
@@ -109,7 +109,6 @@
 import api from "@/api/cost";
 import CommonSearch from "../components/commonSearch";
 import mixin from "../mixins";
-import filters from "@/utils/filters";
 import AddAndEditDialog from "./addAndEdit";
 export default {
   name: "",
@@ -126,13 +125,6 @@ export default {
       pageSize: 10,
       total: 0
     };
-  },
-  computed: {
-    DateTimeEn() {
-      return function(time) {
-        return filters.DateTimeEn(time);
-      };
-    }
   },
   mounted() {
     this.init();

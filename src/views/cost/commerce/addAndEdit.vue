@@ -96,12 +96,13 @@ export default {
     open(query) {
       this.$nextTick(() => {
         this.$refs.form.resetFields();
+        this.visible = true;
+        this.title = query.id ? "编辑" : "新增";
+        if (query.id) {
+          this.getData(query.id);
+        }
       });
-      this.visible = true;
-      this.title = query.id ? "编辑" : "新增";
-      if (query.id) {
-        this.getData(query.id);
-      }
+      
     },
     getData(id) {
       api.expenseDetail(id).then(res => {
