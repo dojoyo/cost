@@ -88,12 +88,17 @@ export default {
     },
     mixins:[minix],
     mounted() {
-        this.getEnum('FeeMonth')
+        // this.getEnum('FeeMonth')
     },
     methods: {
         // 打开弹窗
         open() {
             this.initForm();
+            let monthArray = this.$parent.$parent.enumType.FeeMonth || []
+            if (monthArray.length && monthArray[0].name.indexOf('全部') > -1) {
+                monthArray.shift()
+            }
+            this.enumType.FeeMonth = monthArray
             this.visible = true;
         },
         // 初始化表单

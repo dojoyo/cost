@@ -120,7 +120,7 @@
       </div>
     </el-main>
     <AddAndEditDialog ref="addAndEdit" :deptTree="deptTree"/>
-     <ExportDialog ref="exportDialog" method="exportDatabaseList"/>
+    <ExportDialog ref="exportDialog" method="exportDatabaseList"/>
     <ImportDialog ref="importDialog" method="importDatabaseList"/>
   </el-container>
 </template>
@@ -182,24 +182,12 @@ export default {
           console.log(err);
         });
     },
-    // 分页更改
-    handleSizeChange(val) {
-      this.pageNum = 1;
-      this.pageSize = val;
-      this.getList();
-    },
-    // 换页
-    handleCurrentChange(val) {
-      this.pageNum = val;
-      this.getList();
-    },
     // 编辑新增编辑弹窗打开
     showAddAndEditDialog(data) {
       this.$refs.addAndEdit.open(data);
     },
     //费用分摊设置
     setCostShare() {
-      console.log("23");
       this.$refs.setCostShare.open();
     },
     delte(id) {
