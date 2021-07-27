@@ -53,24 +53,25 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="订票日期" :label-width="labelWidth" required prop="bookingTime">
-                        <el-date-picker v-model="form.bookingTime" type="date"></el-date-picker>
+                        <el-date-picker v-model="form.bookingTime" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="发车日期" :label-width="labelWidth" required prop="departureDate">
-                        <el-date-picker v-model="form.departureDate" type="date"></el-date-picker>
+                        <el-date-picker v-model="form.departureDate" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="发车时间" :label-width="labelWidth" required prop="departureTime">
-                        <el-time-picker v-model="form.departureTime" value-format="timestamp"></el-time-picker>
+                        <el-time-picker v-model="form.departureTime" value-format="HH:mm:ss"></el-time-picker>
+                        <!-- timestamp -->
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="到达时间" :label-width="labelWidth" required prop="arrivalTime">
-                        <el-time-picker v-model="form.arrivalTime" value-format="timestamp"></el-time-picker>
+                        <el-time-picker v-model="form.arrivalTime" value-format="HH:mm:ss"></el-time-picker>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -114,7 +115,7 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="订单金额" :label-width="labelWidth" prop="orderAmount">
+                    <el-form-item label="订单金额" :label-width="labelWidth" required prop="orderAmount">
                         <el-input v-model="form.orderAmount" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
@@ -194,7 +195,10 @@ export default {
                 deptId: [
                     {
                         required: true, message: '请选择部门', trigger: 'change'
-                    }
+                    },
+                    {
+                        message: '请选择部门', trigger: 'change', validator: this.checkDept
+                    },
                 ],
                 bookingTime: [
                     {
@@ -250,6 +254,11 @@ export default {
                     {
                         required: true, message: '请选择入账月份', trigger: ['change', 'blur']
                     }
+                ],
+                orderAmount: [
+                    {
+                        required: true, message: '请输入订单金额', trigger: ['change', 'blur']
+                    }
                 ]
             }
         };
@@ -266,8 +275,8 @@ export default {
                 this.form = Object.assign({}, query);
                 this.form.bookingTime = filter.DateTimeEn(this.form.bookingTime)
                 this.form.departureDate = filter.DateTimeEn(this.form.departureDate)
-                // this.form.departureTime = filter.DateTimeSecondEn(this.form.departureTime)
-                // this.form.arrivalTime = filter.DateTimeSecondEn(this.form.arrivalTime)
+                this.form.departureTime = filter.HourMinSecond(this.form.departureTime)
+                this.form.arrivalTime = filter.HourMinSecond(this.form.arrivalTime)
                 if (this.form.fundingDirection) {
                     this.form.fundingDirection = this.form.fundingDirection.value
                 }
@@ -322,10 +331,9 @@ export default {
                         userName,
                         deptName: node[0].label
                     }
-                    // this.form.departureTime = filter.HourMinSecond(this.form.departureTime)
-                    // this.form.arrivalTime = filter.HourMinSecond(this.form.arrivalTime)
+                    params.departureTime = new Date(this.form.departureDate.replace(/-/g, '/') + ' ' + this.form.departureTime).getTime()
+                    params.arrivalTime = new Date(this.form.departureDate.replace(/-/g, '/') + ' ' + this.form.arrivalTime).getTime()
                     console.log(params)
-                    // params.departureTime = new Date(this.form.departureTime).getTime()
                     if (params.id) {
                         method = 'editTravelTrain'
                     }
@@ -354,6 +362,14 @@ export default {
                         this.userOptions = []
                     }
                 })
+            }
+        },
+        checkDept(rule, value, callback) {
+            debugger
+            if (value ) {
+                callback(new Error(rule.message))
+            } else {
+                callback()
             }
         }
     }
