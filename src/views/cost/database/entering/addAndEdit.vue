@@ -15,87 +15,89 @@
             </div>
             <div class="clear"></div>
         </div>
-        <el-form :model="form" :rules="rules" ref="form">
+        <el-form :model="form" :rules="rules" ref="form" label-width="120px">
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="数据库类型" :label-width="labelWidth" required prop="month">
-                        <el-select v-model="form.month" placeholder="请选择">
+                    <el-form-item label="数据库类型"  required prop="databaseType">
+                        <el-select v-model="form.databaseType" placeholder="请选择">
                             <el-option
-                                v-for="item in monthOptions"
+                                v-for="item in enumType.FeeDatabaseType"
                                 :key="item.value"
-                                :label="item.label"
+                                :label="item.name"
                                 :value="item.value">
                             </el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row class="border-top">
+            <div class="border-top">
               <div class="title">购买信息</div>
-               <el-col :span="12">
-                    <el-form-item label="账号单位" :label-width="labelWidth" required prop="unit">
-                        <el-radio-group v-model="form.radio">
-                          <el-radio :label="3">个</el-radio>
-                          <el-radio :label="6">小时</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-               </el-col>
-               <el-col :span="12">
-                    <el-form-item label="购买账号量" :label-width="labelWidth" required prop="buyCount">
-                       <el-input v-model="form.radio" ></el-input>
-                    </el-form-item>
-               </el-col>
-                <el-col :span="12">
-                    <el-form-item label="总费用" :label-width="labelWidth" required prop="totalPrice">
-                        <el-select v-model="form.department">
-                            <el-option
-                                v-for="item in monthOptions"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12" class="price">
-                    <el-form-item label="单价" :label-width="labelWidth" required>
-                         <span style="display:inline-block;width:220px;height:36px">{{price}}</span>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="开始使用日期" :label-width="labelWidth" required prop="startDate">
-                        <el-date-picker v-model="form.startDate" type="date" placeholder="选择日期"></el-date-picker>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="账号到期日期" :label-width="labelWidth" required prop="totalDate">
-                        <el-date-picker v-model="form.startDate" type="date" placeholder="选择日期"></el-date-picker>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="付款日期" :label-width="labelWidth" required prop="payDate">
-                        <el-date-picker v-model="form.startDate" type="date" placeholder="选择日期"></el-date-picker>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row class="border-top">
+               <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="账号单位"  required prop="accountUnit">
+                            <el-radio-group v-model="form.accountUnit">
+                            <el-radio label="NU">个</el-radio>
+                            <el-radio label="HO">小时</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="购买账号量" required prop="accountNumber">
+                        <el-input v-model="form.accountNumber" ></el-input>
+                        </el-form-item>
+                    </el-col>
+               </el-row>
+               <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="总费用"  required prop="amount">
+                            <el-input type="text" v-model="form.amount"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12" >
+                        <el-form-item label="单价" prop="price" required>
+                            <el-input type="text" v-model="form.price"></el-input>
+                        </el-form-item>
+                    </el-col>
+               </el-row>
+               <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="开始使用日期"  required prop="startUseDate">
+                            <el-date-picker v-model="form.startUseDate" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期"></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="账号到期日期"  required prop="expirationDate">
+                            <el-date-picker v-model="form.expirationDate" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期"></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+               </el-row>
+               <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="付款日期"  required prop="paymentDate">
+                            <el-date-picker v-model="form.paymentDate" type="date" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="选择日期"></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+               </el-row>
+               
+            </div>
+            <div class="border-top" style="height:150px">
               <div class="title">对接人信息</div>
               <el-col :span="12" >
-                  <el-form-item label="姓名" :label-width="labelWidth"  prop="name">
-                      <el-input v-model="form.name" readonly></el-input>
+                  <el-form-item label="姓名"  prop="dockingName">
+                      <el-input v-model="form.dockingName"></el-input>
                   </el-form-item>
               </el-col>
                <el-col :span="12" >
-                  <el-form-item label="电话" :label-width="labelWidth"  prop="phone">
-                      <el-input v-model="form.phone" readonly></el-input>
+                  <el-form-item label="电话"  prop="dockingPhone">
+                      <el-input v-model="form.dockingPhone" type="tel"></el-input>
                   </el-form-item>
               </el-col>
                <el-col :span="12" >
-                  <el-form-item label="合同链接" :label-width="labelWidth" prop="link">
-                      <el-input v-model="form.link" readonly></el-input>
+                  <el-form-item label="合同链接"  prop="contractLink">
+                      <el-input v-model="form.contractLink"></el-input>
                   </el-form-item>
               </el-col>
-            </el-row>
+            </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -104,148 +106,142 @@
     </el-dialog>
 </template>
 <script>
+import api from "@/api/cost";
+import filter from '@/utils/filters'
 export default {
     name: 'laborAddAndEdit',
+    props:{
+        enumType:Object
+    },
     data() {
         return {
             visible: false,
-            labelWidth: '150px',
-            title: '',
-            price:'-',
+            labelWidth: '100px',
+            title: '新增',
             form: {
-                year: '',
-                month: '',
-                department: '',
-                cost: '',
-                radio:3,
-                startDate:'',
-                name:'',
-                link:'',
-                phone:''
+                accountNumber: '',
+                accountUnit: '',
+                amount: '',
+                contractLink: '',
+                databaseType:'',
+                dockingPhone:'',
+                dockingName:'',
+                expirationDate:'',
+                paymentDate:'',
+                price:'',
+                startUseDate:''
             },
             rules: {
-                unit: [
+                accountUnit: [
                     {
                         required: true, message: '请选择账号单位', trigger: 'change'
                     }
                 ],
                 
-                buyCount: [
+                accountNumber: [
                     {
-                        required: true, message: '请输入购买账号量', trigger: 'blur'
+                        required: true, message: '请输入购买账号量', trigger: ['change','blur']
                     }
                 ],
-                totalPrice: [
+                amount: [
                     {
-                        required: true, message: '请选择总费用', trigger: 'change'
+                        required: true, message: '请输入总费用', trigger: ['change','blur']
                     }
                 ],
-                payDate:[
+                paymentDate:[
                   {
                         required: true, message: '请选择付款日期', trigger: 'change'
                     }
                 ],
-                startDate:[
+                startUseDate:[
                   {
                         required: true, message: '请选择开始日期', trigger: 'change'
                     }
                 ],
-                totalDate:[
+                expirationDate:[
                   {
                         required: true, message: '请选择账号到期日期', trigger: 'change'
                     }
+                ],
+                price:[
+                  {
+                        required: true, message: '请输入单价', trigger: ['change','blur']
+                    }
+                ],
+                 databaseType:[
+                  {
+                        required: true, message: '请选择数据库类型', trigger: 'change'
+                    }
                 ]
-            },
-            monthOptions: [
-                {
-                    label: '1月',
-                    value: 1
-                },
-                {
-                    label: '2月',
-                    value: 2
-                },
-                {
-                    label: '3月',
-                    value: 3
-                },
-                {
-                    label: '4月',
-                    value: 4
-                },
-                {
-                    label: '5月',
-                    value: 5
-                },
-                {
-                    label: '6月',
-                    value: 6
-                },
-                {
-                    label: '7月',
-                    value: 7
-                },
-                {
-                    label: '8月',
-                    value: 8
-                },
-                {
-                    label: '9月',
-                    value: 9
-                },
-                {
-                    label: '10月',
-                    value: 10
-                },
-                {
-                    label: '11月',
-                    value: 11
-                },
-                {
-                    label: '12月',
-                    value: 12
-                }
-            ]
+            }
         };
     },
     mounted() {
 
     },
-    methods: {
+  methods: {
         // 打开弹窗
         open(query) {
-            this.initForm();
-            if (query) {
-                this.title = '编辑';
-                this.form = Object.assign({}, query);
-            } else {
-                this.title = '新增';
+          this.visible = true
+          this.$nextTick(()=>{
+            this.$refs.form.resetFields();
+            this.title = query.id ? '编辑':'新增'
+            if(query.id){
+                this.getData(query.id)
             }
-            this.visible = true;
+          })
+              
         },
-        // 初始化表单
-        initForm() {
-            this.form = {
-                year: '',
-                month: '',
-                department: '',
-                cost: ''
-            };
-            this.$nextTick(() => {
-                this.$refs.form.clearValidate();
-            });
-            // this.$refs['form'].resetFields();
+        getData(id){
+            api.recordDatabaseDetail(id).then(res=>{
+                console.log(res)
+                if(res.code === 200){
+                    this.form = res.data
+                    this.form.accountUnit = res.data.accountUnit.value
+                    this.form.databaseType = res.data.databaseType.value
+                    this.form.startUseDate = filter.DateTimeEn(res.data.startUseDate)
+                    this.form.expirationDate = filter.DateTimeEn(res.data.expirationDate)
+                    this.form.paymentDate = filter.DateTimeEn(res.data.paymentDate)
+                }
+            })
         },
         // 新增、编辑
         submitForm() {
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    console.log('submit!');
+                
+                    let method = 'addReocrdDatabase'
+            
+                    if (this.form.id) {
+                        method = 'editReocrdDatabase'
+                    }
+                    api[method](this.form).then(res => {
+                        if (res.code === 200) {
+                            this.$message.success('操作成功')
+                            this.$parent.$parent.getList()
+                            this.visible = false
+                        } else {
+                            this.$message.error('操作失败')
+                        }
+                    })
                 } else {
                     console.log('error submit!!');
                     return false;
                 }
             });
+        },
+        remoteMethod(query) {
+            if (query !== '') {
+                this.loading = true
+                api.getUser({filter: query}).then(res => {
+                    this.loading = false
+                    if (res.code === 200) {
+                        this.userOptions = res.data
+                    } else {
+                        this.userOptions = []
+                    }
+                })
+            }
         }
     }
 };
@@ -284,9 +280,7 @@ export default {
 
             }
           }
-          .price .el-input__inner{
-            border:none;
-          }
+         
         }
         .border-top{
           border-top: 1px solid #f1f2f4;

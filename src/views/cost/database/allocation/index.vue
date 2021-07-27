@@ -12,40 +12,39 @@
     </el-header>
     <div class="search-area">
       <el-input v-model="search.userName" placeholder="请输入人员姓名" class="mr-10"></el-input>
-      <el-select v-model="value" placeholder="请选择" class="mr-10">
+       <el-cascader
+        ref="department"
+        class="mr-10"
+        placeholder="请选择部门"
+        v-model="search.deptId"
+        :options="deptTree"
+        :show-all-levels="false"
+        :props="{ checkStrictly: true, emitPath: false }"
+        clearable></el-cascader>
+      <el-select v-model="search.databaseType" placeholder="请选择" class="mr-10">
         <el-option
-          v-for="item in options"
+          v-for="item in enumType.FeeDatabaseType"
           :key="item.value"
-          :label="item.label"
+          :label="item.name"
           :value="item.value">
         </el-option>
       </el-select>
-      <el-select v-model="value" placeholder="请选择" class="mr-10">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <el-button @click="doSearch" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
+      <el-button @click="getList" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
     </div>
    <div class="tag-operate-tool">
         <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="openExportDialog"> 导出</el-button>
     </div>
     <el-main class="main">
-      <el-table  :data="list" style="width: 100%; margin-top:10px;" :span-method="objectSpanMethod"
-       :fit="true" :header-cell-style="{background:'#f5f9ff'}">
-        <el-table-column label="数据库" type="index" width="200"></el-table-column>
-        <el-table-column label="部门" prop="contractName"></el-table-column>
-        <el-table-column label="用户名" prop="contractType.name" ></el-table-column>
-        <el-table-column label="账号" prop="signTime" ></el-table-column>
-        <el-table-column label="使用频率" prop="approvalTitle" ></el-table-column>
-        <el-table-column label="操作" fixed="right" >
+      <el-table v-if="list&&list.length>0" :data="list" style="width: 100%; margin-top:10px;" :span-method="objectSpanMethod":header-cell-style="{background:'#f5f9ff'}">
+        <el-table-column label="数据库" prop="databaseType.name" min-width="100"></el-table-column>
+        <el-table-column label="部门" prop="dept.deptName" min-width="100"></el-table-column>
+        <el-table-column label="用户名" prop="user.userName" min-width="100"></el-table-column>
+        <el-table-column label="账号" prop="account" min-width="100"></el-table-column>
+        <el-table-column label="使用频率" prop="frequency" min-width="100"></el-table-column>
+        <el-table-column label="操作" fixed="right" min-width="100" >
           <template slot-scope="scope">
             <el-button type="text" @click="showAddAndEditDialog(scope.row)">编辑</el-button>
-            <span style="padding: 0 10px">|</span>
-            <el-button type="text" @click="goDelete(scope.row)">删除</el-button>
+            <el-button type="text" @click="delte(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -68,25 +67,33 @@
         <br><span style="font-size: 14px">暂无数据</span><br/><br/>
       </div>
     </el-main>
-    <AddAndEditDialog ref="addAndEdit" />
+     <AddAndEditDialog ref="addAndEdit" :deptTree="deptTree" :enumType="enumType"/>
+     <ExportDialog ref="exportDialog" method="exportAccount"/>
   </el-container>
 </template>
 <script>
   import AddAndEditDialog from './addAndEdit.vue';
+  import ExportDialog from "../../components/exportDialog";
   import api from '@/api/cost';
   import mixin from '../../mixins';
   export default {
     name: '',
-    components: {AddAndEditDialog},
+    components: {AddAndEditDialog,ExportDialog},
     props: {},
     data() {
       return {
         enumType: {},
-        search: {},
+        search: {
+          deptId:'',
+          databaseType:'',
+          userName:''
+        },
         pageNum: 1,
         pageSize: 10,
         total: 0,
-        filter:{}
+        filter:{},
+        spanArr:[],
+        position:0
       };
     },
     mixins: [mixin],
@@ -95,64 +102,82 @@
     },
     methods: {
       async init() {
-        await this.getEnum('FeeMonth');
+        await this.getEnum('FeeDatabaseType');
         await this.getDeptTree();
-        this.$refs.commonSearch.doSearch();
+        this.enumType.FeeDatabaseType = [{name: '全部数据库类型', value: ''}].concat(this.enumType.FeeDatabaseType)
+        this.getList()
       },
-      doSearch(data) {
-        this.pageNum = 1;
-        this.filter = { ...data };
+      getList(){
+        let params = {
+            pageNum: this.pageNum,
+            pageSize: this.pageSize,
+            ...this.search
+          };
+          api.accountDatabaseList(params).then(res => {
+              console.log(res);
+              if (res.code === 200) {
+                this.list = res.data.list;
+                this.total = res.data.total;
+                this.rowspan()
+
+              }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       },
-      getList(){},
       objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-        if (columnIndex === 0) {
-          if (rowIndex % 2 === 0) {
-            return {
-              rowspan: 2,
-              colspan: 1
-            };
-          } else {
-            return {
-              rowspan: 0,
-              colspan: 0
-            };
-          }
-        }
+       
       },
-      showAddAndEditDialog(){
-        this.$refs.addAndEdit.open();
-      }
+      showAddAndEditDialog(data){
+        this.$refs.addAndEdit.open(data);
+      },
+      openExportDialog(){
+        this.$refs.exportDialog.open();
+      },
+      delte(id) {
+        this.$confirm("即将删除数据，是否继续？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(() => {
+            api.delAccount(id).then(res => {
+                if (res.code === 200) {
+                  this.getList();
+                  this.$message.success({ message: "删除成功!", duration: 1500 });
+                }
+              })
+            .catch(err => {
+                console.log(err);
+            });
+        }).catch(err => {});
+      },
     }
   };
 </script>
 
 <style lang="scss" scoped>
-.search-area{
-    margin: 15px 15px 0;
-    padding: 20px;
-    background-color: #fff;
-    .el-input{width: 220px;}
-}
-  .tag-operate-tool{
-    margin: 15px 15px 0;
-    padding: 0 15px;
-    background-color: #fff;
-    border-bottom: 1px solid #e6e6e6;
-    text-align: right;
-    .el-menu{
-      border-bottom: 0;
-      .el-menu-item{
-        height: 40px;
-        padding: 0;
-        margin: 0 20px;
-        line-height: 40px;
-      }
-      .is-active{
-        color: #007bff;
-        background: #fff!important;
-        border-color: #007bff;
-      }
-    }
+.search-area {
+  margin: 15px 15px 0;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  .el-input {
+    width: 220px;
   }
-  .main{margin-top: 0!important;padding-top: 10px;}
+}
+.tag-operate-tool {
+  text-align: right;
+  margin: 15px auto 0;
+  padding: 0 15px;
+  width: calc(100% - 30px);
+  background-color: #fff;
+  border-bottom: 1px solid #e6e6e6;
+  border-radius: 5px 5px 0 0;
+}
+.main {
+  margin: 0 auto !important;
+  padding: 15px;
+  width: calc(100% - 30px);
+}
 </style>

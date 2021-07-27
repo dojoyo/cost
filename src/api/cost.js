@@ -940,4 +940,95 @@ export default {
       data
     });
   },
+  // 数据库-账号分配-列表
+  accountDatabaseList(data) {
+    return request({
+      url: `/fee/pc/database/account/list`,
+      method: 'post',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 数据库-账号分配-新增
+  addAccount(data) {
+    return request({
+      url: `/fee/pc/database/account/add`,
+      method: 'post',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 数据库-账号分配-导出
+  exportAccount(data) {
+    return request({
+      url: `/fee/pc/database/account/export`,
+      method: 'post',
+      data,
+      responseType: 'arraybuffer'
+    });
+  },
+  // 数据库-账号分配-详情
+  accountDetail(id) {
+    return request({
+      url: `/fee/pc/database/account/${id}`,
+      method: 'get'
+    });
+  },
+  // 数据库-账号分配-编辑
+  editAccount(data) {
+    return request({
+      url: `/fee/pc/database/account/${data.id}`,
+      method: 'put',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 数据库-账号分配-删除
+  delAccount(id) {
+    return request({
+      url: `/fee/pc/database/account/${id}`,
+      method: 'delete'
+    });
+  },
+  // 数据库-录入-删除
+  delReocrdData(id) {
+    return request({
+      url: `/fee/pc/database/${id}`,
+      method: 'delete'
+    });
+  },
+  // 数据库-录入-列表
+  reocrdDatabaseList(data) {
+    return request({
+      url: `/fee/pc/database/list`,
+      method: 'post',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 数据库-录入-新增
+  addReocrdDatabase(data) {
+    return request({
+      url: `/fee/pc/database/add`,
+      method: 'post',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 数据库-录入-编辑
+  editReocrdDatabase(data) {
+    return request({
+      url: `/fee/pc/database/${data.id}`,
+      method: 'put',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 数据库-录入-详情
+  recordDatabaseDetail(id) {
+    return request({
+      url: `/fee/pc/database/${id}`,
+      method: 'get'
+    });
+  },
 };

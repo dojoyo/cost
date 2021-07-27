@@ -171,9 +171,7 @@ export default {
         pageSize: this.pageSize,
         ...this.filter
       };
-      api
-        .databaseUseList(params)
-        .then(res => {
+      api.databaseUseList(params).then(res => {
           console.log(res);
           if (res.code === 200) {
             this.list = res.data.list;
