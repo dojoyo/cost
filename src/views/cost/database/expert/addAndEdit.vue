@@ -30,14 +30,14 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="Date" required  prop="useDate">
-                <el-date-picker v-model="form.useDate" type="date" placeholder="选择日期"></el-date-picker>
+                <el-date-picker v-model="form.useDate" type="date" placeholder="选择日期" format="yyyy-MM-dd" value-format="yyyy-MM-dd"></el-date-picker>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
               <el-form-item label="用户名" required prop="userId">
-                    <el-select
+                  <el-select
                       v-model="form.userId"
                       ref="userSelect"
                       filterable
@@ -81,7 +81,7 @@
             </el-col>
             <el-col :span="12">
                 <el-form-item label="Hours" required prop="hours">
-                  <el-input v-model="form.hours" autocomplete="off"></el-input>
+                  <el-input v-model="form.hours" type="number" autocomplete="off"></el-input>
                 </el-form-item>
             </el-col>
           </el-row>
@@ -101,6 +101,7 @@
 </template>
 <script>
 import api from "@/api/cost";
+import filter from '@/utils/filters'
 export default {
     name: 'laborAddAndEdit',
     props:{
@@ -130,7 +131,7 @@ export default {
                project: [{ required: true, message: "请输入项目", trigger: ['change','blur'] }],
                remark: [{ required: true, message: "请输入备注",  trigger: ['change', 'blur'] }],
                useDate: [{ required: true, message: "请选择时间", trigger: 'change' }],
-               userId: [{ required: true, message: "请输入用户名",  trigger: ['change', 'blur'] }],
+               userId: [{ required: true, message: "请输入用户名",  trigger: 'change' }],
                type: [{ required: true, message: "请输入类型",  trigger: ['change', 'blur'] }],
             },
             userOptions: [],
@@ -152,9 +153,12 @@ export default {
             this.title = query.id ? '编辑':'新增'
             if(query.id){
               this.form = query
+              this.form.userId = query.user.userId
+              this.form.deptId = query.dept.deptId
+              this.form.useDate = filter.DateTimeEn(query.useDate)
               this.userOptions = [{
-                  userName: this.form.userName,
-                  userId: this.form.userId
+                  userName: query.user.userName,
+                  userId: query.user.userId
               }]
             }
           })

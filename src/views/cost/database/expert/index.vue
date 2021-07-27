@@ -87,10 +87,10 @@
           <template slot-scope="scope">
             <el-button
               type="text"
-              @click="showAddAndEditDialog(scope.row.instanceId)"
+              @click="showAddAndEditDialog(scope.row)"
               >编辑</el-button
             >
-            <el-button type="text" @click="downloadFile(scope.row.instanceId)"
+            <el-button type="text" @click="delte(scope.row.id)"
               >删除</el-button
             >
           </template>
@@ -138,7 +138,9 @@ export default {
   data() {
     return {
       enumType: {},
-      search: {},
+      search: {
+
+      },
       list: [],
       pageNum: 1,
       pageSize: 10,
@@ -208,7 +210,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-          api.delExcessRemind(id).then(res => {
+          api.deDatabaseList(id).then(res => {
               if (res.code === 200) {
                 this.getList();
                 this.$message.success({ message: "删除成功!", duration: 1500 });
