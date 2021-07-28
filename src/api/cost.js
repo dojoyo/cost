@@ -672,7 +672,7 @@ export default {
   bizExpenseList(data){
     return request({
       url: '/fee/pc/biz-expense/list',
-      method: 'POST',
+      method: 'post',
       data
     });
   },
@@ -945,7 +945,6 @@ export default {
     return request({
       url: `/fee/pc/database/account/list`,
       method: 'post',
-      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },
@@ -1002,7 +1001,6 @@ export default {
     return request({
       url: `/fee/pc/database/list`,
       method: 'post',
-      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
       data
     });
   },

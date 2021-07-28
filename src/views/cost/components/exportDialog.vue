@@ -13,11 +13,11 @@
             </div>
             <div class="clear"></div>
         </div>
-        <el-form :model="form" :rules="rules" ref="form">
-            <el-form-item label="年份" :label-width="labelWidth" required class="w-100p" prop="year">
+        <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+            <el-form-item label="年份"  required class="w-100p" prop="year">
                 <el-date-picker v-model="form.year" type="year" value-format="yyyy" format="yyyy" placeholder="请选择年份"></el-date-picker>
             </el-form-item>
-            <el-form-item label="月份" :label-width="labelWidth" required prop="month">
+            <el-form-item label="月份"  required prop="month">
                 <el-select v-model="form.month" placeholder="请选择月份">
                     <el-option
                         v-for="item in enumType.FeeMonth"
@@ -54,12 +54,12 @@ export default {
             rules: {
                 year: [
                     {
-                        required: true, message: '请选择年份', trigger: 'change'
+                        required: true, message: '请选择年份', trigger: ['change','blur']
                     }
                 ],
                 month: [
                     {
-                        required: true, message: '请选择月份', trigger: 'change'
+                        required: true, message: '请选择月份', trigger: ['change','blur']
                     }
                 ]
             },
