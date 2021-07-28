@@ -51,7 +51,7 @@
         >
         </el-option>
       </el-select>
-      <el-button @click="doSearch" type="primary" size="small">查询</el-button>
+      <el-button @click="getList" type="primary" size="small">查询</el-button>
     </div>
     <el-main class="main">
       <el-table
@@ -139,7 +139,7 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item
-                  @click.native="setCostShare(scope.row)"
+                  @click.native="setCostShare(scope.row.id)"
                   >费用分摊设置</el-dropdown-item
                 >
                 <el-dropdown-item @click.native="delte(scope.row.id)"
@@ -189,7 +189,12 @@ export default {
   data() {
     return {
       enumType: {},
-      search: {},
+      search: {
+        month:'',
+        databaseType:'',
+        year:'',
+        userName:''
+      },
       list: [],
       pageNum: 1,
       pageSize: 10,
@@ -211,16 +216,11 @@ export default {
         this.enumType.FeeDatabaseType = [{name: '全部数据库类型', value: ''}].concat(this.enumType.FeeDatabaseType)
         this.getList()
     },
-    doSearch(data) {
-      this.pageNum = 1;
-      this.filter = { ...data };
-      this.getList();
-    },
     getList() {
       let params = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
-        ...this.filter
+        ...this.search
       };
       api.reocrdDatabaseList(params).then(res => {
           console.log(res)
@@ -238,8 +238,9 @@ export default {
       this.$refs.addAndEdit.open(data);
     },
     //费用分摊设置
-    setCostShare() {
-      this.$refs.setCostShare.open();
+    setCostShare(id) {
+      console.log(id)
+      this.$refs.setCostShare.open(id);
     },
     delte(id){
       this.$confirm("即将删除数据，是否继续？", "提示", {

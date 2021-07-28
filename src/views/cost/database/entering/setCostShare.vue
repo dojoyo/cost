@@ -14,10 +14,12 @@
             <div class="clear"></div>
         </div>
         <el-table :data="tableData" style="width: 100%"  :header-cell-style="{background:'#f5f9ff'}" border>
-          <el-table-column  label="费用分摊部门" width="150" align="center" prop="name" ></el-table-column>
-          <el-table-column label="数量" align="right">
+          <el-table-column label="费用分摊部门" width="150" align="center" prop="dept.deptName"></el-table-column>
+          <el-table-column label="数量" align="center" prop="cost">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.value"></el-input>
+              <el-input v-model="scope.row.cost" type="number" size="mini">
+                 <span slot="suffix" class="lh-28">%</span>
+              </el-input>
             </template>
           </el-table-column>
         </el-table>
@@ -28,24 +30,14 @@
     </el-dialog>
 </template>
 <script>
+import api from "@/api/cost";
 export default {
     name: 'laborAddAndEdit',
     data() {
         return {
             visible: false,
-            tableData:[
-              {name:'股权投资一部',value:'5%'},
-              {name:'股权投资二部',value:'10%'},
-              {name:'股权投资三部',value:'20%'},
-              {name:'战略投资部',value:'30%'},
-              {name:'教育投资部',value:''},
-              {name:'证券投资部',value:''},
-              {name:'VC投资部',value:''},
-              {name:'同德投资组',value:''},
-              {name:'财务组',value:''},
-              {name:'人力组',value:''},
-            ]
-            
+            tableData:[],
+            id:''
         };
     },
     mounted() {
@@ -54,32 +46,42 @@ export default {
     methods: {
         // 打开弹窗
         open(query) {
-            this.initForm();
             this.visible = true;
-        },
-        // 初始化表单
-        initForm() {
-            this.form = {
-                year: '',
-                month: '',
-                department: '',
-                cost: ''
-            };
-            this.$nextTick(() => {
-                this.$refs.form.clearValidate();
-            });
-            // this.$refs['form'].resetFields();
+            this.id = query
+            this.getData(query)
         },
         // 新增、编辑
         submitForm() {
-            this.$refs.form.validate((valid) => {
-                if (valid) {
-                    console.log('submit!');
-                } else {
-                    console.log('error submit!!');
-                    return false;
+            console.log(this.tableData)
+            let list = []
+            this.tableData.forEach(item=>{
+                if(item.cost){
+                    list.push({
+                        cost:item.cost,
+                        depId:item.dept.deptId
+                    })
                 }
-            });
+            })
+        
+            api.setCostShare({
+                id:this.id,
+                costShareDtos:list
+            }).then(res=>{
+                if(res.code === 200){
+                    this.visible = false
+                    this.$message.success({ message: "设置成功!", duration: 1500 });
+                }
+            })
+        },
+        getData(id){
+            api.costShareList(id).then(res=>{
+                console.log(res)
+                if(res.code === 200){
+                    this.tableData = res.data
+
+                    console.log(this.tableData)
+                }
+            })
         }
     }
 };
@@ -99,6 +101,8 @@ export default {
             padding-left: 115px;
         }
         .el-dialog__body{
+            max-height: 500px;
+            overflow: scroll;
           tbody {
             tr td:first-child{
               background: #f5f9ff;

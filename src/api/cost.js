@@ -1031,4 +1031,20 @@ export default {
       method: 'get'
     });
   },
+  // 数据库-费用分摊设置
+  setCostShare(data) {
+    return request({
+      url: `/fee/pc/database/${data.id}/cost-share`,
+      method: 'post',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  costShareList(id) {
+    return request({
+      url: `/fee/pc/database/${id}/cost-share/list`,
+      method: 'get'
+    });
+  },
+  
 };
