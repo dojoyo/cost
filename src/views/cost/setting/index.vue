@@ -22,35 +22,43 @@
     </div>
     <el-main class="main">
       <el-table :data="dataList">
-        <el-table-column label="费用部门" prop="expenseDeptName"></el-table-column>
+        <el-table-column label="费用部门" prop="expenseDeptName" width="100"></el-table-column>
         <el-table-column label="创投部门" align="center">
-          <el-table-column v-for="(item,index) in dataList.length && dataList[0].isCGVCDeptData" :key="'isCGVCDeptData'+index" :label="item.deptName" width="120">
+          <el-table-column v-for="(item,index) in dataList.length && dataList[0].isCGVCDeptData" :key="'isCGVCDeptData'+index" :label="item.deptName" width="120" align="right">
             <template slot-scope="scope">
               <span v-show="scope.row.showEdit">
-                <el-input v-model="scope.row.isCGVCDeptData[index].ratio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')" />
+                <el-input class="input-txt-right" v-model="scope.row.isCGVCDeptData[index].editRatio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')" >
+                  <span slot="suffix" class="lh-28">%</span>
+                </el-input>
               </span>
-              <span v-show="!scope.row.showEdit">{{ scope.row.isCGVCDeptData[index].ratio }}</span>
+              <div class="txt-right" v-show="!scope.row.showEdit">{{ scope.row.isCGVCDeptData[index].ratio }}%</div>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="非创投部门" align="center">
-          <el-table-column v-for="(item,index) in dataList.length && dataList[0].noCGVCDeptData" :key="'noCGVCDeptData'+index" :label="item.deptName" width="120">
+          <el-table-column v-for="(item,index) in dataList.length && dataList[0].noCGVCDeptData" :key="'noCGVCDeptData'+index" :label="item.deptName" width="120" align="right">
             <template slot-scope="scope">
               <span v-show="scope.row.showEdit">
-                <el-input v-model="scope.row.noCGVCDeptData[index].ratio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')" />
+                <el-input class="input-txt-right" v-model="scope.row.noCGVCDeptData[index].editRatio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')">
+                  <span slot="suffix" class="lh-28">%</span>
+                </el-input>
               </span>
-              <span v-show="!scope.row.showEdit">{{ scope.row.noCGVCDeptData[index].ratio }}</span>
+              <div class="txt-right" v-show="!scope.row.showEdit">{{ scope.row.noCGVCDeptData[index].ratio }}%</div>
             </template>
           </el-table-column>
         </el-table-column>
-        <el-table-column label="合计" prop="total"></el-table-column>
+        <el-table-column label="合计" prop="total" align="right">
+          <template slot-scope="scope">
+            <span>{{scope.row.total}}%</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" fixed="right" width="100">
           <template slot-scope="scope">
             <div v-show="!scope.row.showEdit">
               <el-button type="text" @click="edit(scope.row)">编辑</el-button>
             </div>
             <div v-show="scope.row.showEdit">
-              <el-button type="text" class="blue" @click="edit(scope.row)">保存</el-button>
+              <el-button type="text" class="blue" @click="saveEdit(scope.row)">保存</el-button>
               <el-button type="text" class="blue" @click="cancelEdit(scope.row)">取消</el-button>
             </div>
           </template>
@@ -179,6 +187,7 @@
                     for(let j=0;j<listData[i].expenseDeptList.length;j++){
                       if(combineData[k].isCGVCDeptData[l].deptId === listData[i].expenseShareDept.deptId && combineData[k].expenseDeptId === listData[i].expenseDeptList[j].expenseShareDept.deptId) {
                         combineData[k].isCGVCDeptData[l].ratio = listData[i].expenseDeptList[j].ratio
+                        combineData[k].isCGVCDeptData[l].editRatio = listData[i].expenseDeptList[j].ratio
                         combineData[k].isCGVCDeptData[l].isSetRatio = listData[i].expenseDeptList[j].isSetRatio
                         combineData[k].total += listData[i].expenseDeptList[j].ratio
                       }
@@ -194,6 +203,7 @@
                     for(let j=0;j<listData[i].expenseDeptList.length;j++){
                       if(combineData[k].noCGVCDeptData[m].deptId === listData[i].expenseShareDept.deptId && combineData[k].expenseDeptId === listData[i].expenseDeptList[j].expenseShareDept.deptId) {
                         combineData[k].noCGVCDeptData[m].ratio = listData[i].expenseDeptList[j].ratio
+                        combineData[k].noCGVCDeptData[m].editRatio = listData[i].expenseDeptList[j].ratio
                         combineData[k].noCGVCDeptData[m].isSetRatio = listData[i].expenseDeptList[j].isSetRatio
                         combineData[k].total += listData[i].expenseDeptList[j].ratio
                       }
@@ -210,29 +220,49 @@
           console.log(err);
         });
       },
-      // 分页更改
-      handleSizeChange(val) {
-        this.pageSize = val;
-        this.pageNum = 1;
-        this.getList();
-      },
-      // 换页
-      handleCurrentChange(val) {
-        this.pageNum = val;
-        this.getList();
-      },
       edit(data){
-        console.log(data)
         data.showEdit = true
       },
       cancelEdit(data) {
+        data.noCGVCDeptData.forEach(item => {
+          item.editRatio = item.ratio
+        })
+        data.isCGVCDeptData.forEach(item => {
+          item.editRatio = item.ratio
+        })
         data.showEdit = false
+      },
+      saveEdit(data) {
+        console.log(data)
+        const isArray = data.isCGVCDeptData.map(item => {
+          return {
+            expenseShareDeptId: item.deptId,
+            ratio: parseFloat(item.editRatio)
+          }
+        })
+        const noArray = data.noCGVCDeptData.map(item => {
+          return {
+            expenseShareDeptId: item.deptId,
+            ratio: parseFloat(item.editRatio)
+          }
+        })
+        const params = {
+          ...this.search,
+          expenseDeptId: data.expenseDeptId,
+          expenseShareDeptList: isArray.concat(noArray)
+        }
+        api.editShareList(params).then(res => {
+          if(res.code === 200) {
+            this.$message.success('操作成功');
+            this.getList()
+          }
+        })
       }
     }
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .search-area{
     margin: 15px 15px 0;
     padding: 20px;
@@ -245,5 +275,9 @@
 }
 .main{
   border-radius: 5px 5px 0 0 ;
+}
+.lh-28{line-height: 28px;}
+.input-txt-right{
+  input{text-align: right!important;}
 }
 </style>

@@ -57,8 +57,8 @@
         :fit="true"
         :header-cell-style="{ background: '#f5f9ff' }"
       >
-        <el-table-column label="部门" prop="dept.deptName"></el-table-column>
-        <el-table-column label="Date" prop="useDate">
+        <el-table-column label="部门" prop="dept.deptName" width="120"></el-table-column>
+        <el-table-column label="Date" prop="useDate" width="100">
           <template slot-scope="scope">
             {{ scope.row.useDate | DateTimeEn }}
           </template>

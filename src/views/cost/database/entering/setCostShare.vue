@@ -17,7 +17,7 @@
           <el-table-column label="费用分摊部门" width="150" align="center" prop="dept.deptName"></el-table-column>
           <el-table-column label="数量" align="center" prop="cost">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.cost" type="number" size="mini">
+              <el-input v-model="scope.row.cost" type="number" size="mini" class="input-txt-right">
                  <span slot="suffix" class="lh-28">%</span>
               </el-input>
             </template>
@@ -57,7 +57,7 @@ export default {
             this.tableData.forEach(item=>{
                 if(item.cost){
                     list.push({
-                        cost:item.cost,
+                        cost:parseFloat(item.cost),
                         depId:item.dept.deptId
                     })
                 }
@@ -65,7 +65,7 @@ export default {
         
             api.setCostShare({
                 id:this.id,
-                costShareDtos:list
+                data: list
             }).then(res=>{
                 if(res.code === 200){
                     this.visible = false
@@ -78,7 +78,6 @@ export default {
                 console.log(res)
                 if(res.code === 200){
                     this.tableData = res.data
-
                     console.log(this.tableData)
                 }
             })
@@ -102,13 +101,15 @@ export default {
         }
         .el-dialog__body{
             max-height: 500px;
-            overflow: scroll;
+            width: 100%;
+            overflow: auto;
           tbody {
             tr td:first-child{
               background: #f5f9ff;
             }
           }
         }
-        
     }
+    .lh-28{line-height: 28px;}
+    .input-txt-right{input{text-align: right;}}
 </style>
