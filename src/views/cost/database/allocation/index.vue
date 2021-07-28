@@ -17,13 +17,13 @@
         class="mr-10"
         placeholder="请选择部门"
         v-model="search.deptId"
-        :options="deptTree"
+        :options="deptTreeAll"
         :show-all-levels="false"
         :props="{ checkStrictly: true, emitPath: false }"
         clearable></el-cascader>
       <el-select v-model="search.databaseType" placeholder="请选择" class="mr-10">
         <el-option
-          v-for="item in enumType.FeeDatabaseType"
+          v-for="item in enumType.FeeDatabaseTypeAll"
           :key="item.value"
           :label="item.name"
           :value="item.value">
@@ -32,7 +32,7 @@
       <el-button @click="getList" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
     </div>
    <div class="tag-operate-tool">
-        <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="openExportDialog"> 导出</el-button>
+        <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="exportFile"> 导出</el-button>
     </div>
     <el-main class="main allocation-table">
       <el-table v-if="list&&list.length>0" :data="list" :span-method="objectSpanMethod" :header-cell-style="{background:'#f5f9ff'}">
@@ -68,23 +68,21 @@
       </div>
     </el-main>
      <AddAndEditDialog ref="addAndEdit" :deptTree="deptTree" :enumType="enumType"/>
-     <ExportDialog ref="exportDialog" method="exportAccount" :enumType="enumType"/>
   </el-container>
 </template>
 <script>
   import AddAndEditDialog from './addAndEdit.vue';
-  import ExportDialog from "../../components/exportDialog";
   import api from '@/api/cost';
   import mixin from '../../mixins';
   export default {
     name: '',
-    components: {AddAndEditDialog,ExportDialog},
+    components: {AddAndEditDialog},
     props: {},
     data() {
       return {
         enumType: {},
         search: {
-          deptId:'',
+          deptId:'all',
           databaseType:'',
           userName:''
         },
@@ -106,7 +104,8 @@
         await this.getEnum('FeeDatabaseType');
         await this.getDeptTree();
         this.enumType.FeeMonthAll = [{ name: "全部月份", value: "" }].concat(this.enumType.FeeMonth);
-        this.enumType.FeeDatabaseType = [{name: '全部数据库类型', value: ''}].concat(this.enumType.FeeDatabaseType)
+        this.enumType.FeeDatabaseTypeAll = [{name: '全部数据库类型', value: ''}].concat(this.enumType.FeeDatabaseType);
+        this.deptTreeAll = [{ label: '全部部门', value: 'all' }].concat(this.deptTree);
         this.getList()
       },
       getList(){
@@ -114,17 +113,20 @@
             pageNum: this.pageNum,
             pageSize: this.pageSize,
             ...this.search
-          };
-          api.accountDatabaseList(params).then(res => {
-              if (res.code === 200) {
-                this.list = res.data.list;
-                this.total = res.data.total;
-                this.rowspan()
-              }
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        };
+        if (params.deptId === 'all') {
+          params.deptId = ''
+        }
+        api.accountDatabaseList(params).then(res => {
+            if (res.code === 200) {
+              this.list = res.data.list;
+              this.total = res.data.total;
+              this.rowspan()
+            }
+        })
+        .catch(err => {
+          console.log(err);
+        });
       },
       rowspan() {
         this.list.forEach(v => {
@@ -155,6 +157,20 @@
       },
       openExportDialog(){
         this.$refs.exportDialog.open();
+      },
+      exportFile(){
+          api.exportAccount().then(res=>{
+              let headers = res.headers;
+              let title = headers['x-file-name'];
+              let blob = new Blob([res.data], {
+                  type: headers['content-type']
+              });
+              let link = document.createElement('a');
+              link.href = window.URL.createObjectURL(blob);
+              link.download = decodeURIComponent(title);
+              link.click();
+              this.initForm()
+          })
       },
       delte(id) {
         this.$confirm("即将删除数据，是否继续？", "提示", {

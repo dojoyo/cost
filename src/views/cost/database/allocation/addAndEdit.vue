@@ -106,7 +106,12 @@ export default {
             this.$refs.form.resetFields();
             this.title = query.id ? '编辑':'新增'
             if(query.id){
-              this.form = query
+              this.form = {
+                  id: query.id,
+                  account: query.account,
+                  userId: query.user.userId,
+                  frequency: query.frequency,
+              }
               this.form.databaseType = query.databaseType.value
               this.form.deptId = query.dept.deptId
               this.userOptions = [{
