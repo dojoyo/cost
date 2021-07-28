@@ -34,8 +34,8 @@
    <div class="tag-operate-tool">
         <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="openExportDialog"> 导出</el-button>
     </div>
-    <el-main class="main">
-      <el-table v-if="list&&list.length>0" :data="list" style="width: 100%; margin-top:10px;" :span-method="objectSpanMethod":header-cell-style="{background:'#f5f9ff'}">
+    <el-main class="main allocation-table">
+      <el-table v-if="list&&list.length>0" :data="list" :span-method="objectSpanMethod" :header-cell-style="{background:'#f5f9ff'}">
         <el-table-column label="数据库" prop="databaseType.name" min-width="100"></el-table-column>
         <el-table-column label="部门" prop="dept.deptName" min-width="100"></el-table-column>
         <el-table-column label="用户名" prop="user.userName" min-width="100"></el-table-column>
@@ -68,7 +68,7 @@
       </div>
     </el-main>
      <AddAndEditDialog ref="addAndEdit" :deptTree="deptTree" :enumType="enumType"/>
-     <ExportDialog ref="exportDialog" method="exportAccount"/>
+     <ExportDialog ref="exportDialog" method="exportAccount" :enumType="enumType"/>
   </el-container>
 </template>
 <script>
@@ -102,8 +102,10 @@
     },
     methods: {
       async init() {
+        await this.getEnum('FeeMonth');
         await this.getEnum('FeeDatabaseType');
         await this.getDeptTree();
+        this.enumType.FeeMonthAll = [{ name: "全部月份", value: "" }].concat(this.enumType.FeeMonth);
         this.enumType.FeeDatabaseType = [{name: '全部数据库类型', value: ''}].concat(this.enumType.FeeDatabaseType)
         this.getList()
       },
@@ -114,20 +116,39 @@
             ...this.search
           };
           api.accountDatabaseList(params).then(res => {
-              console.log(res);
               if (res.code === 200) {
                 this.list = res.data.list;
                 this.total = res.data.total;
                 this.rowspan()
-
               }
           })
           .catch(err => {
             console.log(err);
           });
       },
+      rowspan() {
+        this.list.forEach(v => {
+          v.rowspan = 1
+        })
+        // 双层循环
+          for (let i = 0; i < this.list.length; i++) {
+            for (let j = i + 1; j < this.list.length; j++) {
+              if (this.list[i].databaseType.value === this.list[j].databaseType.value) {
+                this.list[i].rowspan++
+                this.list[j].rowspan--
+              }
+            }
+            // 这里跳过已经重复的数据
+            i = i + this.list[i].rowspan - 1
+          }
+      },
       objectSpanMethod({ row, column, rowIndex, columnIndex }) {
-       
+        if (columnIndex === 0) {
+          return {
+            rowspan: row.rowspan,
+            colspan: 1
+          }
+        }
       },
       showAddAndEditDialog(data){
         this.$refs.addAndEdit.open(data);
@@ -156,7 +177,7 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .search-area {
   margin: 15px 15px 0;
   padding: 20px;
@@ -179,5 +200,10 @@
   margin: 0 auto !important;
   padding: 15px;
   width: calc(100% - 30px);
+}
+.allocation-table{
+ .el-table__row .el-table_1_column_1 {
+    border-right:1px solid #ebeef5;
+  }
 }
 </style>

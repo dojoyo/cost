@@ -52,9 +52,8 @@
     </div>
     <el-main class="main">
       <el-table
+        v-if="list&&list.length"
         :data="list"
-        style="width: 100%; margin-top:10px; "
-        :fit="true"
         :header-cell-style="{ background: '#f5f9ff' }"
       >
         <el-table-column label="部门" prop="dept.deptName" width="120"></el-table-column>
