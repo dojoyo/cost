@@ -195,10 +195,10 @@ export default {
                 deptId: [
                     {
                         required: true, message: '请选择部门', trigger: 'change'
-                    },
-                    {
-                        message: '请选择部门', trigger: 'change', validator: this.checkDept
-                    },
+                    }
+                    // {
+                    //     message: '请选择部门', trigger: 'change', validator: this.checkDept
+                    // },
                 ],
                 bookingTime: [
                     {
@@ -361,15 +361,15 @@ export default {
                     }
                 })
             }
-        },
-        checkDept(rule, value, callback) {
-            debugger
-            if (value ) {
-                callback(new Error(rule.message))
-            } else {
-                callback()
-            }
         }
+        // checkDept(rule, value, callback) {
+        //     debugger
+        //     if (value ) {
+        //         callback(new Error(rule.message))
+        //     } else {
+        //         callback()
+        //     }
+        // }
     }
 };
 </script>
