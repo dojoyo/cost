@@ -274,8 +274,6 @@ export default {
                             this.$message.success('操作成功')
                             this.$parent.$parent.getList()
                             this.visible = false
-                        } else {
-                            this.$message.error('操作失败')
                         }
                     })
                 } else {

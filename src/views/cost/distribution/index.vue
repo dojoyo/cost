@@ -10,7 +10,7 @@
     </el-header>
     <div class="search-area">
         <el-date-picker v-model="search.year" type="year" format="yyyy年" value-format="yyyy" placeholder="请选择年份" class="mr-10 mb-10"></el-date-picker>
-        <el-select v-model="search.month" class="mr-10 mb-10" placeholder="全部月份">
+        <el-select v-model="search.month" class="mr-10 mb-10">
             <el-option
                 v-for="item in enumType.FeeMonth"
                 :key="item.value"
@@ -21,58 +21,22 @@
       <el-button @click="getList" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
     </div>
     <div class="tag-operate-tool">
-      <span>最近发布时间：{{releaseTime | DateTimeSecondEn}}</span>
-       <el-button type="text" icon="iconfont icon-shujufabu fs-12" class="blue" @click="publishRelease">发布数据</el-button>
+      <span>最近发布时间：{{releaseTime || '-'}}</span>
+       <el-button type="text" icon="iconfont icon-shujufabu fs-12" class="blue" @click="publishRelease"> 发布数据</el-button>
     </div>
     <el-main class="main">
-      <el-table v-if="list && list.length>0" :data="list" style="width: 100%;" :header-cell-style="{background:'#f5f9ff'}">
-        <el-table-column label="合同名称" width="300"  prop="contractName"></el-table-column>
-        <el-table-column prop="contractType.name" label="分类" width="120"></el-table-column>
-        <el-table-column prop="approvalTitle" label="审批流程" width="400"></el-table-column>
-        <el-table-column prop="signTime" label="创建时间" width="150">
+      <el-table :data="dataList" :header-cell-style="{background:'#f5f9ff'}" border :cell-style="firstCellStyle">
+        <el-table-column label="费用类别" prop="name" width="100" fixed="left"></el-table-column>
+        <el-table-column v-for="(item,index) in dataList.length && dataList[0].cellData" :key="'cellData'+index" :label="item.deptName" width="120" align="right">
           <template slot-scope="scope">
-            {{scope.row.createTime | DateTimeEn}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="signTime" label="签订时间" width="150">
-          <template slot-scope="scope">
-            {{scope.row.signTime | DateTimeEn}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="signState.name" label="状态" width="80"></el-table-column>
-        <el-table-column prop="promoter.userName" label="发起人" width="120"></el-table-column>
-        <el-table-column prop="signer" label="签署方" width="120"></el-table-column>
-
-        <el-table-column label="操作" width="145" fixed="right" header-align="center" align="center" >
-          <template slot-scope="scope">
-            <el-button type="text" :disabled="scope.row.permission && scope.row.signState && (!scope.row.permission.canDownload || scope.row.signState.value!=='COMPLETE')" @click="downloadFile(scope.row.instanceId)">下载</el-button>
-            <span style="padding: 0 10px">|</span>
-            <el-dropdown trigger="click">
-            <span class="el-dropdown-link" style="cursor: pointer">
-              更多<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="cancelSign(scope.row.instanceId)">取消签署</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
+            <div class="txt-right">
+              {{scope.row.cellData[index].realtimeAmount | formatMoney}}
+              <span class="red" v-if="!scope.row.cellData[index].isSame">({{scope.row.cellData[index].historyAmount | formatMoney}})</span>
+            </div>
           </template>
         </el-table-column>
       </el-table>
-      <div class="txt-right">
-        <el-pagination
-          v-if="list && list.length>0"
-          style="margin-top: 20px"
-          :current-page="pageNum"
-          :page-sizes="[5, 10, 20]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        >
-        </el-pagination>
-      </div>
-      <div v-show="list && list.length===0" class="w-100p gray" style="text-align: center;">
+      <div v-show="dataList && dataList.length===0" class="w-100p gray" style="text-align: center;">
         <img src="@/assets/no-list.png">
         <br><span style="font-size: 14px">暂无数据</span><br/><br/>
       </div>
@@ -93,30 +57,99 @@
           month: '',
           year: new Date().getFullYear() + ''
         },
-        list: [],
-        total: 0,
+        dataList:[],
+        editIndex: '',
         releaseTime:''
       };
     },
     mixins:[mixin],
     mounted() {
-      this.getEnum('FeeMonth', true)
-      this.getList();
+      this.init();
     },
     methods: {
+      async init() {
+        await this.getEnum('FeeMonth');
+        const currentMonth = (new Date().getMonth() +1) + '';
+        const haiCurrentMonth = this.enumType.FeeMonth.some(item => (item.value+'') === currentMonth);
+        this.search.month = haiCurrentMonth ? currentMonth : (this.enumType.FeeMonth && this.enumType.FeeMonth[0].value);
+        this.getList();
+      },
       // 获取企业列表
       getList() {
         api.releaseList(this.search).then(res => {
           if (res.code === 200) {
             this.releaseTime = res.data.releaseTime
-            this.list = res.data.releaseWithTypeVos;
+            let listData = res.data.releaseWithTypeVos;
+            let combineData = [];
+            let hasCombine = false;
+            let cellData = [];
+            // 组件列数据
+            listData.forEach(item => {
+              cellData.push({
+                deptName: item.deptName,
+                historyAmount: '',
+                realtimeAmount: '',
+                isSame: ''
+              })
+            })
+            // 组建行数据
+            for(let i=0;i<listData.length;i++){
+              for(let j=0;j<listData[i].deptCostVos.length;j++){
+                hasCombine = false
+                for(let k=0;k<combineData.length;k++){
+                  if (combineData[k].name === listData[i].deptCostVos[j].feeType.name && combineData[k].value === listData[i].deptCostVos[j].feeType.value) {
+                    hasCombine = true
+                    break;
+                  }
+                }
+                // deepCopy
+                if (!hasCombine) {
+                  combineData.push({
+                    name: listData[i].deptCostVos[j].feeType.name,
+                    value: listData[i].deptCostVos[j].feeType.value,
+                    cellData: JSON.parse(JSON.stringify(cellData)),
+                  })
+                }
+              }
+            }
+            let hasCellData = false;
+            combineData.forEach(item => {
+              item.cellData.forEach(cellItem => {
+                hasCellData = false;
+                for(let o=0;o<listData.length;o++){
+                  // 组建列数据
+                  for(let p=0;p<listData[o].deptCostVos.length;p++){
+                    if(cellItem.deptName === listData[o].deptName && item.value === listData[o].deptCostVos[p].feeType.value && item.name === listData[o].deptCostVos[p].feeType.name) {
+                      cellItem.historyAmount = listData[o].deptCostVos[p].historyAmount
+                      cellItem.realtimeAmount = listData[o].deptCostVos[p].realtimeAmount
+                      cellItem.isSame = listData[o].deptCostVos[p].isSame
+                      hasCellData = true
+                      break;
+                    }
+                  }
+                  if (hasCellData) {
+                    break;
+                  }
+                }
+              })
+            })
+            console.log(combineData)
+            this.dataList = combineData;
           } else {
-            this.list = []
+            this.dataList = []
           }
         }).catch(err => {
-          this.list = []
+          this.dataList = []
           console.log(err);
         });
+      },
+      publishRelease() {
+        api.publishRelease({...this.search}).then(res => {
+          if(res.code === 200) {
+            this.$message.success('操作成功')
+            this.getList()
+          }
+        })
       }
     }
   };

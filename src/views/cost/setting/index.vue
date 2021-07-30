@@ -21,29 +21,29 @@
       <el-button @click="getList" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
     </div>
     <el-main class="main">
-      <el-table :data="dataList">
-        <el-table-column label="费用部门" prop="expenseDeptName" width="100"></el-table-column>
+      <el-table :data="dataList" :header-cell-style="{background:'#f5f9ff'}" border :cell-style="firstCellStyle">
+        <el-table-column label="费用部门" prop="expenseDeptName" width="100" fixed="left"></el-table-column>
         <el-table-column label="创投部门" align="center">
           <el-table-column v-for="(item,index) in dataList.length && dataList[0].isCGVCDeptData" :key="'isCGVCDeptData'+index" :label="item.deptName" width="120" align="right">
             <template slot-scope="scope">
-              <span v-show="scope.row.showEdit">
+              <span v-show="scope.row.editIndex === editIndex">
                 <el-input class="input-txt-right" v-model="scope.row.isCGVCDeptData[index].editRatio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')" >
                   <span slot="suffix" class="lh-28">%</span>
                 </el-input>
               </span>
-              <div class="txt-right" v-show="!scope.row.showEdit">{{ scope.row.isCGVCDeptData[index].ratio }}%</div>
+              <div class="txt-right" v-show="scope.row.editIndex !== editIndex">{{ scope.row.isCGVCDeptData[index].ratio }}%</div>
             </template>
           </el-table-column>
         </el-table-column>
         <el-table-column label="非创投部门" align="center">
           <el-table-column v-for="(item,index) in dataList.length && dataList[0].noCGVCDeptData" :key="'noCGVCDeptData'+index" :label="item.deptName" width="120" align="right">
             <template slot-scope="scope">
-              <span v-show="scope.row.showEdit">
+              <span v-show="scope.row.editIndex === editIndex">
                 <el-input class="input-txt-right" v-model="scope.row.noCGVCDeptData[index].editRatio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')">
                   <span slot="suffix" class="lh-28">%</span>
                 </el-input>
               </span>
-              <div class="txt-right" v-show="!scope.row.showEdit">{{ scope.row.noCGVCDeptData[index].ratio }}%</div>
+              <div class="txt-right" v-show="scope.row.editIndex !== editIndex">{{ scope.row.noCGVCDeptData[index].ratio }}%</div>
             </template>
           </el-table-column>
         </el-table-column>
@@ -52,12 +52,12 @@
             <span>{{scope.row.total}}%</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" fixed="right" width="100">
+        <el-table-column label="操作" fixed="right" width="100" align="right">
           <template slot-scope="scope">
-            <div v-show="!scope.row.showEdit">
+            <div v-show="scope.row.editIndex !== editIndex">
               <el-button type="text" @click="edit(scope.row)">编辑</el-button>
             </div>
-            <div v-show="scope.row.showEdit">
+            <div v-show="scope.row.editIndex === editIndex">
               <el-button type="text" class="blue" @click="saveEdit(scope.row)">保存</el-button>
               <el-button type="text" class="blue" @click="cancelEdit(scope.row)">取消</el-button>
             </div>
@@ -86,74 +86,47 @@
           year: new Date().getFullYear() + '',
           month:''
         },
-        list: [],
-        ventureDep:[],
-        dataList:[]
+        dataList:[],
+        editIndex: ''
       };
     },
     mounted() {
-      // this.getEnum('ContractSignState', true)
       this.init();
     },
     methods: {
       async init() {
         await this.getEnum('FeeMonth');
-        this.search.month = this.enumType.FeeMonth && this.enumType.FeeMonth[0].value
+        const currentMonth = (new Date().getMonth() +1) + '';
+        const haiCurrentMonth = this.enumType.FeeMonth.some(item => (item.value+'') === currentMonth);
+        this.search.month = haiCurrentMonth ? currentMonth : (this.enumType.FeeMonth && this.enumType.FeeMonth[0].value);
         this.getList();
       },
       // 获取企业列表
       getList() {
         api.shareList(this.search).then(res => {
           if (res.code === 200) {
-            // this.list = res.data;
-            // res.data[0].expenseDeptList.forEach(item => {
-            //   this.dataList.push({
-            //     dep:{
-            //      depId:item.expenseShareDept.deptId,
-            //      deptName: item.expenseShareDept.deptName
-            //     },
-            //     ventureDep:[],
-            //     isSetRatio:item.isSetRatio,
-            //     ratio:item.ratio
-            //   })
-            //   console.log(this.dataList)
-            //   res.data.forEach(item=>{
-            //     const sameIndex = this.ventureDep.findIndex(venItem=>{
-            //       return venItem.depId === item.expenseShareDept.deptId
-            //     })
-            //     if(!item.isCGVCDept && sameIndex === -1){
-            //       this.ventureDep.push({
-            //         depId:item.expenseShareDept.deptId,
-            //         deptName: item.expenseShareDept.deptName
-            //       })
-            //     }
-            //   })
-            //   console.log(this.ventureDep)
-            // });
-            const listData = res.data
+            let listData = res.data
+            let editIndex = 0
             let combineData = [] // 组合的最终数据
             let hasCombine = false // 是否存在最终数据里
             // 组建列数据
-            let isCGVCDeptData = listData.filter(item => {
-              return item.isCGVCDept
-            })
-            let noCGVCDeptData = listData.filter(item => {
-              return !item.isCGVCDept
-            })
-            let colIsCGVCDeptData = isCGVCDeptData.map(item => {
-              return {
-                deptId: item.expenseShareDept.deptId,
-                deptName: item.expenseShareDept.deptName,
-                ratio: '',
-                isSetRatio: ''
-              }
-            })
-            let colNoCGVCDeptData = noCGVCDeptData.map(item => {
-              return {
-                deptId: item.expenseShareDept.deptId,
-                deptName: item.expenseShareDept.deptName,
-                ratio: '',
-                isSetRatio: ''
+            let isCGVCDeptData = []
+            let noCGVCDeptData = []
+            listData.forEach(item => {
+              if (item.isCGVCDept) {
+                isCGVCDeptData.push({
+                  deptId: item.expenseShareDept.deptId,
+                  deptName: item.expenseShareDept.deptName,
+                  ratio: '',
+                  isSetRatio: ''
+                })
+              } else {
+                noCGVCDeptData.push({
+                  deptId: item.expenseShareDept.deptId,
+                  deptName: item.expenseShareDept.deptName,
+                  ratio: '',
+                  isSetRatio: ''
+                })
               }
             })
             // 组建行数据
@@ -166,54 +139,67 @@
                     break;
                   }
                 }
+                // deepCopy
                 if (!hasCombine) {
                   combineData.push({
                     expenseDeptId: listData[i].expenseDeptList[j].expenseShareDept.deptId,
                     expenseDeptName: listData[i].expenseDeptList[j].expenseShareDept.deptName,
-                    isCGVCDeptData: colIsCGVCDeptData,
-                    noCGVCDeptData: colNoCGVCDeptData,
+                    isCGVCDeptData: JSON.parse(JSON.stringify(isCGVCDeptData)),
+                    noCGVCDeptData: JSON.parse(JSON.stringify(noCGVCDeptData)),
                     total: 0,
-                    showEdit: false
+                    editIndex: editIndex
                   })
+                  editIndex++
                 }
               }
             }
+            let isDepthasRowCell = false
+            let noDeptHasRowCell = false
             // 往combinData塞数据
-            for (let k=0;k<combineData.length;k++){
-              for (let l=0;l<combineData[k].isCGVCDeptData.length;l++){
-                for(let i=0;i<listData.length;i++){
+            for (let h=0;h<combineData.length;h++){
+              for (let l=0;l<combineData[h].isCGVCDeptData.length;l++){
+                isDepthasRowCell = false
+                for(let o=0;o<listData.length;o++){
                   // 组建列数据
-                  if (listData[i].isCGVCDept) { // 创投部
-                    for(let j=0;j<listData[i].expenseDeptList.length;j++){
-                      if(combineData[k].isCGVCDeptData[l].deptId === listData[i].expenseShareDept.deptId && combineData[k].expenseDeptId === listData[i].expenseDeptList[j].expenseShareDept.deptId) {
-                        combineData[k].isCGVCDeptData[l].ratio = listData[i].expenseDeptList[j].ratio
-                        combineData[k].isCGVCDeptData[l].editRatio = listData[i].expenseDeptList[j].ratio
-                        combineData[k].isCGVCDeptData[l].isSetRatio = listData[i].expenseDeptList[j].isSetRatio
-                        combineData[k].total += listData[i].expenseDeptList[j].ratio
+                  if (listData[o].isCGVCDept) { // 创投部
+                    for(let p=0;p<listData[o].expenseDeptList.length;p++){
+                      if(combineData[h].isCGVCDeptData[l].deptId === listData[o].expenseShareDept.deptId && combineData[h].expenseDeptId === listData[o].expenseDeptList[p].expenseShareDept.deptId) {
+                        combineData[h].isCGVCDeptData[l].ratio = listData[o].expenseDeptList[p].ratio
+                        combineData[h].isCGVCDeptData[l].editRatio = listData[o].expenseDeptList[p].ratio
+                        combineData[h].isCGVCDeptData[l].isSetRatio = listData[o].expenseDeptList[p].isSetRatio
+                        combineData[h].total += listData[o].expenseDeptList[p].ratio
+                        isDepthasRowCell = true
+                        break;
                       }
-                      break;
                     }
+                  }
+                  if (isDepthasRowCell) {
+                    break;
                   }
                 }
               }
-              for (let m=0;m<combineData[k].noCGVCDeptData.length;m++){
-                for(let i=0;i<listData.length;i++){
+              for (let m=0;m<combineData[h].noCGVCDeptData.length;m++){
+                noDeptHasRowCell = false
+                for(let q=0;q<listData.length;q++){
                   // 组建列数据
-                  if (!listData[i].isCGVCDept) { // 创投部
-                    for(let j=0;j<listData[i].expenseDeptList.length;j++){
-                      if(combineData[k].noCGVCDeptData[m].deptId === listData[i].expenseShareDept.deptId && combineData[k].expenseDeptId === listData[i].expenseDeptList[j].expenseShareDept.deptId) {
-                        combineData[k].noCGVCDeptData[m].ratio = listData[i].expenseDeptList[j].ratio
-                        combineData[k].noCGVCDeptData[m].editRatio = listData[i].expenseDeptList[j].ratio
-                        combineData[k].noCGVCDeptData[m].isSetRatio = listData[i].expenseDeptList[j].isSetRatio
-                        combineData[k].total += listData[i].expenseDeptList[j].ratio
+                  if (!(listData[q].isCGVCDept)) { // 创投部
+                    for(let r=0;r<listData[q].expenseDeptList.length;r++){
+                      if(combineData[h].noCGVCDeptData[m].deptId === listData[q].expenseShareDept.deptId && combineData[h].expenseDeptId === listData[q].expenseDeptList[r].expenseShareDept.deptId) {
+                        combineData[h].noCGVCDeptData[m].ratio = listData[q].expenseDeptList[r].ratio
+                        combineData[h].noCGVCDeptData[m].editRatio = listData[q].expenseDeptList[r].ratio
+                        combineData[h].noCGVCDeptData[m].isSetRatio = listData[q].expenseDeptList[r].isSetRatio
+                        combineData[h].total += listData[q].expenseDeptList[r].ratio
+                        noDeptHasRowCell = true
+                        break;
                       }
-                      break;
                     }
+                  }
+                  if (noDeptHasRowCell) {
+                    break;
                   }
                 }
               }
             }
-            console.log(combineData)
             this.dataList = combineData;
           }
         }).catch(err => {
@@ -221,7 +207,7 @@
         });
       },
       edit(data){
-        data.showEdit = true
+        this.editIndex = data.editIndex
       },
       cancelEdit(data) {
         data.noCGVCDeptData.forEach(item => {
@@ -230,7 +216,7 @@
         data.isCGVCDeptData.forEach(item => {
           item.editRatio = item.ratio
         })
-        data.showEdit = false
+        this.editIndex = ''
       },
       saveEdit(data) {
         console.log(data)
@@ -254,6 +240,7 @@
         api.editShareList(params).then(res => {
           if(res.code === 200) {
             this.$message.success('操作成功');
+            this.editIndex = ''
             this.getList()
           }
         })

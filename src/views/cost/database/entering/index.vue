@@ -22,25 +22,28 @@
         size="medium"
         placeholder="请输入人员姓名"
         v-model="search.userName"
+        class="mr-10 mb-10"
       />
       <el-date-picker
         v-model="search.year"
+        class="mr-10 mb-10"
         type="year"
         format="yyyy"
         value-format="yyyy"
         placeholder="请选择年份"
       >
       </el-date-picker>
-      <el-date-picker
-        v-model="search.month"
-        type="month"
-        format="MM"
-        value-format="MM"
-        placeholder="请选择月份"
-      >
-      </el-date-picker>
+      <el-select v-model="search.month" class="mr-10 mb-10">
+          <el-option
+              v-for="item in enumType.FeeMonthAll"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+          </el-option>
+      </el-select>
       <el-select
         v-model="search.databaseType"
+        class="mr-10 mb-10"
         placeholder="请选择数据库类型"
       >
         <el-option
@@ -192,7 +195,7 @@ export default {
       search: {
         month:'',
         databaseType:'',
-        year:'',
+        year: new Date().getFullYear() + '',
         userName:''
       },
       list: [],

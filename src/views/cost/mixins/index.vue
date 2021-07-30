@@ -82,6 +82,14 @@ export default {
                 link.download = decodeURIComponent(title);
                 link.click();
             });
+        },
+        // 设置第一列蓝色背景
+        firstCellStyle({ row, column, rowIndex, columnIndex }) {
+            if (columnIndex === 0) {
+            return { backgroundColor: '#f5f9ff' };
+            } else if (columnIndex === 13) {
+            return { color: 'black' };
+            }
         }
     }
 };

@@ -764,7 +764,7 @@ export default {
     return request({
       url:'/fee/pc/share/edit',
       method:'post',
-      // headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
       data
     })
   },

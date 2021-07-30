@@ -58,7 +58,7 @@ export default {
                 if(item.cost){
                     list.push({
                         cost:parseFloat(item.cost),
-                        depId:item.dept.deptId
+                        deptId:item.dept.deptId
                     })
                 }
             })
