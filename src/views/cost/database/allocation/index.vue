@@ -218,8 +218,10 @@
   width: calc(100% - 30px);
 }
 .allocation-table{
- .el-table__row .el-table_1_column_1 {
-    border-right:1px solid #ebeef5;
+  tbody{
+    >.el-table__row td:first-child[rowspan="2"] {
+      border-right:1px solid #ebeef5;
+    }
   }
 }
 </style>
