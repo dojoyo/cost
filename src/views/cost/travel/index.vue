@@ -21,9 +21,9 @@
       </el-menu>
       <div class="operate-buttons">
         <el-button type="text" icon="iconfont icon-xinzeng fs-12" class="blue" @click="goAddAndEdit"> 新增</el-button>
-        <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue" @click="openImportDialog"> 导入</el-button>
+        <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue" @click="openImportDialog" v-show="activeIndex !== '5'"> 导入</el-button>
         <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="openExportDialog"> 导出</el-button>
-        <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue" @click="getTemp"> 下载模板</el-button>
+        <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue" @click="getTemp" v-show="activeIndex !== '5'"> 下载模板</el-button>
       </div>
     </div>
     <el-main class="main travel-main">
@@ -179,12 +179,12 @@
         <el-table-column prop="deptName" label="费用归属部门" width="120"></el-table-column>
         <el-table-column prop="userName" label="填报人" width="80"></el-table-column>
         <el-table-column prop="amount" label="金额" width="80"></el-table-column>
-        <el-table-column prop="accountCode" label="会计编码" width="80"></el-table-column>
-        <el-table-column prop="budgetCode" label="预算编码" width="80"></el-table-column>
+        <el-table-column prop="accountCode" label="会计编码"></el-table-column>
+        <el-table-column prop="budgetCode" label="预算编码"></el-table-column>
         <el-table-column prop="budgetAccount.name" label="预算科目" width="80"></el-table-column>
-        <el-table-column prop="projectName" label="项目名称" width="80"></el-table-column>
+        <el-table-column prop="projectName" label="项目名称"></el-table-column>
         <el-table-column prop="belongMonth" label="入账月份" width="80"></el-table-column>
-        <el-table-column prop="summary" label="摘要" width="150"></el-table-column>
+        <el-table-column prop="summary" label="摘要" width="180"></el-table-column>
         <el-table-column prop="mainBody" label="主体" width="150"></el-table-column>
         <el-table-column label="操作" width="145" fixed="right" align="left" >
           <template slot-scope="scope">

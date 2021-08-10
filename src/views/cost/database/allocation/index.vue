@@ -36,7 +36,7 @@
     </div>
     <el-main class="main allocation-table">
       <el-table v-if="list&&list.length>0" :data="list" :span-method="objectSpanMethod" :header-cell-style="{background:'#f5f9ff'}">
-        <el-table-column label="数据库" prop="databaseType.name" min-width="100"></el-table-column>
+        <el-table-column label="数据库" prop="database" min-width="100"></el-table-column>
         <el-table-column label="部门" prop="dept.deptName" min-width="100"></el-table-column>
         <el-table-column label="用户名" prop="user.userName" min-width="100"></el-table-column>
         <el-table-column label="账号" prop="account" min-width="100"></el-table-column>
@@ -91,7 +91,8 @@
         total: 0,
         filter:{},
         spanArr:[],
-        position:0
+        position:0,
+        deptTreeAll: []
       };
     },
     mixins: [mixin],
@@ -135,7 +136,7 @@
         // 双层循环
           for (let i = 0; i < this.list.length; i++) {
             for (let j = i + 1; j < this.list.length; j++) {
-              if (this.list[i].databaseType.value === this.list[j].databaseType.value) {
+              if (this.list[i].database === this.list[j].database) {
                 this.list[i].rowspan++
                 this.list[j].rowspan--
               }

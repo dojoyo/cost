@@ -957,6 +957,15 @@ export default {
       data
     });
   },
+  // 数据库费-账号分配
+  allocateAccount(data) {
+    return request({
+      url: `/fee/pc/database/${data.id}/account/allocated`,
+      method: 'post',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    })
+  },
   // 数据库-账号分配-导出
   exportAccount(data) {
     return request({

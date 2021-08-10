@@ -145,7 +145,11 @@
                   @click.native="setCostShare(scope.row.id)"
                   >费用分摊设置</el-dropdown-item
                 >
-                <el-dropdown-item @click.native="delte(scope.row.id)"
+                <el-dropdown-item
+                  @click.native="setAccount(scope.row.id)"
+                  >分配账号</el-dropdown-item
+                >
+                <el-dropdown-item  @click.native="delte(scope.row.id)"
                   >删除</el-dropdown-item
                 >
               </el-dropdown-menu>
@@ -178,16 +182,18 @@
     </el-main>
     <AddAndEditDialog ref="addAndEdit" :enumType="enumType"/>
     <SetCostShareDialog ref="setCostShare" />
+    <SetAccountDialog ref="setAccount" />
   </el-container>
 </template>
 <script>
 import api from "@/api/cost";
 import AddAndEditDialog from "./addAndEdit";
 import SetCostShareDialog from "./setCostShare";
+import SetAccountDialog from "./setCostShare";
 import mixin from "../../mixins";
 export default {
   name: "",
-  components: { AddAndEditDialog, SetCostShareDialog },
+  components: { AddAndEditDialog, SetCostShareDialog, SetAccountDialog },
   props: {},
   data() {
     return {
@@ -242,8 +248,11 @@ export default {
     },
     //费用分摊设置
     setCostShare(id) {
-      console.log(id)
       this.$refs.setCostShare.open(id);
+    },
+    // 分配账号
+    setAccount(id) {
+      this.$refs.setAccount.open(id)
     },
     delte(id){
       this.$confirm("即将删除数据，是否继续？", "提示", {
