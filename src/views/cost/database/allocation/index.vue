@@ -6,7 +6,7 @@
         <div class="title">
           <i class="iconfont icon-shujukufei"></i> 数据库录账号分配</div>
         <div style="margin-left: auto">
-          <el-button type="primary" size="small" icon="el-icon-plus" @click="showAddAndEditDialog()">新增</el-button>
+          <!-- <el-button type="primary" size="small" icon="el-icon-plus" @click="showAddAndEditDialog()">新增</el-button> -->
         </div>
       </div>
     </el-header>

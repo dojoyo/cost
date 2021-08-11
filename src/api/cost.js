@@ -963,7 +963,7 @@ export default {
       url: `/fee/pc/database/${data.id}/account/allocated`,
       method: 'post',
       headers:{ 'Content-Type': 'application/json; charset=utf-8' },
-      data
+      data: data.data
     })
   },
   // 数据库-账号分配-导出

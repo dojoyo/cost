@@ -14,7 +14,7 @@
             <div class="clear"></div>
         </div>
         <el-form :model="form" ref="form" :rules="rules" label-width="110px">
-          <el-form-item label="数据库类型"  required prop="databaseType">
+          <!-- <el-form-item label="数据库类型"  required prop="databaseType">
            <el-select v-model="form.databaseType" placeholder="请选择数据库类型">
               <el-option
                     v-for="item in enumType.FeeDatabaseType"
@@ -23,7 +23,7 @@
                     :value="item.value">
                 </el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="用户名" required prop="userId">
             <el-select
                 v-model="form.userId"
@@ -78,14 +78,14 @@ export default {
             title:'新增',
             form:{
                 account:'',
-                databaseType:'',
+                // databaseType:'',
                 deptId:'',
                 frequency:'',
                 userId:''
             },
             rules:{
                account: [{ required: true, message: "请输入账号", trigger:['change','blur'] }],
-               databaseType: [{ required: true, message: "请选择数据库类型", trigger:'change' }],
+            //    databaseType: [{ required: true, message: "请选择数据库类型", trigger:'change' }],
                deptId: [{ required: true, message: "请输入选择部门", trigger:'change' }],
                userId: [{ required: true, message: "请输入用户名",  trigger: 'change' }],
             },
@@ -106,22 +106,22 @@ export default {
             this.$refs.form.resetFields();
             this.title = query.id ? '编辑':'新增'
             if(query.id){
-              this.form = {
-                  id: query.id,
-                  account: query.account,
-                  userId: query.user.userId,
-                  frequency: query.frequency,
-              }
-              this.form.databaseType = query.databaseType.value
-              this.form.deptId = query.dept.deptId
-              this.userOptions = [{
-                  userName: query.user.userName,
-                  userId: query.user.userId
-              }]
+                this.userOptions = [{
+                    userName: query.user.userName,
+                    userId: query.user.userId
+                }]
+                this.form = {
+                    id: query.id,
+                    account: query.account,
+                    userId: query.user.userId,
+                    frequency: query.frequency,
+                    deptId: query.dept.deptId
+                }
+                // this.form.databaseType = query.databaseType.value
             }
           })
         },
-        // 新增、编辑
+        // 新增、编辑（不要新增）
         submitForm() {
              this.$refs.form.validate((valid) => {
                 if (valid) {

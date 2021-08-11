@@ -182,14 +182,14 @@
     </el-main>
     <AddAndEditDialog ref="addAndEdit" :enumType="enumType"/>
     <SetCostShareDialog ref="setCostShare" />
-    <SetAccountDialog ref="setAccount" />
+    <SetAccountDialog ref="setAccount" :deptTree="deptTree" />
   </el-container>
 </template>
 <script>
 import api from "@/api/cost";
 import AddAndEditDialog from "./addAndEdit";
 import SetCostShareDialog from "./setCostShare";
-import SetAccountDialog from "./setCostShare";
+import SetAccountDialog from "./setAccount";
 import mixin from "../../mixins";
 export default {
   name: "",
@@ -219,6 +219,7 @@ export default {
     async init() {
         await this.getEnum('FeeMonth');
         await this.getEnum('FeeDatabaseType');
+        await this.getDeptTree();
         this.enumType.FeeMonthAll = [{ name: "全部月份", value: "" }].concat(
           this.enumType.FeeMonth
         );

@@ -1,28 +1,64 @@
 <template>
     <el-dialog
         :visible.sync="visible"
-        width="500px"
+        width="450px"
         :show-close="false"
         :close-on-click-modal="false"
         custom-class="cost-dialog"
     >
         <div slot="title" class="header">
-            <div class="title">费用分摊设置</div>
+            <div class="title">{{title}}</div>
             <div class="options">
                 <i class="iconfont icon-x1 pointer fs-22" @click="visible=false"></i>
             </div>
             <div class="clear"></div>
         </div>
-        <el-table :data="tableData" style="width: 100%"  :header-cell-style="{background:'#f5f9ff'}" border>
-          <el-table-column label="费用分摊部门" width="150" align="center" prop="dept.deptName"></el-table-column>
-          <el-table-column label="数量" align="center" prop="cost">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.cost" type="number" size="mini" class="input-txt-right">
-                 <span slot="suffix" class="lh-28">%</span>
-              </el-input>
-            </template>
-          </el-table-column>
-        </el-table>
+        <el-form :model="form" ref="form" :rules="rules" label-width="110px">
+          <!-- <el-form-item label="数据库类型"  required prop="databaseType">
+           <el-select v-model="form.databaseType" placeholder="请选择数据库类型">
+              <el-option
+                    v-for="item in enumType.FeeDatabaseType"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.value">
+                </el-option>
+            </el-select>
+          </el-form-item> -->
+          <el-form-item label="用户名" required prop="userId">
+            <el-select
+                v-model="form.userId"
+                ref="userSelect"
+                filterable
+                remote
+                reserve-keyword
+                :remote-method="remoteMethod"
+                :loading="loading">
+                <el-option
+                    v-for="item in userOptions"
+                    :key="item.userId"
+                    :label="item.userName"
+                    :value="item.userId">
+                </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="部门" required prop="deptId">
+             <el-cascader
+                ref="department"
+                class="mr-10"
+                v-model="form.deptId"
+                :options="deptTree"
+                :show-all-levels="false"
+                :props="{ checkStrictly: true, emitPath: false }"
+                clearable
+             ></el-cascader>
+          </el-form-item>
+          <el-form-item label="账号" required prop="account">
+             <el-input v-model="form.account" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="使用频率" >
+            <el-input v-model="form.frequency" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="submitForm">确 定</el-button>
             <el-button @click="visible = false">取 消</el-button>
@@ -33,11 +69,28 @@
 import api from "@/api/cost";
 export default {
     name: 'laborAddAndEdit',
+    props:{
+        // enumType:Object,
+        deptTree:Array
+    },
     data() {
         return {
-            visible: false,
-            tableData:[],
-            id:''
+            title:'账号分配',
+            id: '',
+            form:{
+                account:'',
+                deptId:'',
+                frequency:'',
+                userId:''
+            },
+            rules:{
+               account: [{ required: true, message: "请输入账号", trigger:['change','blur'] }],
+               deptId: [{ required: true, message: "请输入选择部门", trigger:'change' }],
+               userId: [{ required: true, message: "请输入用户名",  trigger: 'change' }],
+            },
+            userOptions: [],
+            loading: false,
+            visible:false
         };
     },
     mounted() {
@@ -46,41 +99,59 @@ export default {
     methods: {
         // 打开弹窗
         open(query) {
-            this.visible = true;
-            this.id = query
-            this.getData(query)
+          this.id = query
+          this.userOptions = []
+          this.visible = true
+          this.$nextTick(()=>{
+            this.$refs.form.resetFields();
+            // if(query.id){
+            //   this.form = {
+            //       id: query.id,
+            //       account: query.account,
+            //       userId: query.user.userId,
+            //       frequency: query.frequency,
+            //   }
+            //   this.form.deptId = query.dept.deptId
+            //   this.userOptions = [{
+            //       userName: query.user.userName,
+            //       userId: query.user.userId
+            //   }]
+            // }
+          })
         },
         // 新增、编辑
         submitForm() {
-            console.log(this.tableData)
-            let list = []
-            this.tableData.forEach(item=>{
-                if(item.cost){
-                    list.push({
-                        cost:parseFloat(item.cost),
-                        deptId:item.dept.deptId
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    const params = {
+                        id: this.id,
+                        data: this.form
+                    }
+                    api.allocateAccount(params).then(res => {
+                        if (res.code === 200) {
+                            this.$message.success('操作成功')
+                            this.$parent.$parent.getList()
+                            this.visible = false
+                        }
                     })
+                } else {
+                    console.log('error submit!!');
+                    return false;
                 }
-            })
-        
-            api.setCostShare({
-                id:this.id,
-                data: list
-            }).then(res=>{
-                if(res.code === 200){
-                    this.visible = false
-                    this.$message.success({ message: "设置成功!", duration: 1500 });
-                }
-            })
+            });
         },
-        getData(id){
-            api.costShareList(id).then(res=>{
-                console.log(res)
-                if(res.code === 200){
-                    this.tableData = res.data
-                    console.log(this.tableData)
-                }
-            })
+        remoteMethod(query) {
+            if (query !== '') {
+                this.loading = true
+                api.getUser({filter: query}).then(res => {
+                    this.loading = false
+                    if (res.code === 200) {
+                        this.userOptions = res.data
+                    } else {
+                        this.userOptions = []
+                    }
+                })
+            }
         }
     }
 };
@@ -100,16 +171,31 @@ export default {
             padding-left: 115px;
         }
         .el-dialog__body{
-            max-height: 500px;
-            width: 100%;
-            overflow: auto;
-          tbody {
-            tr td:first-child{
-              background: #f5f9ff;
+          .title{
+            font-size: 14px;
+            font-weight: bold;
+            padding-left: 8px;
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            &::before{
+              content:'';
+              position: absolute;
+              left: 0;
+              top: 50%;
+              width: 3px;
+              height: 70%;
+              border-left: 3px solid #015cb9;
+              transform: translateY(-50%);
+
             }
           }
+          .price .el-input__inner{
+            border:none;
+          }
+        }
+        .border-top{
+          border-top: 1px solid #f1f2f4;
         }
     }
-    .lh-28{line-height: 28px;}
-    .input-txt-right{input{text-align: right;}}
 </style>
