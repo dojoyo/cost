@@ -668,6 +668,46 @@ export default {
       responseType: 'arraybuffer'
     });
   },
+  // 猎头费-新增人数-列表
+  newHunterList(data){
+    return request({
+      url: '/fee/pc/headhunting/addition/list',
+      method: 'post',
+      data
+    });
+  },
+  // 猎头费-新增人数-新增
+  addNewHunter(data){
+    return request({
+      url: '/fee/pc/headhunting/addition/add',
+      method: 'post',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 猎头费-新增人数- 编辑
+  editNewHunter(data){
+    return request({
+      url: `/fee/pc/headhunting/addition/${data.id}`,
+      method: 'put',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      data
+    });
+  },
+  // 猎头费-新增人数-详情
+  newHunterDetail(id){
+    return request({
+      url: `/fee/pc/headhunting/addition/${id}`,
+      method: 'get'
+    });
+  },
+  // 猎头费-新增人数- 删除
+  delNewHunter(id){
+    return request({
+      url: `/fee/pc/headhunting/addition/${id}`,
+      method: 'delete'
+    });
+  },
   //工商类 - 列表
   bizExpenseList(data){
     return request({

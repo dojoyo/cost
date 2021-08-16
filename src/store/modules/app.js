@@ -18,14 +18,19 @@ const app = {
           { name: '差旅费', icon: 'icon-chalvfei', path: '/cost/travel', code: '' },
           { name: '业务招待费', icon: 'icon-yewuzhaodaifei', path: '/cost/serve', code: '' },
           { name: '咨询/中介费', icon: 'icon-waibuzixunzhongjiefei', path: '/cost/agent', code: '' },
-          { name: '数据库费', icon: 'icon-shujukufei', path: '', code: '',
+          { name: '数据库费', icon: 'icon-shujukufei', path: '/cost/database', code: '',
             children: [
               { name: '数据库录入费', icon: '', path: '/cost/database/entering', code: '' },
               { name: '数据库录账号分配', icon: '', path: '/cost/database/allocation', code: '' },
               { name: '凯胜专家库使用情况', icon: '', path: '/cost/database/expert', code: '' }
             ]
           },
-          { name: '猎头费', icon: 'icon-lietoufei', path: '/cost/headhunting', code: '' },
+          { name: '猎头费', icon: 'icon-lietoufei', path: '', code: '',
+            children: [
+              { name: '猎头招聘费', icon: '', path: '/cost/headhunting', code: '' },
+              { name: '新增人数', icon: '', path: '/cost/newly', code: '' },
+            ]
+          },
           { name: '固定办公费', icon: 'icon-gudingbangongfei', path: '/cost/office', code: '' },
           { name: '工商类费用', icon: 'icon-gongshangleifeiyong', path: '/cost/commerce', code: '' },
           { name: '其他费用', icon: 'icon-qitafeiyong', path: '/cost/other', code: '' },

@@ -128,7 +128,7 @@
           label="操作"
           align="center"
           fixed="right"
-          width="150"
+          width="145"
         >
           <template slot-scope="scope">
             <el-button
@@ -136,6 +136,7 @@
               @click.native="showAddAndEditDialog(scope.row)"
               >编辑</el-button
             >
+            <span style="padding: 0 10px">|</span>
             <el-dropdown trigger="click">
               <span class="el-dropdown-link" style="cursor: pointer">
                 更多<i class="el-icon-arrow-down el-icon--right"></i>
@@ -286,5 +287,9 @@ export default {
     > * {
         margin-bottom: 10px;
     }
+}
+.main{
+  margin-top: 15px!important;
+  border-radius: 5px 5px 0 0 ;
 }
 </style>

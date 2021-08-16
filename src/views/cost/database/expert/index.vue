@@ -76,12 +76,13 @@
         ></el-table-column>
         <el-table-column label="Type" prop="type"></el-table-column>
         <el-table-column label="Hours" prop="hours"></el-table-column>
-        <el-table-column label="Remarks" prop="remark"></el-table-column>
+        <el-table-column label="Remarks" prop="remark" width="200"></el-table-column>
         <el-table-column
           label="操作"
           fixed="right"
           header-align="center"
           align="center"
+          width="126"
         >
           <template slot-scope="scope">
             <el-button
@@ -89,6 +90,7 @@
               @click="showAddAndEditDialog(scope.row)"
               >编辑</el-button
             >
+            <span style="padding: 0 10px">|</span>
             <el-button type="text" @click="delte(scope.row.id)"
               >删除</el-button
             >

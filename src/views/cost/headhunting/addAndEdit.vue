@@ -14,7 +14,9 @@
       <div class="clear"></div>
     </div>
     <el-form :model="form" :inline="true"  :rules="rules" ref="form" label-width="90px">
-         <el-form-item label="部门" required prop="deptId">
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="部门" required prop="deptId">
             <el-cascader
               ref="department"
               class="mr-10"
@@ -24,6 +26,8 @@
               :props="{ checkStrictly: true, emitPath: false }"
               clearable></el-cascader>
           </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="入职人" required prop="userId">
              <el-select
                 v-model="form.userId"
@@ -42,10 +46,16 @@
                   </el-option>
             </el-select>
           </el-form-item>
-           <el-form-item label="费用" required prop="amount">
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="费用" required prop="amount">
               <el-input v-model="form.amount" placeholder="请输入费用"></el-input>
            </el-form-item>
-          <el-form-item label="费用发生日期" required prop="paymentDate">
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="费用发生日期" required prop="paymentDate" class="lh-18">
             <el-date-picker
               v-model="form.paymentDate"
               type="date"
@@ -54,6 +64,8 @@
               placeholder="选择日期">
             </el-date-picker>
           </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
      <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -63,7 +75,6 @@
 </template>
 <script>
 import api from "@/api/cost";
-import filters from '@/utils/filters'
 export default {
   props:{
      enumType:Object,
@@ -162,7 +173,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .hunter-dialog{
       .el-dialog__title{
           line-height: 48px;
@@ -174,5 +185,8 @@ export default {
           text-align: left;
           padding-left: 115px;
       }
+  }
+  .lh-18{
+      .el-form-item__label{line-height: 18px;}
   }
 </style>

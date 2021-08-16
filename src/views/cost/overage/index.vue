@@ -210,4 +210,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main{
+  border-radius: 5px 5px 0 0 ;
+}
 </style>

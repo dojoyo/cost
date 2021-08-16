@@ -108,7 +108,7 @@
     }
   };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .space-between{
     justify-content: space-between;
   }
@@ -132,6 +132,9 @@
         }
       }
     }
+  }
+  .main{
+    border-radius: 5px 5px 0 0 ;
   }
   .blue-background{
     background-color: #f5f9ff;

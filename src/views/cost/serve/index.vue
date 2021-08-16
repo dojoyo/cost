@@ -42,7 +42,7 @@
         <el-table-column prop="number" label="单据号" width="120"></el-table-column>
         <el-table-column prop="belongMonth" label="入账月份" width="120"></el-table-column>
         <el-table-column prop="remark" label="备注" width="120"></el-table-column>
-        <el-table-column label="操作" width="145" fixed="right" align="left" >
+        <el-table-column label="操作" width="126" fixed="right" align="center" >
           <template slot-scope="scope">
             <el-button type="text" @click="goEdit(scope.row)">编辑</el-button>
             <span style="padding: 0 10px">|</span>
@@ -171,6 +171,7 @@
     padding: 0 15px;
     background-color: #fff;
     border-bottom: 1px solid #e6e6e6;
+    border-radius: 5px 5px 0 0;
   }
   .space-between{
     justify-content: space-between;

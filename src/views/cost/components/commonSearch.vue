@@ -2,7 +2,7 @@
     <div class="search-area">
         <el-input v-model="search.userName" placeholder="请输入人员姓名" class="mr-10" v-if="showUserName"></el-input>
         <el-date-picker v-model="search.year" type="year" format="yyyy年" value-format="yyyy" placeholder="请选择年份" class="mr-10"></el-date-picker>
-        <el-select v-model="search.month" class="mr-10">
+        <el-select v-model="search.month" class="mr-10" v-if="showMonth">
             <el-option
                 v-for="item in months"
                 :key="item.value"
@@ -28,6 +28,10 @@ export default {
         feeMonth: Array,
         deptTree: Array,
         showUserName: {
+            type: Boolean,
+            default: true
+        },
+        showMonth: {
             type: Boolean,
             default: true
         }

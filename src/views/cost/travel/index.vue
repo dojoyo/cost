@@ -41,7 +41,7 @@
             {{scope.row.departureTime | DateTimeEn}}
           </template>
         </el-table-column>
-        <el-table-column prop="flightType.name" label="国际/国内" width="80"></el-table-column>
+        <el-table-column prop="flightType.name" label="国际/国内" width="100"></el-table-column>
         <el-table-column prop="voyage" label="航程" width="120"></el-table-column>
         <el-table-column prop="flight" label="航班" width="80"></el-table-column>
         <el-table-column prop="cabin" label="航等" width="80"></el-table-column>
@@ -56,7 +56,7 @@
         <el-table-column prop="belongMonth" label="入账月份" width="80"></el-table-column>
         <el-table-column prop="coupon" label="优惠券" width="80"></el-table-column>
         <el-table-column prop="remarks" label="备注" width="120"></el-table-column>
-        <el-table-column label="操作" width="145" fixed="right" align="left" >
+        <el-table-column label="操作" width="126" fixed="right" align="center" >
           <template slot-scope="scope">
             <el-button type="text" @click="goAddAndEdit(scope.row)">编辑</el-button>
             <span style="padding: 0 10px">|</span>
@@ -93,7 +93,7 @@
         <el-table-column prop="amount" label="金额" width="80"></el-table-column>
         <el-table-column prop="belongMonth" label="入账月份" width="80"></el-table-column>
         <el-table-column prop="remarks" label="备注" width="120"></el-table-column>
-        <el-table-column label="操作" width="145" fixed="right" align="left" >
+        <el-table-column label="操作" width="126" fixed="right" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="goAddAndEdit(scope.row)">编辑</el-button>
             <span style="padding: 0 10px">|</span>
@@ -139,7 +139,7 @@
         <el-table-column prop="serviceCharge" label="服务费" width="80"></el-table-column>
         <el-table-column prop="total" label="合计" width="80"></el-table-column>
         <el-table-column prop="belongMonth" label="入账月份" width="80"></el-table-column>
-        <el-table-column label="操作" width="145" fixed="right" align="left" >
+        <el-table-column label="操作" width="126" fixed="right" align="center" >
           <template slot-scope="scope">
             <el-button type="text" @click="goAddAndEdit(scope.row)">编辑</el-button>
             <span style="padding: 0 10px">|</span>
@@ -165,7 +165,7 @@
         <el-table-column prop="belongMonth" label="入账月份" width="80"></el-table-column>
         <el-table-column prop="remarks" label="用车备注" width="120"></el-table-column>
         <el-table-column prop="supplement" label="补充说明" width="120"></el-table-column>
-        <el-table-column label="操作" width="145" fixed="right" align="left" >
+        <el-table-column label="操作" width="126" fixed="right" align="center" >
           <template slot-scope="scope">
             <el-button type="text" @click="goAddAndEdit(scope.row)">编辑</el-button>
             <span style="padding: 0 10px">|</span>
@@ -186,7 +186,7 @@
         <el-table-column prop="belongMonth" label="入账月份" width="80"></el-table-column>
         <el-table-column prop="summary" label="摘要" width="180"></el-table-column>
         <el-table-column prop="mainBody" label="主体" width="150"></el-table-column>
-        <el-table-column label="操作" width="145" fixed="right" align="left" >
+        <el-table-column label="操作" width="126" fixed="right" align="center" >
           <template slot-scope="scope">
             <el-button type="text" @click="goAddAndEdit(scope.row)">编辑</el-button>
             <span style="padding: 0 10px">|</span>
@@ -429,6 +429,7 @@
     padding: 0 15px;
     background-color: #fff;
     border-bottom: 1px solid #e6e6e6;
+    border-radius: 5px 5px 0 0 ;
     .el-menu{
       border-bottom: 0;
       .el-menu-item{

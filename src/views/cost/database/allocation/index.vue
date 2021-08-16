@@ -11,17 +11,17 @@
       </div>
     </el-header>
     <div class="search-area">
-      <el-input v-model="search.userName" placeholder="请输入人员姓名" class="mr-10"></el-input>
+      <el-input v-model="search.userName" placeholder="请输入人员姓名" class="mr-10 mb-10"></el-input>
        <el-cascader
         ref="department"
-        class="mr-10"
+        class="mr-10 mb-10"
         placeholder="请选择部门"
         v-model="search.deptId"
         :options="deptTreeAll"
         :show-all-levels="false"
         :props="{ checkStrictly: true, emitPath: false }"
         clearable></el-cascader>
-      <el-select v-model="search.databaseType" placeholder="请选择" class="mr-10">
+      <el-select v-model="search.databaseType" placeholder="请选择" class="mr-10 mb-10">
         <el-option
           v-for="item in enumType.FeeDatabaseTypeAll"
           :key="item.value"
@@ -41,9 +41,10 @@
         <el-table-column label="用户名" prop="user.userName" min-width="100"></el-table-column>
         <el-table-column label="账号" prop="account" min-width="100"></el-table-column>
         <el-table-column label="使用频率" prop="frequency" min-width="100"></el-table-column>
-        <el-table-column label="操作" fixed="right" min-width="100" >
+        <el-table-column label="操作" fixed="right" width="126" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="showAddAndEditDialog(scope.row)">编辑</el-button>
+            <span style="padding: 0 10px">|</span>
             <el-button type="text" @click="delte(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -194,7 +195,7 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .search-area {
   margin: 15px 15px 0;
   padding: 20px;
@@ -217,6 +218,9 @@
   margin: 0 auto !important;
   padding: 15px;
   width: calc(100% - 30px);
+}
+.mb-10{
+  margin-bottom: 10px;
 }
 .allocation-table{
   tbody{

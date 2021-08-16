@@ -48,9 +48,10 @@
             {{ scope.row.amount | formatMoney }}
           </template>
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="showAddAndEditDialog(scope.row)">编辑</el-button>
+            <span style="padding: 0 10px">|</span>
             <el-button type="text" @click="del(scope.row)">删除</el-button>
           </template>
         </el-table-column>
@@ -174,6 +175,9 @@ export default {
   border-radius: 5px;
   .el-input {
     width: 220px;
+  }
+  & > div {
+    margin-bottom: 0!important;
   }
 }
 .tag-operate-tool {

@@ -5,6 +5,7 @@
       path==='/cost/serve' ||
       path==='/cost/agent' ||
       path==='/cost/headhunting' ||
+      path==='/cost/newly' || 
       path==='/cost/office' ||
       path==='/cost/commerce' ||
       path==='/cost/other' ||

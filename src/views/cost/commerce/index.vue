@@ -57,9 +57,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="remark" label="备注" min-width="200"></el-table-column>
-        <el-table-column label="操作" width="145" fixed="right" header-align="center" align="center" >
+        <el-table-column label="操作" width="126" fixed="right" header-align="center" align="center" >
           <template slot-scope="scope">
             <el-button type="text" @click="showAddAndEditDialog(scope.row)">编辑</el-button>
+            <span style="padding: 0 10px">|</span>
             <el-button type="text" @click="del(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>

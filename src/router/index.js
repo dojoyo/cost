@@ -26,6 +26,7 @@ export default new Router({
         { path: 'serve', name: 'cost-serve', component: _import('cost/serve/index'), meta: { title: 'cost-serve' } },
         { path: 'agent', name: 'cost-agent', component: _import('cost/agent/index'), meta: { title: 'cost-agent' } },
         { path: 'headhunting', name: 'cost-headhunting', component: _import('cost/headhunting/index'), meta: { title: 'cost-headhunting' } },
+        { path: 'newly', name: 'cost-newly', component: _import('cost/headhunting/newly'), meta: { title: 'cost-newly' } },
         { path: 'office', name: 'cost-office', component: _import('cost/office/index'), meta: { title: 'cost-office' } },
         { path: 'commerce', name: 'cost-commerce', component: _import('cost/commerce/index'), meta: { title: 'cost-commerce' } },
         { path: 'other', name: 'cost-other', component: _import('cost/other/index'), meta: { title: 'cost-other' } },

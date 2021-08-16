@@ -52,13 +52,14 @@
             <span>{{scope.row.total}}%</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" fixed="right" width="100" align="right">
+        <el-table-column label="操作" fixed="right" width="126" align="center">
           <template slot-scope="scope">
             <div v-show="scope.row.editIndex !== editIndex">
               <el-button type="text" @click="edit(scope.row)">编辑</el-button>
             </div>
             <div v-show="scope.row.editIndex === editIndex">
               <el-button type="text" class="blue" @click="saveEdit(scope.row)">保存</el-button>
+              <span style="padding: 0 10px">|</span>
               <el-button type="text" class="blue" @click="cancelEdit(scope.row)">取消</el-button>
             </div>
           </template>
@@ -249,7 +250,7 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .search-area{
     margin: 15px 15px 0;
     padding: 20px;
