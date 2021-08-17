@@ -20,9 +20,9 @@ const app = {
           { name: '咨询/中介费', icon: 'icon-waibuzixunzhongjiefei', path: '/cost/agent', code: '' },
           { name: '数据库费', icon: 'icon-shujukufei', path: '/cost/database', code: '',
             children: [
-              { name: '数据库录入费', icon: '', path: '/cost/database/entering', code: '' },
-              { name: '数据库录账号分配', icon: '', path: '/cost/database/allocation', code: '' },
-              { name: '凯胜专家库使用情况', icon: '', path: '/cost/database/expert', code: '' }
+              { name: '数据库费录入', icon: '', path: '/cost/database/entering', code: '' },
+              { name: '数据库账号分配', icon: '', path: '/cost/database/allocation', code: '' },
+              { name: '凯盛专家库使用情况', icon: '', path: '/cost/database/expert', code: '' }
             ]
           },
           { name: '猎头费', icon: 'icon-lietoufei', path: '', code: '',

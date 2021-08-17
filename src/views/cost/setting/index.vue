@@ -58,9 +58,9 @@
               <el-button type="text" @click="edit(scope.row)">编辑</el-button>
             </div>
             <div v-show="scope.row.editIndex === editIndex">
-              <el-button type="text" class="blue" @click="saveEdit(scope.row)">保存</el-button>
+              <el-button type="text" class="blue-active" @click="saveEdit(scope.row)">保存</el-button>
               <span style="padding: 0 10px">|</span>
-              <el-button type="text" class="blue" @click="cancelEdit(scope.row)">取消</el-button>
+              <el-button type="text" class="blue-active" @click="cancelEdit(scope.row)">取消</el-button>
             </div>
           </template>
         </el-table-column>
@@ -268,4 +268,5 @@
 .input-txt-right{
   input{text-align: right!important;}
 }
+.blue-active{color: #3C6CBA;}
 </style>

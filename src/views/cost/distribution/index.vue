@@ -22,7 +22,7 @@
     </div>
     <div class="tag-operate-tool">
       <span>最近发布时间：{{releaseTime || '-'}}</span>
-       <el-button type="text" icon="iconfont icon-shujufabu fs-12" class="blue" @click="publishRelease"> 发布数据</el-button>
+       <el-button type="text" icon="iconfont icon-shujufabu fs-12" class="blue-active" @click="publishRelease"> 发布数据</el-button>
     </div>
     <el-main class="main">
       <el-table :data="dataList" :header-cell-style="{background:'#f5f9ff'}" border :cell-style="firstCellStyle">
@@ -167,11 +167,13 @@
     }
 }
 .tag-operate-tool{
+  height: 42px;
+  line-height: 42px;
   margin: 15px auto 0;
   padding: 0 15px;
   width: calc(100% - 30px);
   background-color: #fff;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid #f2f2f2;
   border-radius: 5px 5px 0 0 ;
   display:flex;
   align-items: center;
@@ -181,4 +183,5 @@
   margin:0 15px!important;
 }
 .mb-10{margin-bottom: 10px;}
+.blue-active{color: #3C6CBA;}
 </style>

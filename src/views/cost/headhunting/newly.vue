@@ -165,7 +165,7 @@ export default {
 //   padding: 0 15px;
 //   width: calc(100% - 30px);
 //   background-color: #fff;
-//   border-bottom: 1px solid #e6e6e6;
+//   border-bottom: 1px solid #f2f2f2;
 //   border-radius: 5px 5px 0 0 ;
 // }
 .main.none-operate{

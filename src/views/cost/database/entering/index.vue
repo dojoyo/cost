@@ -4,7 +4,7 @@
     <el-header class="header">
       <div class="header-wrap" style="display: flex">
         <div class="title">
-          <i class="iconfont icon-shujukufei"></i> 数据库录入费
+          <i class="iconfont icon-shujukufei"></i> 数据库费录入
         </div>
         <div style="margin-left: auto">
           <el-button

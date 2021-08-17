@@ -15,9 +15,9 @@
     <div class="flex space-between tag-operate-tool">
       <div></div>
       <div class="operate-buttons">
-        <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue" @click="openImportDialog"> 导入</el-button>
-        <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="openExportDialog"> 导出</el-button>
-        <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue" @click="getTemp"> 下载模板</el-button>
+        <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue-active" @click="openImportDialog"> 导入</el-button>
+        <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue-active" @click="openExportDialog"> 导出</el-button>
+        <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue-active" @click="getTemp"> 下载模板</el-button>
       </div>
     </div>
     <el-main class="main travel-main">
@@ -167,14 +167,17 @@
 
 <style lang="scss" scoped>
   .tag-operate-tool{
+    height: 42px;
+    line-height: 42px;
     margin: 15px 15px 0;
     padding: 0 15px;
     background-color: #fff;
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid #f2f2f2;
     border-radius: 5px 5px 0 0;
   }
   .space-between{
     justify-content: space-between;
   }
   .travel-main{margin-top: 0!important;padding-top: 10px;}
+  .blue-active{color: #3C6CBA;}
 </style>

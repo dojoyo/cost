@@ -4,7 +4,7 @@
     <el-header class="header">
       <div class="header-wrap" style="display: flex">
         <div class="title">
-          <i class="iconfont icon-shujukufei"></i> 数据库录账号分配</div>
+          <i class="iconfont icon-shujukufei"></i> 数据库账号分配</div>
         <div style="margin-left: auto">
           <!-- <el-button type="primary" size="small" icon="el-icon-plus" @click="showAddAndEditDialog()">新增</el-button> -->
         </div>
@@ -32,7 +32,7 @@
       <el-button @click="getList" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
     </div>
    <div class="tag-operate-tool">
-        <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="exportFile"> 导出</el-button>
+        <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue-active" @click="exportFile"> 导出</el-button>
     </div>
     <el-main class="main allocation-table">
       <el-table v-if="list&&list.length>0" :data="list" :span-method="objectSpanMethod" :header-cell-style="{background:'#f5f9ff'}">
@@ -206,12 +206,14 @@
   }
 }
 .tag-operate-tool {
+  height: 42px;
+  line-height: 42px;
   text-align: right;
   margin: 15px auto 0;
   padding: 0 15px;
   width: calc(100% - 30px);
   background-color: #fff;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid #f2f2f2;
   border-radius: 5px 5px 0 0;
 }
 .main {
@@ -229,4 +231,5 @@
     }
   }
 }
+.blue-active{color: #3C6CBA;}
 </style>

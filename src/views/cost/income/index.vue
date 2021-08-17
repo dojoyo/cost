@@ -31,11 +31,11 @@
               :value="item.value">
             </el-option>
         </el-select>
-        <el-button @click="getList()" type="primary" size="small" icon="iconfont icon-sousuo fs-12">查询</el-button>
+        <el-button @click="getList()" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
       </div>
       <div class="tag-operate-tool">
-        <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" 
-        @click="openExportDialog">导出</el-button>
+        <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue-active" 
+        @click="openExportDialog"> 导出</el-button>
       </div>
     </div>
     <el-main class="main">
@@ -187,4 +187,5 @@ export default {
   border-radius: 5px;
 }
 .mb-10{margin-bottom: 10px}
+.blue-active{color: #3C6CBA;}
 </style>

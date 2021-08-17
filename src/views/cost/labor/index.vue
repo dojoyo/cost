@@ -18,10 +18,10 @@
           <el-button @click="getList()" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
         </div>
         <div class="operate-buttons">
-          <el-button type="text" icon="iconfont icon-bianjix fs-12" class="blue" @click="goAdd"> 编辑</el-button>
-          <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue" @click="openImportDialog"> 导入</el-button>
-          <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue" @click="openExportDialog"> 导出</el-button>
-          <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue" @click="getTemp"> 下载模板</el-button>
+          <el-button type="text" icon="iconfont icon-bianjix fs-12" class="blue-active" @click="goAdd"> 编辑</el-button>
+          <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue-active" @click="openImportDialog"> 导入</el-button>
+          <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue-active" @click="openExportDialog"> 导出</el-button>
+          <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue-active" @click="getTemp"> 下载模板</el-button>
         </div>
       </div>
     </div>
@@ -139,4 +139,5 @@
   .blue-background{
     background-color: #f5f9ff;
   }
+  .blue-active{color: #3C6CBA;}
 </style>

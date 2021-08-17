@@ -4,7 +4,7 @@
     <el-header class="header">
       <div class="header-wrap" style="display: flex">
         <div class="title">
-          <i class="iconfont icon-shujukufei"></i> 凯胜专家库使用情况
+          <i class="iconfont icon-shujukufei"></i> 凯盛专家库使用情况
         </div>
         <div style="margin-left: auto">
           <el-button
@@ -28,7 +28,7 @@
       <el-button
         type="text"
         icon="iconfont icon-xiazai3 fs-12"
-        class="blue"
+        class="blue-active"
         @click="openImportDialog"
       >
         导入</el-button
@@ -36,7 +36,7 @@
       <el-button
         type="text"
         icon="iconfont icon-shangchuan2 fs-12"
-        class="blue"
+        class="blue-active"
         @click="openExportDialog"
       >
         导出</el-button
@@ -44,7 +44,7 @@
       <el-button
         type="text"
         icon="iconfont icon-xiazai1 fs-12"
-        class="blue"
+        class="blue-active"
         @click="getTemp"
       >
         下载模板</el-button
@@ -223,12 +223,14 @@ export default {
 
 <style lang="scss" scoped>
 .tag-operate-tool {
+  height: 42px;
+  line-height: 42px;
   text-align: right;
   margin: 15px auto 0;
   padding: 0 15px;
   width: calc(100% - 30px);
   background-color: #fff;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid #f2f2f2;
   border-radius: 5px 5px 0 0;
 }
 .main {
@@ -236,4 +238,5 @@ export default {
   padding: 15px;
   width: calc(100% - 30px);
 }
+.blue-active{color: #3C6CBA;}
 </style>
