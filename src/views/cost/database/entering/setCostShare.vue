@@ -13,16 +13,26 @@
             </div>
             <div class="clear"></div>
         </div>
-        <el-table :data="tableData" style="width: 100%"  :header-cell-style="{background:'#f5f9ff'}" border>
-          <el-table-column label="费用分摊部门" width="150" align="center" prop="dept.deptName"></el-table-column>
-          <el-table-column label="数量" align="center" prop="cost">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.cost" type="number" size="mini" class="input-txt-right">
-                 <span slot="suffix" class="lh-28">%</span>
-              </el-input>
-            </template>
-          </el-table-column>
-        </el-table>
+        <div class="max-height-content">
+            <el-table :data="tableData" style="width: 100%"  :header-cell-style="{background:'#f5f9ff'}" border>
+                <el-table-column label="费用分摊部门" width="150" align="center" prop="dept.deptName"></el-table-column>
+                <el-table-column label="数量" align="center" prop="cost">
+                    <template slot-scope="scope">
+                    <el-input v-model="scope.row.cost" type="number" size="mini" class="input-txt-right">
+                        <span slot="suffix" class="lh-28">%</span>
+                    </el-input>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="60" fixed="right" header-align="center" align="center">
+                    <template slot-scope="scope">
+                        <el-button type="text" @click="del(scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="button-fixed-bottom">
+            <el-button type="text" icon="el-icon-plus" class="blue-active" @click="showNewDeptList">新增部门</el-button>
+        </div>
         <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="submitForm">确 定</el-button>
             <el-button @click="visible = false">取 消</el-button>
@@ -62,7 +72,6 @@ export default {
                     })
                 }
             })
-        
             api.setCostShare({
                 id:this.id,
                 data: list
@@ -75,10 +84,41 @@ export default {
         },
         getData(id){
             api.costShareList(id).then(res=>{
-                console.log(res)
                 if(res.code === 200){
-                    this.tableData = res.data
-                    console.log(this.tableData)
+                    this.tableData = res.data;
+                }
+            })
+        },
+        del(data){
+            this.$confirm('即将删除数据，是否继续？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                const index = this.tableData.indexOf(data)
+                this.tableData.splice(index, 1)
+            }).catch(err => {});
+        },
+        showNewDeptList() {
+            this.$parent.$parent.$refs.newDeptList.open(this.id);
+        },
+        setNewDeptList(data) {
+            let hasDept = false;
+            data.forEach(item => {
+                for(let i=0;i<this.tableData.length;i++) {
+                if (item.deptId === this.tableData[i].dept.deptId) {
+                    hasDept = true;
+                    break;
+                }
+                }
+                if (!hasDept) {
+                this.tableData.push({
+                    cost: '',
+                    dept: {
+                    deptId: item.deptId,
+                    deptName: item.deptName
+                    }
+                })
                 }
             })
         }
@@ -97,19 +137,35 @@ export default {
         .dialog-footer{
             padding: 5px;
             text-align: left;
-            padding-left: 115px;
+            padding-left: 80px;
         }
         .el-dialog__body{
-            max-height: 500px;
+            position: relative;
+            height: 350px;
             width: 100%;
+            padding-bottom: 40px!important;
             overflow: auto;
-          tbody {
-            tr td:first-child{
-              background: #f5f9ff;
+            .max-height-content {
+                max-height: 295px;
+                width: 100%;
+                overflow: auto;
+                .el-table{
+                    tbody {
+                        tr td:first-child{
+                        background: #f5f9ff;
+                        }
+                    }
+                }
             }
-          }
+            
         }
     }
     .lh-28{line-height: 28px;}
     .input-txt-right{input{text-align: right;}}
+    .blue-active{color: #3C6CBA!important;}
+    .button-fixed-bottom{
+        position: absolute;
+        bottom: 0;
+        left: 15px;
+    }
 </style>

@@ -980,6 +980,13 @@ export default {
       data
     });
   },
+  // 数据库费-部门选择列表
+  moreDatabaseList(id) {
+    return request({
+      url: `/fee/pc/database/${id}/dept/list`,
+      method: 'get'
+    });
+  },
   // 数据库-账号分配-列表
   accountDatabaseList(data) {
     return request({

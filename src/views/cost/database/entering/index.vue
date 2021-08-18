@@ -184,6 +184,7 @@
     <AddAndEditDialog ref="addAndEdit" :enumType="enumType"/>
     <SetCostShareDialog ref="setCostShare" />
     <SetAccountDialog ref="setAccount" :deptTree="deptTree" />
+    <NewDeptList ref="newDeptList" @getNewDeptList="getNewDeptList" />
   </el-container>
 </template>
 <script>
@@ -191,10 +192,11 @@ import api from "@/api/cost";
 import AddAndEditDialog from "./addAndEdit";
 import SetCostShareDialog from "./setCostShare";
 import SetAccountDialog from "./setAccount";
+import NewDeptList from "./newDeptList";
 import mixin from "../../mixins";
 export default {
   name: "",
-  components: { AddAndEditDialog, SetCostShareDialog, SetAccountDialog },
+  components: { AddAndEditDialog, SetCostShareDialog, SetAccountDialog, NewDeptList },
   props: {},
   data() {
     return {
@@ -234,7 +236,6 @@ export default {
         ...this.search
       };
       api.reocrdDatabaseList(params).then(res => {
-          console.log(res)
           if (res.code === 200) {
             this.list = res.data.list;
             this.total = res.data.total;
@@ -258,21 +259,24 @@ export default {
     },
     delte(id){
       this.$confirm("即将删除数据，是否继续？", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          }).then(() => {
-              api.delReocrdData(id).then(res => {
-                  if (res.code === 200) {
-                    this.getList();
-                    this.$message.success({ message: "删除成功!", duration: 1500 });
-                  }
-                })
-              .catch(err => {
-                  console.log(err);
-              });
-          }).catch(err => {});
-      }
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+      }).then(() => {
+          api.delReocrdData(id).then(res => {
+              if (res.code === 200) {
+                this.getList();
+                this.$message.success({ message: "删除成功!", duration: 1500 });
+              }
+            })
+          .catch(err => {
+              console.log(err);
+          });
+      }).catch(err => {});
+    },
+    getNewDeptList(data) {
+      this.$refs.setCostShare.setNewDeptList(data);
+    }
   }
 };
 </script>
