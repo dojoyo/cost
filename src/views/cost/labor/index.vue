@@ -50,6 +50,7 @@
     <AddAndEditDialog ref="addAndEdit" />
     <ImportDialog ref="importDialog" method="laborImport" />
     <ExportDialog ref="exportDialog" method="laborExport" />
+    <DownloadTemp ref="downloadTempFile" />
   </el-container>
 </template>
 <script>
@@ -58,9 +59,10 @@
   import AddAndEditDialog from './addAndEdit';
   import ImportDialog from '../components/importDialog';
   import ExportDialog from '../components/exportDialog';
+  import DownloadTemp from '../components/downloadTemp'
   export default {
     name: '',
-    components: { AddAndEditDialog, ImportDialog, ExportDialog },
+    components: { AddAndEditDialog, ImportDialog, ExportDialog, DownloadTemp },
     props: {},
     data() {
       return {
@@ -103,7 +105,8 @@
         this.$refs.exportDialog.open();
       },
       getTemp() {
-        this.downLoadTempFile('getLaborTemp');
+        // this.downLoadTempFile('getLaborTemp');
+        this.$refs.downloadTempFile.open('getLaborTemp');
       }
     }
   };

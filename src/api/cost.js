@@ -47,11 +47,12 @@ export default {
     });
   },
   // 人工费下载模板
-  getLaborTemp() {
+  getLaborTemp(data) {
     return request({
       url: '/fee/pc/labor-cost/template/download',
       method: 'get',
-      responseType: 'arraybuffer'
+      responseType: 'arraybuffer',
+      params: data
     });
   },
   // 人工费导入
@@ -156,11 +157,12 @@ export default {
     });
   },
   // 固定办公费-下载模板
-  getFixedTemp() {
+  getFixedTemp(data) {
     return request({
       url: '/fee/pc/fixed-office/template/download',
       method: 'get',
-      responseType: 'arraybuffer'
+      responseType: 'arraybuffer',
+      params: data
     });
   },
   // 固定办公费-导入
@@ -199,11 +201,12 @@ export default {
     });
   },
   // 其他费用-下载模板
-  getOtherTemp() {
+  getOtherTemp(data) {
     return request({
       url: '/fee/pc/other/template/download',
       method: 'get',
-      responseType: 'arraybuffer'
+      responseType: 'arraybuffer',
+      params: data
     });
   },
   // 其他费用-导入
