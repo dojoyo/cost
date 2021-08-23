@@ -51,71 +51,71 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="12">
+                <!-- <el-col :span="12">
                     <el-form-item label="订票日期" :label-width="labelWidth" required prop="bookingTime">
                         <el-date-picker v-model="form.bookingTime" type="date"></el-date-picker>
                     </el-form-item>
-                </el-col>
+                </el-col> -->
                 <el-col :span="12">
                     <el-form-item label="入住时间" :label-width="labelWidth" required prop="checkInDate">
                         <el-date-picker v-model="form.checkInDate" type="date"></el-date-picker>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
                     <el-form-item label="离店日期" :label-width="labelWidth" required prop="checkOutDate">
                         <el-date-picker v-model="form.checkOutDate" type="date"></el-date-picker>
                     </el-form-item>
                 </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="12">
                     <el-form-item label="入账月份" :label-width="labelWidth" required prop="belongMonth">
                         <el-date-picker v-model="form.belongMonth" type="month" value-format="yyyy-MM"></el-date-picker>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
                     <el-form-item label="酒店城市" :label-width="labelWidth" required prop="hotelCity">
                         <el-input v-model="form.hotelCity" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="12">
                     <el-form-item label="酒店名称" :label-width="labelWidth" required prop="hotelName">
                         <el-input v-model="form.hotelName" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
                     <el-form-item label="单价" :label-width="labelWidth" required prop="unitPrice">
                         <el-input v-model="form.unitPrice" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="12">
                     <el-form-item label="金额" :label-width="labelWidth" required prop="amount">
                         <el-input v-model="form.amount" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
                     <el-form-item label="房型" :label-width="labelWidth" prop="roomType">
                         <el-input v-model="form.roomType" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="12">
                     <el-form-item label="房间数" :label-width="labelWidth" prop="numberOfRoom">
                         <el-input v-model="form.numberOfRoom" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
                     <el-form-item label="星级" :label-width="labelWidth" prop="starLevel">
                         <el-input v-model="form.starLevel" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="12">
                     <el-form-item label="间夜" :label-width="labelWidth" prop="stayDays">
                         <el-input v-model="form.stayDays" autocomplete="off"></el-input>
@@ -164,11 +164,11 @@ export default {
                         required: true, message: '请选择部门', trigger: 'change'
                     }
                 ],
-                bookingTime: [
-                    {
-                        required: true, message: '请选择订票日期', trigger: ['change', 'blur']
-                    }
-                ],
+                // bookingTime: [
+                //     {
+                //         required: true, message: '请选择订票日期', trigger: ['change', 'blur']
+                //     }
+                // ],
                 checkInDate: [
                     {
                         required: true, message: '请选择入住时间', trigger: ['change', 'blur']
@@ -217,7 +217,7 @@ export default {
             if (query && query.id) {
                 this.title = '编辑';
                 this.form = Object.assign({}, query);
-                this.form.bookingTime = filter.DateTimeEn(this.form.bookingTime)
+                // this.form.bookingTime = filter.DateTimeEn(this.form.bookingTime)
                 this.form.checkInDate = filter.DateTimeEn(this.form.checkInDate)
                 this.form.checkOutDate = filter.DateTimeEn(this.form.checkOutDate)
                 this.userOptions = [{
@@ -235,7 +235,7 @@ export default {
                 deptId: '',
                 userName: '',
                 userId: '',
-                bookingTime: '',
+                // bookingTime: '',
                 checkInDate: '',
                 checkOutDate: '',
                 belongMonth: '',

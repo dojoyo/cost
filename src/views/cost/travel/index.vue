@@ -68,11 +68,11 @@
         <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column label="部门" prop="deptName" width="120"></el-table-column>
         <el-table-column prop="userName" label="入住人" width="80"></el-table-column>
-        <el-table-column prop="bookingTime" label="订票日期" width="100">
+        <!-- <el-table-column prop="bookingTime" label="订票日期" width="100">
           <template slot-scope="scope">
             {{scope.row.bookingTime | DateTimeEn}}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="checkInDate" label="入住日期" width="100">
           <template slot-scope="scope">
             {{scope.row.checkInDate | DateTimeEn}}
@@ -105,11 +105,11 @@
         <el-table-column label="序号" type="index"></el-table-column>
         <el-table-column label="部门" prop="deptName" width="120"></el-table-column>
         <el-table-column prop="userName" label="出行人" width="80"></el-table-column>
-        <el-table-column prop="bookingTime" label="订票日期" width="100">
+        <!-- <el-table-column prop="bookingTime" label="订票日期" width="100">
           <template slot-scope="scope">
             {{scope.row.bookingTime | DateTimeEn}}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column prop="departureDate" label="发车日期" width="100">
           <template slot-scope="scope">
             {{scope.row.departureDate | DateTimeEn}}
