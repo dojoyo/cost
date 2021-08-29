@@ -30,8 +30,8 @@
         <el-table-column v-for="(item,index) in dataList.length && dataList[0].cellData" :key="'cellData'+index" :label="item.deptName" width="120" align="right">
           <template slot-scope="scope">
             <div class="txt-right">
-              {{scope.row.cellData[index].realtimeAmount | formatMoney}}
-              <span class="red" v-if="!scope.row.cellData[index].isSame">({{scope.row.cellData[index].historyAmount | formatMoney}})</span>
+              <div>{{scope.row.cellData[index].realtimeAmount | formatMoney}}</div>
+              <div class="red" v-if="!scope.row.cellData[index].isSame">({{scope.row.cellData[index].historyAmount | formatMoney}})</div>
             </div>
           </template>
         </el-table-column>

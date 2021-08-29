@@ -57,106 +57,107 @@
                     </el-form-item>
                 </el-col> -->
                 <el-col :span="12">
-                    <el-form-item label="发车日期" :label-width="labelWidth" required prop="departureDate">
+                    <el-form-item label="入账月份" :label-width="labelWidth" required prop="belongMonth">
+                        <el-date-picker v-model="form.belongMonth" type="month" value-format="yyyy-MM"></el-date-picker>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="发车日期" :label-width="labelWidth" prop="departureDate">
                         <el-date-picker v-model="form.departureDate" type="date" value-format="yyyy-MM-dd"></el-date-picker>
                     </el-form-item>
                 </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="12">
-                    <el-form-item label="发车时间" :label-width="labelWidth" required prop="departureTime">
+                    <el-form-item label="发车时间" :label-width="labelWidth" prop="departureTime">
                         <el-time-picker v-model="form.departureTime" value-format="HH:mm:ss"></el-time-picker>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
-                    <el-form-item label="到达时间" :label-width="labelWidth" required prop="arrivalTime">
+                    <el-form-item label="到达时间" :label-width="labelWidth" prop="arrivalTime">
                         <el-time-picker v-model="form.arrivalTime" value-format="HH:mm:ss"></el-time-picker>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="发车站" :label-width="labelWidth" required prop="departureStation">
-                        <el-input v-model="form.departureStation" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="到达站" :label-width="labelWidth" required prop="arrivalStation">
-                        <el-input v-model="form.arrivalStation" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="车次" :label-width="labelWidth" prop="trainNumber">
-                        <el-input v-model="form.trainNumber" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="坐等" :label-width="labelWidth" prop="seat">
-                        <el-input v-model="form.seat" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="费用类型" :label-width="labelWidth" required prop="feeType">
+                    <el-form-item label="费用类型" :label-width="labelWidth" prop="feeType">
                         <el-input v-model="form.feeType" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
-                    <el-form-item label="资金方向" :label-width="labelWidth" required prop="fundingDirection">
+                    <el-form-item label="资金方向" :label-width="labelWidth" prop="fundingDirection">
                         <el-radio-group v-model="form.fundingDirection">
                             <el-radio v-for="(funding, index) in feeFundingDirection" :key="'funding'+index" :label="funding.value">{{funding.name}}</el-radio>
                         </el-radio-group>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="订单金额" :label-width="labelWidth" required prop="orderAmount">
-                        <el-input v-model="form.orderAmount" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
             </el-row>
             <el-row>
-                <el-col :span="12">
-                    <el-form-item label="票价/价差" :label-width="labelWidth" required prop="fareOrSpread">
-                        <el-input v-model="form.fareOrSpread" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="改签费" :label-width="labelWidth" prop="changeFee">
-                        <el-input v-model="form.changeFee" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="退票费" :label-width="labelWidth" prop="refundFee">
-                        <el-input v-model="form.refundFee" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
                 <el-col :span="12">
                     <el-form-item label="结算金额" :label-width="labelWidth" required prop="settlementAmount">
                         <el-input v-model="form.settlementAmount" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
+                <el-col :span="12">
+                    <el-form-item label="票价/价差" :label-width="labelWidth" prop="fareOrSpread">
+                        <el-input v-model="form.fareOrSpread" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
             </el-row>
             <el-row>
+                <el-col :span="12">
+                    <el-form-item label="发车站" :label-width="labelWidth" prop="departureStation">
+                        <el-input v-model="form.departureStation" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="到达站" :label-width="labelWidth" prop="arrivalStation">
+                        <el-input v-model="form.arrivalStation" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+                
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="车次" :label-width="labelWidth" prop="trainNumber">
+                        <el-input v-model="form.trainNumber" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="坐等" :label-width="labelWidth" prop="seat">
+                        <el-input v-model="form.seat" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="订单金额" :label-width="labelWidth" prop="orderAmount">
+                        <el-input v-model="form.orderAmount" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="退票费" :label-width="labelWidth" prop="refundFee">
+                        <el-input v-model="form.refundFee" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="改签费" :label-width="labelWidth" prop="changeFee">
+                        <el-input v-model="form.changeFee" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
                 <el-col :span="12">
                     <el-form-item label="服务费" :label-width="labelWidth" prop="serviceCharge">
                         <el-input v-model="form.serviceCharge" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="合计" :label-width="labelWidth" prop="total">
-                        <el-input v-model="form.total" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="入账月份" :label-width="labelWidth" required prop="belongMonth">
-                        <el-date-picker v-model="form.belongMonth" type="month" value-format="yyyy-MM"></el-date-picker>
+                    <el-form-item label="合计" :label-width="labelWidth" prop="total">
+                        <el-input v-model="form.total" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -204,46 +205,46 @@ export default {
                 //         required: true, message: '请选择订票日期', trigger: ['change', 'blur']
                 //     }
                 // ],
-                departureDate: [
-                    {
-                        required: true, message: '请选择发车日期', trigger: ['change', 'blur']
-                    }
-                ],
-                departureTime: [
-                    {
-                        required: true, message: '请选择发车时间', trigger: ['change', 'blur']
-                    }
-                ],
-                arrivalTime: [
-                    {
-                        required: true, message: '请选择到达时间', trigger: ['change', 'blur']
-                    }
-                ],
-                departureStation: [
-                    {
-                        required: true, message: '请输入发车站', trigger: ['change', 'blur']
-                    }
-                ],
-                arrivalStation: [
-                    {
-                        required: true, message: '请输入到达站', trigger: ['change', 'blur']
-                    }
-                ],
-                feeType: [
-                    {
-                        required: true, message: '请输入费用类型', trigger: ['change', 'blur']
-                    }
-                ],
-                fundingDirection: [
-                    {
-                        required: true, message: '请选择资金方向', trigger: 'change'
-                    }
-                ],
-                fareOrSpread: [
-                    {
-                        required: true, message: '请输入票价/价差', trigger: ['change', 'blur']
-                    }
-                ],
+                // departureDate: [
+                //     {
+                //         required: true, message: '请选择发车日期', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // departureTime: [
+                //     {
+                //         required: true, message: '请选择发车时间', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // arrivalTime: [
+                //     {
+                //         required: true, message: '请选择到达时间', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // departureStation: [
+                //     {
+                //         required: true, message: '请输入发车站', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // arrivalStation: [
+                //     {
+                //         required: true, message: '请输入到达站', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // feeType: [
+                //     {
+                //         required: true, message: '请输入费用类型', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // fundingDirection: [
+                //     {
+                //         required: true, message: '请选择资金方向', trigger: 'change'
+                //     }
+                // ],
+                // fareOrSpread: [
+                //     {
+                //         required: true, message: '请输入票价/价差', trigger: ['change', 'blur']
+                //     }
+                // ],
                 settlementAmount: [
                     {
                         required: true, message: '请输入结算金额', trigger: ['change', 'blur']
@@ -254,11 +255,11 @@ export default {
                         required: true, message: '请选择入账月份', trigger: ['change', 'blur']
                     }
                 ],
-                orderAmount: [
-                    {
-                        required: true, message: '请输入订单金额', trigger: ['change', 'blur']
-                    }
-                ]
+                // orderAmount: [
+                //     {
+                //         required: true, message: '请输入订单金额', trigger: ['change', 'blur']
+                //     }
+                // ]
             }
         };
     },

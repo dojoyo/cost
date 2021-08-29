@@ -46,16 +46,12 @@
       <el-table v-if="list && list.length>0" :data="list" style="width: 100%;" :header-cell-style="{background:'#f5f9ff'}">
         <el-table-column type="index" label="序号"> </el-table-column>
         <el-table-column prop="deptName" label="部门" width="200"></el-table-column>
-        <el-table-column prop="cost" label="金额" width="150">
+        <el-table-column prop="cost" label="金额">
           <template slot-scope="scope">
             {{formatMoney(scope.row.cost)}}
           </template>
         </el-table-column>
-        <el-table-column prop="costDate" label="费用发生日期" width="200">
-          <template slot-scope="scope">
-            {{DateTimeEn(scope.row.costDate)}}
-          </template>
-        </el-table-column>
+        <el-table-column prop="belongMonth" label="费用发生月份"></el-table-column>
         <el-table-column prop="remark" label="备注" min-width="200"></el-table-column>
         <el-table-column label="操作" width="126" fixed="right" header-align="center" align="center" >
           <template slot-scope="scope">
@@ -65,9 +61,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="txt-right">
+      <div class="pagination-show-total" v-if="list && list.length>0">
+        <div>
+          合计：{{countTotal | formatMoney}}元
+        </div>
         <el-pagination
-          v-if="list && list.length>0"
           style="margin-top: 20px"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
@@ -155,6 +153,13 @@ export default {
       }).catch(err => {
         console.log(err);
       });
+      api.bizExpenseTotal(params).then(res => {
+        if (res.code === 200) {
+          this.countTotal = res.data;
+        }
+      }).catch(err => {
+        console.log(err);
+      });
     },
     // 分页更改
     handleSizeChange(val) {
@@ -216,4 +221,13 @@ export default {
   margin:0 15px!important;
 }
 .blue-active{color: #3C6CBA;}
+.pagination-show-total{
+  text-align: right;
+  div:first-child{
+    float: left;
+    padding: 1px 20px 1px 0;
+    height:28px;
+    line-height: 28px;
+  }
+}
 </style>

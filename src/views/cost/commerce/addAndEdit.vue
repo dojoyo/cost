@@ -16,20 +16,8 @@
       </div>
       <div class="clear"></div>
     </div>
-    <el-form :model="form" :rules="rules" ref="form" label-width="90px">
+    <el-form :model="form" :rules="rules" ref="form" label-width="100px">
       <el-row>
-        <el-col :span="12">
-          <el-form-item label="年份" required prop="costDate">
-            <el-date-picker
-              v-model="form.costDate"
-              type="date"
-              value-format="yyyy-MM-dd"
-              format="yyyy-MM-dd"
-              placeholder="选择"
-            >
-            </el-date-picker>
-          </el-form-item>
-        </el-col>
         <el-col :span="12">
           <el-form-item label="部门" required prop="deptId">
             <el-cascader
@@ -43,14 +31,27 @@
             ></el-cascader>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row>
         <el-col :span="12">
-          <el-form-item label="费用" required prop="cost">
+          <el-form-item label="金额" required prop="cost">
             <el-input v-model="form.cost" placeholder="请输入费用"></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
+          <el-form-item label="费用发生月份" required prop="belongMonth" class="lh-18">
+            <el-date-picker
+              v-model="form.belongMonth"
+              type="month"
+              value-format="yyyy-MM"
+              placeholder="请选择"
+            >
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
           <el-form-item label="备注" prop="remark">
             <el-input v-model="form.remark" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请输入内容"></el-input>
           </el-form-item>
@@ -65,7 +66,6 @@
 </template>
 <script>
 import api from "@/api/cost";
-import filters from "@/utils/filters";
 export default {
   props: {
     enumType: Object,
@@ -80,36 +80,33 @@ export default {
       form: {
         deptId: "",
         cost: "",
-        costDate: "",
+        belongMonth: "",
         id: "",
         deptName: "",
         remark: ""
       },
       rules: {
         deptId: [{ required: true, message: "请选择部门", trigger: "change" }],
-        costDate: [{ required: true, message: "请选择日期", trigger: "change" }],
+        belongMonth: [{ required: true, message: "请选择费用发生月份", trigger: "change" }],
         cost: [{ required: true, message: "请输入金额", trigger: "blur" }],
       }
     };
   },
   methods: {
     open(query) {
+      this.visible = true;
       this.$nextTick(() => {
         this.$refs.form.resetFields();
-        this.visible = true;
         this.title = query.id ? "编辑" : "新增";
         if (query.id) {
           this.getData(query.id);
         }
       });
-      
     },
     getData(id) {
       api.expenseDetail(id).then(res => {
           if (res.code === 200) {
             this.form = res.data;
-            this.form.costDate = filters.DateTimeEn(res.data.costDate);
-            console.log(this.form)
           }
         })
         .catch(err => {
@@ -172,6 +169,17 @@ export default {
     padding: 5px;
     text-align: left;
     padding-left: 115px;
+  }
+  .el-col-24 {
+    .el-input{width: calc(100% - 65px);
+      .el-input__inner{
+          width: 100%;
+      }
+    }
+    .el-textarea{width: calc(100% - 65px)}
+  }
+  .lh-18{
+    .el-form-item__label{line-height: 18px!important;}
   }
 }
 </style>

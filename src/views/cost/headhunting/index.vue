@@ -46,7 +46,7 @@
         :data="list"
         style="width: 100%;"
         :header-cell-style="{ background: '#f5f9ff' }">
-       <el-table-column type="index" label="序号"> </el-table-column>
+        <el-table-column type="index" label="序号"> </el-table-column>
         <el-table-column label="部门" prop="deptName"></el-table-column>
         <el-table-column label="入职人" prop="userName"></el-table-column>
         <el-table-column label="费用" prop="amount">
@@ -54,11 +54,7 @@
             {{ scope.row.amount | formatMoney }}
           </template>
         </el-table-column>
-        <el-table-column label="费用发生日期" prop="paymentDate" width="150">
-          <template slot-scope="scope">
-             {{ scope.row.paymentDate | DateTimeEn }}
-          </template>
-        </el-table-column>
+        <el-table-column label="费用发生月份" prop="belongMonth"></el-table-column>
         <el-table-column label="操作" width="126" fixed="right" header-align="center" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="showAddAndEditDialog(scope.row)">编辑</el-button>
@@ -67,9 +63,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="txt-right">
+      <div class="pagination-show-total" v-if="list && list.length>0">
+        <div>
+          合计：{{countTotal | formatMoney}}元
+        </div>
         <el-pagination
-          v-if="list && list.length > 0"
           style="margin-top: 20px"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
@@ -137,14 +135,21 @@ export default {
         ...this.filter
       };
       api.hunterList(params).then(res => {
-          if (res.code === 200) {
-            this.list = res.data.list;
-            this.total = res.data.total;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        if (res.code === 200) {
+          this.list = res.data.list;
+          this.total = res.data.total;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      api.hunterTotal(params).then(res => {
+        if (res.code === 200) {
+          this.countTotal = res.data;
+        }
+      }).catch(err => {
+        console.log(err);
+      });
     },
     showAddAndEditDialog(data){
       this.$refs.addAndEditDialog.open(data)
@@ -197,4 +202,13 @@ export default {
   width: calc(100% - 30px);
 }
 .blue-active{color: #3C6CBA;}
+.pagination-show-total{
+  text-align: right;
+  div:first-child{
+    float: left;
+    padding: 1px 20px 1px 0;
+    height:28px;
+    line-height: 28px;
+  }
+}
 </style>

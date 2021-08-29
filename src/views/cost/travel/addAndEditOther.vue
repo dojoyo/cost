@@ -144,11 +144,11 @@ export default {
                         required: true, message: '请选择部门', trigger: 'change'
                     }
                 ],
-                number: [
-                    {
-                        required: true, message: '请输入面单号', trigger: ['change', 'blur']
-                    }
-                ],
+                // number: [
+                //     {
+                //         required: true, message: '请输入面单号', trigger: ['change', 'blur']
+                //     }
+                // ],
                 amount: [
                     {
                         required: true, message: '请输入金额', trigger: ['change', 'blur']

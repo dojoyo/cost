@@ -57,12 +57,12 @@
                     </el-form-item>
                 </el-col> -->
                 <el-col :span="12">
-                    <el-form-item label="入住时间" :label-width="labelWidth" required prop="checkInDate">
+                    <el-form-item label="入住时间" :label-width="labelWidth" prop="checkInDate">
                         <el-date-picker v-model="form.checkInDate" type="date"></el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="离店日期" :label-width="labelWidth" required prop="checkOutDate">
+                    <el-form-item label="离店日期" :label-width="labelWidth" prop="checkOutDate">
                         <el-date-picker v-model="form.checkOutDate" type="date"></el-date-picker>
                     </el-form-item>
                 </el-col>
@@ -74,19 +74,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="酒店城市" :label-width="labelWidth" required prop="hotelCity">
-                        <el-input v-model="form.hotelCity" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="酒店名称" :label-width="labelWidth" required prop="hotelName">
-                        <el-input v-model="form.hotelName" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="单价" :label-width="labelWidth" required prop="unitPrice">
+                    <el-form-item label="单价" :label-width="labelWidth" prop="unitPrice">
                         <el-input v-model="form.unitPrice" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
@@ -95,6 +83,18 @@
                 <el-col :span="12">
                     <el-form-item label="金额" :label-width="labelWidth" required prop="amount">
                         <el-input v-model="form.amount" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="酒店城市" :label-width="labelWidth" prop="hotelCity">
+                        <el-input v-model="form.hotelCity" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="酒店名称" :label-width="labelWidth" prop="hotelName">
+                        <el-input v-model="form.hotelName" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -169,31 +169,31 @@ export default {
                 //         required: true, message: '请选择订票日期', trigger: ['change', 'blur']
                 //     }
                 // ],
-                checkInDate: [
-                    {
-                        required: true, message: '请选择入住时间', trigger: ['change', 'blur']
-                    }
-                ],
-                checkOutDate: [
-                    {
-                        required: true, message: '请选择离店日期', trigger: ['change', 'blur']
-                    }
-                ],
-                hotelCity: [
-                    {
-                        required: true, message: '请输入酒店城市', trigger: ['change', 'blur']
-                    }
-                ],
-                hotelName: [
-                    {
-                        required: true, message: '请输入酒店名称', trigger: ['change', 'blur']
-                    }
-                ],
-                unitPrice: [
-                    {
-                        required: true, message: '请输入单价', trigger: ['change', 'blur']
-                    }
-                ],
+                // checkInDate: [
+                //     {
+                //         required: true, message: '请选择入住时间', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // checkOutDate: [
+                //     {
+                //         required: true, message: '请选择离店日期', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // hotelCity: [
+                //     {
+                //         required: true, message: '请输入酒店城市', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // hotelName: [
+                //     {
+                //         required: true, message: '请输入酒店名称', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // unitPrice: [
+                //     {
+                //         required: true, message: '请输入单价', trigger: ['change', 'blur']
+                //     }
+                // ],
                 amount: [
                     {
                         required: true, message: '请输入金额', trigger: ['change', 'blur']

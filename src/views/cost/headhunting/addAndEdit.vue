@@ -13,7 +13,7 @@
       </div>
       <div class="clear"></div>
     </div>
-    <el-form :model="form" :inline="true"  :rules="rules" ref="form" label-width="90px">
+    <el-form :model="form" :inline="true"  :rules="rules" ref="form" label-width="100px">
       <el-row>
         <el-col :span="12">
           <el-form-item label="部门" required prop="deptId">
@@ -55,13 +55,12 @@
            </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="费用发生日期" required prop="paymentDate" class="lh-18">
+          <el-form-item label="费用发生月份" required prop="belongMonth" class="lh-18">
             <el-date-picker
-              v-model="form.paymentDate"
-              type="date"
-              value-format="yyyy-MM-dd"
-              format="yyyy-MM-dd"
-              placeholder="选择日期">
+              v-model="form.belongMonth"
+              type="month"
+              value-format="yyyy-MM"
+              placeholder="请选择">
             </el-date-picker>
           </el-form-item>
         </el-col>
@@ -89,7 +88,7 @@ export default {
       form:{
         deptId:'',
         amount:'',
-        paymentDate:'',
+        belongMonth:'',
         userId:'',
         id:'',
         userName:'',
@@ -99,7 +98,7 @@ export default {
         deptId:[
            { required: true, message: '请选择部门', trigger: 'change' }
         ],
-        paymentDate:[
+        belongMonth:[
            { required: true, message: '请选择费用日期', trigger: 'change' }
         ],
         amount:[
@@ -115,11 +114,20 @@ export default {
     open(query){
       this.userOptions = []
       this.visible = true
+      this.form = {
+        deptId:'',
+        amount:'',
+        belongMonth:'',
+        userId:'',
+        id:'',
+        userName:'',
+        deptName:''
+      }
       this.$nextTick(()=>{
         this.$refs.form.resetFields();
         this.title = query.id ? '编辑':'新增'
         if(query.id){
-          this.form = query
+          this.form = Object.assign({}, query);
           this.userOptions = [{
               userName: this.form.userName,
               userId: this.form.userId
@@ -173,7 +181,7 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   .hunter-dialog{
       .el-dialog__title{
           line-height: 48px;
@@ -185,8 +193,8 @@ export default {
           text-align: left;
           padding-left: 115px;
       }
-  }
-  .lh-18{
-      .el-form-item__label{line-height: 18px;}
+      .lh-18{
+          .el-form-item__label{line-height: 18px;}
+      }
   }
 </style>

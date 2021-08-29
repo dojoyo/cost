@@ -37,7 +37,7 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="费用类别" :label-width="labelWidth" prop="advisoryType">
+                    <el-form-item label="费率类别" :label-width="labelWidth" required prop="advisoryType">
                         <el-select v-model="form.advisoryType">
                             <el-option v-for="item in feeAdvisoryType" :key="item.value" :label="item.name" :value="item.value"></el-option>
                         </el-select>
@@ -51,8 +51,8 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="费用发生日期" :label-width="labelWidth" required prop="expenseDate" class="lh-18">
-                        <el-date-picker v-model="form.expenseDate" type="date"></el-date-picker>
+                    <el-form-item label="费用发生月份" :label-width="labelWidth" required prop="belongMonth" class="lh-18">
+                        <el-date-picker v-model="form.belongMonth" type="month" value-format="yyyy-MM"></el-date-picker>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -65,7 +65,6 @@
 </template>
 <script>
 import api from '@/api/cost';
-import filter from '@/utils/filters'
 export default {
     name: 'serveAddAndEdit',
     props: {
@@ -85,9 +84,14 @@ export default {
                         required: true, message: '请选择部门', trigger: 'change'
                     }
                 ],
-                expenseDate: [
+                belongMonth: [
                     {
-                        required: true, message: '请选择费用发生日期', trigger: ['change', 'blur']
+                        required: true, message: '请选择费用发生月份', trigger: ['change', 'blur']
+                    }
+                ],
+                advisoryType: [
+                    {
+                        required: true, message: '请选择费率类别', trigger: ['change', 'blur']
                     }
                 ],
                 amount: [
@@ -111,7 +115,6 @@ export default {
                 if (this.form.advisoryType) {
                     this.form.advisoryType = this.form.advisoryType.value
                 }
-                this.form.expenseDate = filter.DateTimeEn(this.form.expenseDate)
             } else {
                 this.title = '新增';
             }
@@ -123,7 +126,7 @@ export default {
                 deptId: '',
                 amount: '',
                 advisoryType: '',
-                expenseDate: '',
+                belongMonth: '',
                 projectName: ''
             };
             this.$nextTick(() => {

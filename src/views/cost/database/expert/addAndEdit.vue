@@ -152,7 +152,7 @@ export default {
             this.$refs.form.resetFields();
             this.title = query.id ? '编辑':'新增'
             if(query.id){
-              this.form = query
+              this.form = Object.assign({}, query);
               this.form.userId = query.user.userId
               this.form.deptId = query.dept.deptId
               this.form.useDate = filter.DateTimeEn(query.useDate)

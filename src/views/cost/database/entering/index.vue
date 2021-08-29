@@ -158,9 +158,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="txt-right">
+      <div class="pagination-show-total" v-if="list && list.length>0">
+        <div>
+          合计：{{countTotal | formatMoney}}元
+        </div>
         <el-pagination
-          v-if="list && list.length > 0"
           style="margin-top: 20px"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
@@ -236,14 +238,21 @@ export default {
         ...this.search
       };
       api.reocrdDatabaseList(params).then(res => {
-          if (res.code === 200) {
-            this.list = res.data.list;
-            this.total = res.data.total;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        if (res.code === 200) {
+          this.list = res.data.list;
+          this.total = res.data.total;
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      api.reocrdDatabaseTotal(params).then(res => {
+        if (res.code === 200) {
+          this.countTotal = res.data;
+        }
+      }).catch(err => {
+        console.log(err);
+      });
     },
     // 编辑新增编辑弹窗打开
     showAddAndEditDialog(data) {
@@ -295,5 +304,14 @@ export default {
 .main{
   margin-top: 15px!important;
   border-radius: 5px 5px 0 0 ;
+}
+.pagination-show-total{
+  text-align: right;
+  div:first-child{
+    float: left;
+    padding: 1px 20px 1px 0;
+    height:28px;
+    line-height: 28px;
+  }
 }
 </style>

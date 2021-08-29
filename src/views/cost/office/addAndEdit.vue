@@ -79,7 +79,7 @@ export default {
             rules: {
                 year: [
                     {
-                        required: true, message: '请选择年份', trigger: 'change'
+                        required: true, message: '请选择年份', trigger: ['change','blur']
                     }
                 ],
                 month: [
@@ -94,7 +94,7 @@ export default {
                 ],
                 cost: [
                     {
-                        required: true, message: '请输入金额', trigger: 'blur'
+                        required: true, message: '请输入金额', trigger: ['change','blur']
                     }
                 ]
             },

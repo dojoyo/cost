@@ -69,7 +69,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="国际/国内" :label-width="labelWidth" required prop="flightType">
+                    <el-form-item label="国际/国内" :label-width="labelWidth" prop="flightType">
                         <el-radio-group v-model="form.flightType">
                             <el-radio v-for="(type, index) in flightType" :key="'flight'+index" :label="type.value">{{type.name}}</el-radio>
                         </el-radio-group>
@@ -78,19 +78,19 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="航程" :label-width="labelWidth" required prop="voyage">
+                    <el-form-item label="航程" :label-width="labelWidth" prop="voyage">
                         <el-input v-model="form.voyage" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="航班" :label-width="labelWidth" required prop="flight">
+                    <el-form-item label="航班" :label-width="labelWidth" prop="flight">
                         <el-input v-model="form.flight" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="航等" :label-width="labelWidth" required prop="cabin">
+                    <el-form-item label="航等" :label-width="labelWidth" prop="cabin">
                         <el-input v-model="form.cabin" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
@@ -208,26 +208,26 @@ export default {
                         required: true, message: '请选择入账月份', trigger: ['change', 'blur']
                     }
                 ],
-                flightType: [
-                    {
-                        required: true, message: '请选择国际/国内', trigger: 'change'
-                    }
-                ],
-                voyage: [
-                    {
-                        required: true, message: '请输入航程', trigger: ['change', 'blur']
-                    }
-                ],
-                flight: [
-                    {
-                        required: true, message: '请输入航班', trigger: ['change', 'blur']
-                    }
-                ],
-                cabin: [
-                    {
-                        required: true, message: '请输入航等', trigger: ['change', 'blur']
-                    }
-                ],
+                // flightType: [
+                //     {
+                //         required: true, message: '请选择国际/国内', trigger: 'change'
+                //     }
+                // ],
+                // voyage: [
+                //     {
+                //         required: true, message: '请输入航程', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // flight: [
+                //     {
+                //         required: true, message: '请输入航班', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // cabin: [
+                //     {
+                //         required: true, message: '请输入航等', trigger: ['change', 'blur']
+                //     }
+                // ],
                 receivedOrPaid: [
                     {
                         required: true, message: '请输入实收/实付', trigger: ['change', 'blur']
@@ -295,6 +295,7 @@ export default {
                 if (valid) {
                     const node = this.$refs.department.getCheckedNodes();
                     const userName = this.$refs.userSelect.selected.label
+                    debugger
                     let method = 'addTravelAir'
                     let params = {
                         ...this.form,

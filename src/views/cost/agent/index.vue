@@ -27,11 +27,7 @@
         <el-table-column prop="projectName" label="项目"></el-table-column>
         <el-table-column prop="advisoryType.name" label="费率类别"></el-table-column>
         <el-table-column prop="amount" label="金额"></el-table-column>
-        <el-table-column prop="expenseDate" label="费用发生日期" width="150">
-          <template slot-scope="scope">
-            {{scope.row.expenseDate | DateTimeEn}}
-          </template>
-        </el-table-column>
+        <el-table-column prop="belongMonth" label="费用发生月份"></el-table-column>
         <el-table-column label="操作" width="126" fixed="right" align="center" >
           <template slot-scope="scope">
             <el-button type="text" @click="goEdit(scope.row)">编辑</el-button>
@@ -40,9 +36,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="txt-right">
+      <div class="pagination-show-total" v-if="list && list.length>0">
+        <div>
+          合计：{{countTotal | formatMoney}}元
+        </div>
         <el-pagination
-          v-if="list && list.length>0"
           style="margin-top: 20px"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
@@ -117,6 +115,13 @@
         }).catch(err => {
           console.log(err);
         });
+        api.getAdvisoryTotal(params).then(res => {
+          if (res.code === 200) {
+            this.countTotal = res.data;
+          }
+        }).catch(err => {
+          console.log(err);
+        });
       },
       // 编辑
       goEdit(data) {
@@ -171,4 +176,13 @@
   }
   .travel-main{margin-top: 0!important;padding-top: 10px;}
   .blue-active{color: #3C6CBA;}
+  .pagination-show-total{
+    text-align: right;
+    div:first-child{
+      float: left;
+      padding: 1px 20px 1px 0;
+      height:28px;
+      line-height: 28px;
+    }
+  }
 </style>

@@ -50,9 +50,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="txt-right">
+      <div class="pagination-show-total" v-if="list && list.length>0">
+        <div>
+          合计：{{countTotal | formatMoney}}元
+        </div>
         <el-pagination
-          v-if="list && list.length>0"
           style="margin-top: 20px"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
@@ -126,6 +128,13 @@
         }).catch(err => {
           console.log(err);
         });
+        api.getServeTotal(params).then(res => {
+          if (res.code === 200) {
+            this.countTotal = res.data;
+          }
+        }).catch(err => {
+          console.log(err);
+        });
       },
       // 编辑
       goEdit(data) {
@@ -180,4 +189,13 @@
   }
   .travel-main{margin-top: 0!important;padding-top: 10px;}
   .blue-active{color: #3C6CBA;}
+  .pagination-show-total{
+    text-align: right;
+    div:first-child{
+      float: left;
+      padding: 1px 20px 1px 0;
+      height:28px;
+      line-height: 28px;
+    }
+  }
 </style>

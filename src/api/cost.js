@@ -1103,5 +1103,85 @@ export default {
       method: 'get'
     });
   },
-  
+  // 各页面新增费用合计
+  // 机票-费用合计
+  getTravelAirTotal(data) {
+    return request({
+      url: '/fee/pc/travel/air-ticket/total',
+      method: 'post',
+      data
+    });
+  },
+  // 滴滴-费用合计
+  getTravelDidiTotal(data) {
+    return request({
+      url: '/fee/pc/travel/didi/total',
+      method: 'post',
+      data
+    });
+  },
+  // 酒店-费用合计
+  getTravelHotelTotal(data) {
+    return request({
+      url: '/fee/pc/travel/hotel/total',
+      method: 'post',
+      data
+    });
+  },
+  // 其他-费用合计
+  getOtherTotal(data) {
+    return request({
+      url: '/fee/pc/other/total',
+      method: 'post',
+      data
+    });
+  },
+  // 火车票-费用合计
+  getTravelTrainTotal(data) {
+    return request({
+      url: '/fee/pc/travel/train-ticket/total',
+      method: 'post',
+      data
+    });
+  },
+  // 业务招待费-费用合计
+  getServeTotal(data) {
+    return request({
+      url: '/fee/pc/entertain/total',
+      method: 'post',
+      data
+    });
+  },
+  // 咨询中介费-费用合计
+  getAdvisoryTotal(data) {
+    return request({
+      url: '/fee/pc/advisory/total',
+      method: 'post',
+      data
+    });
+  },
+  // 数据库费-费用合计
+  reocrdDatabaseTotal(data) {
+    return request({
+      url: `/fee/pc/database/total`,
+      method: 'post',
+      data
+    });
+  },
+  // 猎头费-费用合计
+  hunterTotal(data){
+    return request({
+      url: '/fee/pc/headhunting/total',
+      method: 'post',
+      data
+    });
+  },
+  // 工商类费用-费用合计
+  bizExpenseTotal(data){
+    return request({
+      url: '/fee/pc/biz-expense/total',
+      method: 'post',
+      data
+    });
+  },
 };

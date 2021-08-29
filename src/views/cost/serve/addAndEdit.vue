@@ -23,7 +23,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="报销人员" :label-width="labelWidth" required class="w-100p" prop="userId">
+                    <el-form-item label="报销人员" :label-width="labelWidth" class="w-100p" prop="userId">
                         <el-select
                             v-model="form.userId"
                             ref="userSelect"
@@ -81,7 +81,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="我方人数" :label-width="labelWidth" required prop="ourPeople">
+                    <el-form-item label="我方人数" :label-width="labelWidth" prop="ourPeople">
                         <el-input v-model="form.ourPeople" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
@@ -93,7 +93,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="对方人数" :label-width="labelWidth" required prop="opposingPeople">
+                    <el-form-item label="对方人数" :label-width="labelWidth" prop="opposingPeople">
                         <el-input v-model="form.opposingPeople" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
@@ -154,31 +154,31 @@ export default {
             userOptions: [], // 查询
             form: {},
             rules: {
-                userId: [
-                    {
-                        required: true, message: '请选择报销人员', trigger: 'change'
-                    }
-                ],
+                // userId: [
+                //     {
+                //         required: true, message: '请选择报销人员', trigger: 'change'
+                //     }
+                // ],
                 deptId: [
                     {
                         required: true, message: '请选择部门', trigger: 'change'
                     }
                 ],
-                number: [
-                    {
-                        required: true, message: '请输入单据号', trigger: ['change', 'blur']
-                    }
-                ],
-                ourPeople: [
-                    {
-                        required: true, message: '请输入我方人数', trigger: ['change', 'blur']
-                    }
-                ],
-                opposingPeople: [
-                    {
-                        required: true, message: '请输入对方人数', trigger: ['change', 'blur']
-                    }
-                ],
+                // number: [
+                //     {
+                //         required: true, message: '请输入单据号', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // ourPeople: [
+                //     {
+                //         required: true, message: '请输入我方人数', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // opposingPeople: [
+                //     {
+                //         required: true, message: '请输入对方人数', trigger: ['change', 'blur']
+                //     }
+                // ],
                 amount: [
                     {
                         required: true, message: '请输入金额', trigger: ['change', 'blur']

@@ -21,7 +21,7 @@
       </el-menu>
       <div class="operate-buttons">
         <el-button type="text" icon="iconfont icon-xinzeng fs-12" class="blue-active" @click="goAddAndEdit"> 新增</el-button>
-        <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue-active" @click="openImportDialog" v-show="activeIndex !== '5'"> 导入</el-button>
+        <el-button type="text" icon="iconfont icon-xiazai3 fs-12" class="blue-active" @click="openImportDialog"> 导入</el-button>
         <el-button type="text" icon="iconfont icon-shangchuan2 fs-12" class="blue-active" @click="openExportDialog"> 导出</el-button>
         <el-button type="text" icon="iconfont icon-xiazai1 fs-12" class="blue-active" @click="getTemp" v-show="activeIndex !== '5'"> 下载模板</el-button>
       </div>
@@ -129,7 +129,7 @@
         <el-table-column prop="arrivalStation" label="到达站" width="80"></el-table-column>
         <el-table-column prop="trainNumber" label="车次" width="80"></el-table-column>
         <el-table-column prop="seat" label="坐等" width="80"></el-table-column>
-        <el-table-column prop="feeType" label="费用类型" width="80"></el-table-column>
+        <el-table-column prop="feeType" label="费用类型" width="100"></el-table-column>
         <el-table-column prop="fundingDirection.name" label="资金方向" width="80"></el-table-column>
         <el-table-column prop="orderAmount" label="订单金额" width="80"></el-table-column>
         <el-table-column prop="fareOrSpread" label="票价/价差" width="80"></el-table-column>
@@ -194,9 +194,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="txt-right">
+      <div class="pagination-show-total" v-if="list && list.length>0">
+        <div>
+          合计：{{countTotal | formatMoney}}元
+        </div>
         <el-pagination
-          v-if="list && list.length>0"
           style="margin-top: 20px"
           :current-page="pageNum"
           :page-sizes="[5, 10, 20]"
@@ -287,24 +289,31 @@
           ...this.filter
         };
         let method = ''
+        let methodTotal = ''
         switch (this.activeIndex) {
           case '1':
             method = 'getTravelAirList';
+            methodTotal = 'getTravelAirTotal';
             break
           case '2':
             method = 'getTravelHotelList';
+            methodTotal = 'getTravelHotelTotal';
             break
           case '3':
             method = 'getTravelTrainList';
+            methodTotal = 'getTravelTrainTotal';
             break
           case '4':
             method = 'getTravelDidiList';
+            methodTotal = 'getTravelDidiTotal';
             break
           case '5':
             method = 'getTravelOtherList';
+            methodTotal = 'getTravelOtherTotal';
             break
           default:
             method = 'getTravelAirList';
+            methodTotal = 'getTravelAirTotal';
             break
         }
         api[method](params).then(res => {
@@ -318,6 +327,11 @@
           this.list = []
           console.log(err);
         });
+        api[methodTotal](params).then(res => {
+          if(res.code === 200) {
+            this.countTotal = res.data
+          }
+        })
       },
       // tag切换
       handleSelectTag(key, keyPath) {
@@ -452,4 +466,13 @@
   }
   .travel-main{margin-top: 0!important;padding-top: 10px;}
   .blue-active{color: #3C6CBA;}
+  .pagination-show-total{
+    text-align: right;
+    div:first-child{
+      float: left;
+      padding: 1px 20px 1px 0;
+      height:28px;
+      line-height: 28px;
+    }
+  }
 </style>

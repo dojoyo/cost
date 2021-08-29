@@ -52,34 +52,20 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="开始计费时间" :label-width="labelWidth" required prop="startBillingTime" class="lh-18">
+                    <el-form-item label="开始计费时间" :label-width="labelWidth" prop="startBillingTime">
                         <el-date-picker v-model="form.startBillingTime" type="datetime"></el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="用车城市" :label-width="labelWidth" required prop="city">
+                    <el-form-item label="用车城市" :label-width="labelWidth" prop="city">
                         <el-input v-model="form.city" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="24">
-                    <el-form-item label="实际出发地" :label-width="labelWidth" required prop="startPoint">
-                        <el-input v-model="form.startPoint" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="24">
-                    <el-form-item label="实际目的地" :label-width="labelWidth" required prop="destination">
-                        <el-input v-model="form.destination" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
-                    <el-form-item label="距离" :label-width="labelWidth" prop="distance">
-                        <el-input v-model="form.distance" autocomplete="off"></el-input>
+                    <el-form-item label="入账月份" :label-width="labelWidth" required prop="belongMonth">
+                        <el-date-picker v-model="form.belongMonth" type="month" value-format="yyyy-MM"></el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -89,9 +75,23 @@
                 </el-col>
             </el-row>
             <el-row>
+                <el-col :span="24">
+                    <el-form-item label="实际出发地" :label-width="labelWidth" prop="startPoint">
+                        <el-input v-model="form.startPoint" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="实际目的地" :label-width="labelWidth" prop="destination">
+                        <el-input v-model="form.destination" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="12">
-                    <el-form-item label="入账月份" :label-width="labelWidth" required prop="belongMonth">
-                        <el-date-picker v-model="form.belongMonth" type="month" value-format="yyyy-MM"></el-date-picker>
+                    <el-form-item label="距离" :label-width="labelWidth" prop="distance">
+                        <el-input v-model="form.distance" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -144,31 +144,31 @@ export default {
                         required: true, message: '请选择部门', trigger: 'change'
                     }
                 ],
-                startBillingTime: [
-                    {
-                        required: true, message: '请选择开始计费时间', trigger: ['change', 'blur']
-                    }
-                ],
-                city: [
-                    {
-                        required: true, message: '请输入用车城市', trigger: ['change', 'blur']
-                    }
-                ],
+                // startBillingTime: [
+                //     {
+                //         required: true, message: '请选择开始计费时间', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // city: [
+                //     {
+                //         required: true, message: '请输入用车城市', trigger: ['change', 'blur']
+                //     }
+                // ],
                 paid: [
                     {
                         required: true, message: '请输入实付金额', trigger: ['change', 'blur']
                     }
                 ],
-                startPoint: [
-                    {
-                        required: true, message: '请输入实际出发地', trigger: ['change', 'blur']
-                    }
-                ],
-                destination: [
-                    {
-                        required: true, message: '请输入实际目的地', trigger: ['change', 'blur']
-                    }
-                ],
+                // startPoint: [
+                //     {
+                //         required: true, message: '请输入实际出发地', trigger: ['change', 'blur']
+                //     }
+                // ],
+                // destination: [
+                //     {
+                //         required: true, message: '请输入实际目的地', trigger: ['change', 'blur']
+                //     }
+                // ],
                 belongMonth: [
                     {
                         required: true, message: '请选择入账月份', trigger: ['change', 'blur']
