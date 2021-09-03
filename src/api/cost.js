@@ -24,9 +24,10 @@ export default {
   // 用户查询
   getUser(data) {
     return request({
-      url: '/contacts/userSearch',
-      method: 'get',
-      params: data
+      // url: '/contacts/userSearch', get
+      url: '/fee/pc/user/search',
+      method: 'post',
+      data: data // get的时候用params
     })
   },
   // 人工费（人力成本）
@@ -1182,6 +1183,69 @@ export default {
       url: '/fee/pc/biz-expense/total',
       method: 'post',
       data
+    });
+  },
+  // 跟投比例设置 - 列表
+  manageIncomeList(data){
+    return request({
+      url: '/fee/pc/manageIncome/list',
+      method: 'post',
+      data
+    });
+  },
+  // 跟投比例设置 - 设置跟投比例
+  setManageIncome(data) {
+    return request({
+      url: `/fee/pc/manageIncome/setFollowRate/${data.id}`,
+      method: 'post',
+      headers:{ 'Content-Type': 'application/json; charset=utf-8' },
+      data: data.data
+    });
+  },
+  // 跟投比例设置 - 更新数据
+  updateManageIncome(){
+    return request({
+      url: '/fee/pc/manageIncome/update',
+      method: 'post'
+    });
+  },
+  // 跟投比例设置 - 导出
+  exportManageIncome(data){
+    return request({
+      url: '/fee/pc/manageIncome/export',
+      method: 'post',
+      responseType: 'arraybuffer',
+      data
+    });
+  },
+  // 消息 - 查阅记录
+  messageList(data){
+    return request({
+      url: '/fee/pc/message/viewRecord',
+      method: 'post',
+      data
+    });
+  },
+  // 消息 - 阅读消息
+  messageRead(id){
+    return request({
+      url: `/fee/pc/message/read/${id}`,
+      method: 'post'
+    });
+  },
+  // 消息 - 消息推送
+  messagePush(data){
+    return request({
+      url: `/fee/pc/message/push`,
+      method: 'post',
+      data
+    });
+  },
+  // 消息 - 获取消息接收用户
+  messageUser(){
+    return request({
+      url: `/fee/pc/message/getReceiveUser`,
+      method: 'get'
     });
   },
 };

@@ -12,32 +12,33 @@ const app = {
         iconOn: 'icon-feiyong_pressed',
         path: '/cost/labor',
         isActive: false,
-        code: '',
+        code: 350,
         sideMenu: [
-          { name: '人工费', icon: 'icon-renlichengben', path: '/cost/labor', code: '' },
-          { name: '差旅费', icon: 'icon-chalvfei', path: '/cost/travel', code: '' },
-          { name: '业务招待费', icon: 'icon-yewuzhaodaifei', path: '/cost/serve', code: '' },
-          { name: '咨询/中介费', icon: 'icon-waibuzixunzhongjiefei', path: '/cost/agent', code: '' },
-          { name: '数据库费', icon: 'icon-shujukufei', path: '/cost/database', code: '',
+          { name: '人工费', icon: 'icon-renlichengben', path: '/cost/labor', code: 352 },
+          { name: '差旅费', icon: 'icon-chalvfei', path: '/cost/travel', code: 353 },
+          { name: '业务招待费', icon: 'icon-yewuzhaodaifei', path: '/cost/serve', code: 354 },
+          { name: '咨询/中介费', icon: 'icon-waibuzixunzhongjiefei', path: '/cost/agent', code: 355 },
+          { name: '数据库费', icon: 'icon-shujukufei', path: '/cost/database/entering', code: 357,
             children: [
               { name: '数据库费录入', icon: '', path: '/cost/database/entering', code: '' },
               { name: '数据库账号分配', icon: '', path: '/cost/database/allocation', code: '' },
-              { name: '凯盛专家库使用情况', icon: '', path: '/cost/database/expert', code: '' }
+              { name: '专家库使用情况', icon: '', path: '/cost/database/expert', code: '' }
             ]
           },
-          { name: '猎头费', icon: 'icon-lietoufei', path: '', code: '',
+          { name: '猎头费', icon: 'icon-lietoufei', path: '/cost/headhunting', code: 358,
             children: [
               { name: '猎头招聘费', icon: '', path: '/cost/headhunting', code: '' },
               { name: '新增人数', icon: '', path: '/cost/newly', code: '' },
             ]
           },
-          { name: '固定办公费', icon: 'icon-gudingbangongfei', path: '/cost/office', code: '' },
-          { name: '工商类费用', icon: 'icon-gongshangleifeiyong', path: '/cost/commerce', code: '' },
-          { name: '其他费用', icon: 'icon-qitafeiyong', path: '/cost/other', code: '' },
-          { name: '其他收入', icon: 'icon-qitashouru', path: '/cost/income', code: '' },
-          { name: '数据发布', icon: 'icon-shujufabu', path: '/cost/distribution', code: '' },
-          { name: '超额提醒', icon: 'icon-chaoetixing', path: '/cost/overage', code: '' },
-          { name: '费用分摊比例设置', icon: 'icon-feiyongfentanbilishezhi', path: '/cost/setting', code: '' },
+          { name: '固定办公费', icon: 'icon-gudingbangongfei', path: '/cost/office', code: 356 },
+          { name: '工商类费用', icon: 'icon-gongshangleifeiyong', path: '/cost/commerce', code: 359 },
+          { name: '其他费用', icon: 'icon-qitafeiyong', path: '/cost/other', code: 360 },
+          { name: '跟投比例设置', icon: 'icon-gentoubilishezhi', path: '/cost/rate', code: '' },
+          { name: '其他收入', icon: 'icon-qitashouru', path: '/cost/income', code: 361 },
+          { name: '数据发布', icon: 'icon-feiyongfentanbilishezhi', path: '/cost/distribution', code: 362 },
+          { name: '超额提醒', icon: 'icon-chaoetixing', path: '/cost/overage', code: 363 },
+          { name: '费用分摊比例设置', icon: 'icon-feiyongfentanbilishezhi', path: '/cost/setting', code: 364 }
         ]
       },
       { name: '归档',

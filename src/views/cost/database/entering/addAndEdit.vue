@@ -29,6 +29,11 @@
                         </el-select>
                     </el-form-item>
                 </el-col>
+                <el-col :span="12" v-show="form.databaseType === 'OT'">
+                    <el-form-item label="备注名称" prop="typeRemark">
+                        <el-input type="text" v-model="form.typeRemark"></el-input>
+                    </el-form-item>
+                </el-col>
             </el-row>
             <div class="border-top">
               <div class="title">购买信息</div>
@@ -129,7 +134,8 @@ export default {
                 expirationDate:'',
                 paymentDate:'',
                 price:'',
-                startUseDate:''
+                startUseDate:'',
+                typeRemark: ''
             },
             rules: {
                 accountUnit: [
@@ -150,17 +156,17 @@ export default {
                 ],
                 paymentDate:[
                   {
-                        required: true, message: '请选择付款日期', trigger: 'change'
+                        required: true, message: '请选择付款日期', trigger: ['change','blur']
                     }
                 ],
                 startUseDate:[
                   {
-                        required: true, message: '请选择开始日期', trigger: 'change'
+                        required: true, message: '请选择开始日期', trigger: ['change','blur']
                     }
                 ],
                 expirationDate:[
                   {
-                        required: true, message: '请选择账号到期日期', trigger: 'change'
+                        required: true, message: '请选择账号到期日期', trigger: ['change','blur']
                     }
                 ],
                 price:[
@@ -185,12 +191,11 @@ export default {
           this.visible = true
           this.$nextTick(()=>{
             this.$refs.form.resetFields();
-            this.title = query.id ? '编辑':'新增'
-            if(query.id){
+            this.title = query && query.id ? '编辑':'新增'
+            if(query && query.id){
                 this.getData(query.id)
             }
           })
-              
         },
         getData(id){
             api.recordDatabaseDetail(id).then(res=>{
@@ -215,7 +220,11 @@ export default {
                     if (this.form.id) {
                         method = 'editReocrdDatabase'
                     }
-                    api[method](this.form).then(res => {
+                    let params = Object.assign({}, this.form)
+                    if (this.form.databaseType !== 'OT') {
+                        params.typeRemark = ''
+                    }
+                    api[method](params).then(res => {
                         if (res.code === 200) {
                             this.$message.success('操作成功')
                             this.$parent.$parent.getList()

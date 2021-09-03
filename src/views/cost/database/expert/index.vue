@@ -4,7 +4,7 @@
     <el-header class="header">
       <div class="header-wrap" style="display: flex">
         <div class="title">
-          <i class="iconfont icon-shujukufei"></i> 凯盛专家库使用情况
+          <i class="iconfont icon-shujukufei"></i> 专家库使用情况
         </div>
         <div style="margin-left: auto">
           <el-button

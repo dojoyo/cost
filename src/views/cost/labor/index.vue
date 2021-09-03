@@ -14,7 +14,7 @@
     <div class="search-area">
       <div class="w-100p flex space-between">
         <div>
-          <el-date-picker v-model="search.year" type="year" format="yyyy年" value-format="yyyy" placeholder="请选择年份" class="mr-10"></el-date-picker>
+          <el-date-picker v-model="search.year" type="year" format="yyyy年" value-format="yyyy" placeholder="请选择年份" class="mr-10 mb-10"></el-date-picker>
           <el-button @click="getList()" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
         </div>
         <div class="operate-buttons">
@@ -139,6 +139,7 @@
   .main{
     border-radius: 5px 5px 0 0 ;
   }
+  .mb-10{margin-bottom: 10px}
   .blue-background{
     background-color: #f5f9ff;
   }

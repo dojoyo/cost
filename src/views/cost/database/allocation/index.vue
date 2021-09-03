@@ -11,8 +11,7 @@
       </div>
     </el-header>
     <div class="search-area">
-      <el-input v-model="search.userName" placeholder="请输入人员姓名" class="mr-10 mb-10"></el-input>
-       <el-cascader
+      <el-cascader
         ref="department"
         class="mr-10 mb-10"
         placeholder="请选择部门"
@@ -29,6 +28,13 @@
           :value="item.value">
         </el-option>
       </el-select>
+      <el-input
+        v-show="search.databaseType === 'OT'"
+        size="medium"
+        placeholder="请输入内容"
+        v-model="search.typeRemark"
+        class="mr-10 mb-10"
+      />
       <el-button @click="getList" type="primary" size="small" icon="iconfont icon-sousuo fs-12"> 查询</el-button>
     </div>
    <div class="tag-operate-tool">
@@ -85,7 +91,7 @@
         search: {
           deptId:'all',
           databaseType:'',
-          userName:''
+          typeRemark:''
         },
         pageNum: 1,
         pageSize: 10,
@@ -116,8 +122,12 @@
             pageSize: this.pageSize,
             ...this.search
         };
+
         if (params.deptId === 'all') {
           params.deptId = ''
+        }
+        if (this.search.databaseType !== 'OT') {
+          params.typeRemark = ''
         }
         api.accountDatabaseList(params).then(res => {
             if (res.code === 200) {

@@ -15,7 +15,8 @@
       path==='/cost/database/allocation' ||
       path==='/cost/database/expert' ||
       path==='/cost/overage' ||
-      path==='/cost/setting'
+      path==='/cost/setting' ||
+      path==='/cost/rate'
       ">
     <div class="title">费用管理</div>
     <el-menu

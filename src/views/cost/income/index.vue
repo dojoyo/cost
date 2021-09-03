@@ -41,13 +41,14 @@
     <el-main class="main">
       <el-table v-if="list&&list.length>0" :data="list" style="width:100%" :fit="true" :header-cell-style="{'background':'#f5f9ff'}">
         <el-table-column prop="belongMonth" label="月份"></el-table-column>
-        <el-table-column prop="incomeType.name" label="费用类型">
-        </el-table-column>
+        <el-table-column prop="deptName" label="部门"></el-table-column>
         <el-table-column prop="amount" label="金额">
           <template slot-scope="scope">
             {{ scope.row.amount | formatMoney }}
           </template>
         </el-table-column>
+        <el-table-column prop="incomeType.name" label="费用类型"></el-table-column>
+        <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="showAddAndEditDialog(scope.row)">编辑</el-button>
@@ -75,7 +76,7 @@
         <br><span style="font-size: 14px">暂无数据</span><br/><br/>
       </div>
     </el-main>
-    <AddAndEditDialog ref="addAndEdit"  :enumType="enumType"/>
+    <AddAndEditDialog ref="addAndEdit" :deptTree="deptTree" :enumType="enumType"/>
     <ExportDialog ref="exportFile" method="exportIncomeFile"/>
   </el-container>
 </template>
@@ -156,6 +157,7 @@ export default {
     async init(){
       await this.getEnum('FeeMonth')
       await this.getEnum('FeeIncomeType')
+      await this.getDeptTree()
       this.enumType.FeeMonthAll = [{name: '全部月份', value: ''}].concat(this.enumType.FeeMonth)
       this.enumType.FeeIncomeTypeAll = [{name: '全部费用类型', value: ''}].concat(this.enumType.FeeIncomeType)
       this.getList()

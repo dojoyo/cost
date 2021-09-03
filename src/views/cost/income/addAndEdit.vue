@@ -44,7 +44,19 @@
               </el-select>
            </el-form-item>
           <el-form-item label="金额" required prop="amount">
-            <el-input v-model="form.amount" autocomplete="off"></el-input>
+            <el-input v-model="form.amount" autocomplete="off" placeholder="请输入"></el-input>
+          </el-form-item>
+          <el-form-item label="部门" prop="deptId">
+            <el-cascader
+              ref="department"
+              v-model="form.deptId"
+              :options="deptTree"
+              :show-all-levels="false"
+              :props="{ checkStrictly: true, emitPath: false }"
+              clearable></el-cascader>
+          </el-form-item>
+          <el-form-item label="备注" prop="remark">
+            <el-input type="textarea" v-model="form.remark" autocomplete="off" placeholder="请输入"></el-input>
           </el-form-item>
     </el-form>
      <div slot="footer" class="dialog-footer">
@@ -57,7 +69,8 @@
 import api from "@/api/cost";
 export default {
   props:{
-     enumType:Object
+     enumType: Object,
+     deptTree: Array
   },
   data() {
     return {
@@ -67,7 +80,9 @@ export default {
         year:'',
         month:'',
         amount:'',
-        incomeType:''
+        incomeType:'',
+        deptId: '',
+        remark: ''
       },
       rules:{
         year:[
@@ -102,10 +117,13 @@ export default {
       api.getIncomeDetail(id).then(res => {
           if (res.code === 200) {
             this.form = {
+              id: res.data.id,
               year:(res.data.year).toString(),
               month:(res.data.month.value).toString(),
               amount:res.data.amount,
-              incomeType:res.data.incomeType.value
+              incomeType:res.data.incomeType.value,
+              remark: res.data.remark,
+              deptId: res.data.deptId
             }
           }
         })
@@ -117,16 +135,25 @@ export default {
       this.$refs['form'].validate((valid) => {
           if (valid) {
             const methods = this.form.id ?'editIncomeDetail':'addIncome'
-             api[methods](this.form).then(res => {
-                if (res.code === 200) {
-                  this.$message.success({ message: '操作成功' });
-                    this.$parent.$parent.getList();
-                    this.visible = false;
-                }
-              })
-              .catch(err => {
-                console.log(err);
-              });
+            const node = this.$refs.department.getCheckedNodes();
+            let params = {
+              ...this.form
+            }
+            if (node && node.length) {
+              params.deptName = node[0].label
+            } else {
+              params.deptId = ''
+            }
+            api[methods](params).then(res => {
+              if (res.code === 200) {
+                this.$message.success({ message: '操作成功' });
+                  this.$parent.$parent.getList();
+                  this.visible = false;
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
           } else {
             console.log('error submit!!');
             return false;
@@ -150,6 +177,9 @@ export default {
           padding: 5px;
           text-align: left;
           padding-left: 115px;
+      }
+      .el-textarea{
+        width: 220px;
       }
   }
 </style>

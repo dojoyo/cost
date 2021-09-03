@@ -27,7 +27,7 @@
           <el-table-column v-for="(item,index) in dataList.length && dataList[0].isCGVCDeptData" :key="'isCGVCDeptData'+index" :label="item.deptName" width="120" align="right">
             <template slot-scope="scope">
               <span v-show="scope.row.editIndex === editIndex">
-                <el-input class="input-txt-right" v-model="scope.row.isCGVCDeptData[index].editRatio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')" >
+                <el-input v-model="scope.row.isCGVCDeptData[index].editRatio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d\.]/g, '').replace(/^\./g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')" >
                   <span slot="suffix" class="lh-28">%</span>
                 </el-input>
               </span>
@@ -39,7 +39,7 @@
           <el-table-column v-for="(item,index) in dataList.length && dataList[0].noCGVCDeptData" :key="'noCGVCDeptData'+index" :label="item.deptName" width="120" align="right">
             <template slot-scope="scope">
               <span v-show="scope.row.editIndex === editIndex">
-                <el-input class="input-txt-right" v-model="scope.row.noCGVCDeptData[index].editRatio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d]/g,'')">
+                <el-input v-model="scope.row.noCGVCDeptData[index].editRatio" size="mini" placeholder="请输入" oninput="value=value.replace(/[^\d\.]/g, '').replace(/^\./g, '').replace(/\.{2,}/g, '.').replace('.', '$#$').replace(/\./g, '').replace('$#$', '.')">
                   <span slot="suffix" class="lh-28">%</span>
                 </el-input>
               </span>
@@ -266,7 +266,7 @@
 }
 .lh-28{line-height: 28px;}
 .input-txt-right{
-  input{text-align: right!important;}
+  .el-input__inner{text-align: right!important;}
 }
 .blue-active{color: #3C6CBA;}
 </style>

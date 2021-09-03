@@ -18,12 +18,7 @@
       </div>
     </el-header>
     <div class="search-area">
-      <el-input
-        size="medium"
-        placeholder="请输入人员姓名"
-        v-model="search.userName"
-        class="mr-10 mb-10"
-      />
+      
       <el-date-picker
         v-model="search.year"
         class="mr-10 mb-10"
@@ -47,13 +42,20 @@
         placeholder="请选择数据库类型"
       >
         <el-option
-          v-for="item in enumType.FeeDatabaseType"
+          v-for="item in enumType.FeeDatabaseTypeAll"
           :key="item.value"
           :label="item.name"
           :value="item.value"
         >
         </el-option>
       </el-select>
+      <el-input
+        v-show="search.databaseType === 'OT'"
+        size="medium"
+        placeholder="请输入内容"
+        v-model="search.typeRemark"
+        class="mr-10 mb-10"
+      />
       <el-button @click="getList" type="primary" size="small">查询</el-button>
     </div>
     <el-main class="main">
@@ -63,10 +65,10 @@
         style="width: 100%; margin-top:10px; "
       >
         <el-table-column
-          prop="databaseType.name"
+          prop="databaseType"
           label="数据库"
           align="center"
-          width="100"
+          width="150"
         ></el-table-column>
         <el-table-column label="购买信息" align="center">
           <el-table-column
@@ -202,12 +204,14 @@ export default {
   props: {},
   data() {
     return {
-      enumType: {},
+      enumType: {
+        FeeDatabaseTypeAll: []
+      },
       search: {
         month:'',
         databaseType:'',
         year: new Date().getFullYear() + '',
-        userName:''
+        typeRemark:''
       },
       list: [],
       pageNum: 1,
@@ -228,7 +232,7 @@ export default {
         this.enumType.FeeMonthAll = [{ name: "全部月份", value: "" }].concat(
           this.enumType.FeeMonth
         );
-        this.enumType.FeeDatabaseType = [{name: '全部数据库类型', value: ''}].concat(this.enumType.FeeDatabaseType)
+        this.enumType.FeeDatabaseTypeAll = [{name: '全部数据库类型', value: ''}].concat(this.enumType.FeeDatabaseType)
         this.getList()
     },
     getList() {
@@ -237,6 +241,9 @@ export default {
         pageSize: this.pageSize,
         ...this.search
       };
+      if (this.search.databaseType !== 'OT') {
+        params.typeRemark = ''
+      }
       api.reocrdDatabaseList(params).then(res => {
         if (res.code === 200) {
           this.list = res.data.list;
@@ -301,6 +308,7 @@ export default {
         margin-bottom: 10px;
     }
 }
+.mb-10{margin-bottom: 10px}
 .main{
   margin-top: 15px!important;
   border-radius: 5px 5px 0 0 ;
