@@ -26,22 +26,25 @@
       </div>
     </div>
     <el-main class="main">
-      <el-table v-if="list && list.length>0" :data="list" style="width: 100%; margin-top:10px; " :header-cell-style="{background:'#f5f9ff'}" border :cell-style="firstCellStyle">
+      <el-table v-if="list && list.length>0" :data="list" style="width: 100%; margin-top:10px; " :header-cell-style="{background:'#f5f9ff'}" border :cell-style="firstCellStyle" :row-style="lastRowStyle">
         <el-table-column label="部门" width="180" prop="deptName"></el-table-column>
-        <el-table-column label="1月" width="120" align="right" prop="janCost"></el-table-column>
-        <el-table-column label="2月" width="120" align="right" prop="febCost"></el-table-column>
-        <el-table-column label="3月" width="120" align="right" prop="marCost"></el-table-column>
-        <el-table-column label="4月" width="120" align="right" prop="aprCost"></el-table-column>
-        <el-table-column label="5月" width="120" align="right" prop="mayCost"></el-table-column>
-        <el-table-column label="6月" width="120" align="right" prop="junCost"></el-table-column>
-        <el-table-column label="7月" width="120" align="right" prop="julCost"></el-table-column>
-        <el-table-column label="8月" width="120" align="right" prop="augCost"></el-table-column>
-        <el-table-column label="9月" width="120" align="right" prop="septCost"></el-table-column>
-        <el-table-column label="10月" width="120" align="right" prop="octCost"></el-table-column>
-        <el-table-column label="11月" width="120" align="right" prop="novCost"></el-table-column>
-        <el-table-column label="12月" width="120" align="right" prop="decCost"></el-table-column>
-        <el-table-column label="合计" width="120" align="right" prop="totalCost" fixed="right"></el-table-column>
+        <el-table-column label="1月" width="120" align="right" prop="monthCost.janCost"></el-table-column>
+        <el-table-column label="2月" width="120" align="right" prop="monthCost.febCost"></el-table-column>
+        <el-table-column label="3月" width="120" align="right" prop="monthCost.marCost"></el-table-column>
+        <el-table-column label="4月" width="120" align="right" prop="monthCost.aprCost"></el-table-column>
+        <el-table-column label="5月" width="120" align="right" prop="monthCost.mayCost"></el-table-column>
+        <el-table-column label="6月" width="120" align="right" prop="monthCost.junCost"></el-table-column>
+        <el-table-column label="7月" width="120" align="right" prop="monthCost.julCost"></el-table-column>
+        <el-table-column label="8月" width="120" align="right" prop="monthCost.augCost"></el-table-column>
+        <el-table-column label="9月" width="120" align="right" prop="monthCost.septCost"></el-table-column>
+        <el-table-column label="10月" width="120" align="right" prop="monthCost.octCost"></el-table-column>
+        <el-table-column label="11月" width="120" align="right" prop="monthCost.novCost"></el-table-column>
+        <el-table-column label="12月" width="120" align="right" prop="monthCost.decCost"></el-table-column>
+        <el-table-column label="合计" width="120" align="right" prop="total" fixed="right"></el-table-column>
       </el-table>
+      <div v-show="list && list.length > 0" class="black mt-15">
+        合计：{{countTotal | formatMoney}}元
+      </div>
       <div v-show="list && list.length===0" class="w-100p gray" style="text-align: center;">
         <img src="@/assets/no-list.png">
         <br><span style="font-size: 14px">暂无数据</span><br/><br/>
@@ -71,7 +74,8 @@
           year: new Date().getFullYear() + ''
         },
         list: [],
-        deptTree: []
+        deptTree: [],
+        countTotal: ''
       };
     },
     mixins: [mixin],
@@ -96,7 +100,19 @@
         };
         api.getFixedList(params).then(res => {
           if (res.code === 200) {
-            this.list = res.data;
+            let listData = res.data.deptCostList;
+            let totalData = {
+              deptName: '合计',
+              monthCost: res.data.monthTotal,
+              total: res.data.total
+            };
+            if (res.data.deptCostList && res.data.deptCostList.length > 0) {
+              listData.push(totalData)
+              this.list = listData
+              this.countTotal = res.data.total
+            } else {
+              this.list = []
+            }
           }
         }).catch(err => {
           console.log(err);
@@ -115,6 +131,12 @@
       getTemp() {
         // this.downLoadTempFile('getFixedTemp');
         this.$refs.downloadTempFile.open('getFixedTemp');
+      },
+      lastRowStyle({ row, rowIndex }) {
+        console.log(row)
+        if (row.deptName === '合计') {
+          return { color: 'black' };
+        }
       }
     }
   };
