@@ -32,12 +32,12 @@
         :header-cell-style="{ background: '#f5f9ff' }"
       >
         <el-table-column type="index" label="序号"></el-table-column>
-        <el-table-column prop="contractType.name" label="部门" min-width="120">
+        <el-table-column prop="contractType.name" label="部门" width="120">
           <template slot-scope="scope">
             {{ (scope.row.dept && scope.row.dept.deptName) || "" }}
           </template>
         </el-table-column>
-        <el-table-column prop="user" label="人员" min-width="100">
+        <el-table-column prop="user" label="人员" width="100">
           <template slot-scope="scope">
             {{ scope.row.user.userName }}
           </template>
@@ -50,7 +50,6 @@
         <el-table-column
           prop="reminder"
           label="提醒内容"
-          width="150"
         ></el-table-column>
         <el-table-column
           label="操作"
